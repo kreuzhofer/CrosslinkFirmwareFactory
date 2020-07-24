@@ -1,0 +1,28 @@
+type BuildDefinition @model {
+  id: ID!
+  name: String!
+  sourceTree: String!
+  configTree: String!
+  environments: [BuildConfiguration] @connection(keyName: "byBuildDefinition", fields: ["id"])
+}
+
+type BuildConfiguration @model @key(name: "byBuildDefinition", fields: ["buildDefinitionID"]) {
+  id: ID!
+  name: String!
+  buildDefinitionID: ID!
+  buildDefinition: BuildDefinition @connection(fields: ["buildDefinitionID"])
+  printerManufacturer: String!
+  printerModel: String!
+  printerMainboard: String
+  configurationJSON: String
+}
+
+type Patron @model {
+  id: ID!
+  email: String!
+  name: String!
+  pledge: Int!
+  patron_status: String!
+  will_pay_amount_cents: Int
+  last_event: String
+}
