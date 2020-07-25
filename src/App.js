@@ -2,7 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import { API, graphqlOperation } from 'aws-amplify'
 import { withAuthenticator } from '@aws-amplify/ui-react'
-import {Grid, Header, Input, List, Segment, Form, Button} from 'semantic-ui-react'
+import {
+  Grid, 
+  Header, 
+  Input, 
+  List, 
+  Segment, 
+  Form, 
+  Button,
+  Dropdown,
+  Menu,
+  Container,
+  Image,
+} from 'semantic-ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 
 import * as queries from './graphql/queries'
@@ -97,11 +109,48 @@ const App = () => {
 
   return (
     <Router>
+      <Menu fixed='top' inverted>
+        <Container>
+          <Menu.Item as='a' header>
+            <Image size='mini' src='/logo192.png' style={{ marginRight: '1.5em' }} />
+            Project Name
+          </Menu.Item>
+          <Menu.Item as='a'>Home</Menu.Item>
+
+          <Dropdown item simple text='Dropdown'>
+            <Dropdown.Menu>
+              <Dropdown.Item>List Item</Dropdown.Item>
+              <Dropdown.Item>List Item</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Header>Header Item</Dropdown.Header>
+              <Dropdown.Item>
+                <i className='dropdown icon' />
+                <span className='text'>Submenu</span>
+                <Dropdown.Menu>
+                  <Dropdown.Item>List Item</Dropdown.Item>
+                  <Dropdown.Item>List Item</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Item>
+              <Dropdown.Item>List Item</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Container>
+        <Container>
+          <Menu.Item as='a'>Logout</Menu.Item>
+        </Container>
+      </Menu>   
       <Grid padded>
-        <Grid.Column>
-          <Route path="/" exact component={AddBuildDefinition}/>
-          <Route path="/" exact component={BuildDefinitionsList}/>
-         </Grid.Column>
+        <Grid.Row>
+          <Grid.Column>
+            {/* This is a spacer */}
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <Route path="/" exact component={AddBuildDefinition}/>
+            <Route path="/" exact component={BuildDefinitionsList}/>
+          </Grid.Column>
+         </Grid.Row>
        </Grid>
     </Router>
     
