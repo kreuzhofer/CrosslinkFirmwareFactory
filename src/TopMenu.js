@@ -17,9 +17,10 @@ const TopMenu = () => (
       </Menu.Item>
       <Menu.Item><NavLink to={`/`}>Home</NavLink></Menu.Item>
 
-      <Dropdown item simple text='Dropdown'>
+      <Dropdown item simple text='Admin'>
         <Dropdown.Menu>
-          <Dropdown.Item>List Item</Dropdown.Item>
+          <Dropdown.Item href='/BuildDefinition'>Build Definitions</Dropdown.Item>
+          <Dropdown.Divider />
           <Dropdown.Item>List Item</Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Header>Header Item</Dropdown.Header>

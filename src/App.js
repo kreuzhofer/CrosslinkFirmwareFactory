@@ -37,7 +37,7 @@ const BuildDefinitionsList = () => {
     return buildDefinitions
       .sort(comparator.makeComparator('name'))
       .map(def => <List.Item key={def.id}>
-        <NavLink to={`/buildDefinition/${def.id}`}>{def.name}</NavLink>
+        <NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink>
       </List.Item>)
     }
 
@@ -58,6 +58,11 @@ const AddBuildDefinition = () => {
   
   const handleSubmit = async(event) => {
     event.preventDefault();
+    if(name === '' || sourceTree === '' || configTree === '')
+    {
+      alert("All fields have to be filled")
+      return false
+    }
     let result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
         name, sourceTree, configTree
       }}));
@@ -120,6 +125,12 @@ const BuildDefinitionDetails = (props) => {
   )
 }
 
+const IndexDashboard = () => {
+  return (
+    <p>Index</p>
+  )
+}
+
 
 const App = () => {
 
@@ -134,9 +145,10 @@ const App = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column>
-            <Route path="/" exact component={AddBuildDefinition}/>
-            <Route path="/" exact component={BuildDefinitionsList}/>
-            <Route path="/buildDefinition/:id" component={BuildDefinitionDetails}/>
+            <Route path="/" exact component={IndexDashboard} />
+            <Route path="/BuildDefinition" exact component={AddBuildDefinition}/>
+            <Route path="/BuildDefinition" exact component={BuildDefinitionsList}/>
+            <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/>
           </Grid.Column>
          </Grid.Row>
        </Grid>
