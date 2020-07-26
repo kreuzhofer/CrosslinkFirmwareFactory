@@ -19,8 +19,7 @@ import * as subscriptions from './graphql/subscriptions'
 import * as comparator from './util/comparator';
 
 const BuildDefinitionsList = () => {
-  const [buildDefinitions,
-    setBuildDefinitions] = useState([])
+  const [buildDefinitions, setBuildDefinitions] = useState([])
 
   useEffect(() => {
     async function fetchData() {
@@ -38,7 +37,7 @@ const BuildDefinitionsList = () => {
     return buildDefinitions
       .sort(comparator.makeComparator('name'))
       .map(def => <List.Item key={def.id}>
-        <NavLink to={`/buildDefinitions/${def.id}`}>{def.name}</NavLink>
+        <NavLink to={`/buildDefinition/${def.id}`}>{def.name}</NavLink>
       </List.Item>)
     }
 
@@ -100,6 +99,27 @@ const AddBuildDefinition = () => {
     );
 }
 
+const BuildDefinitionDetails = (props) => {
+  const [buildDefinition, setBuildDefinition] = useState([])
+  let id = props.match.params.id
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: id}));
+        setBuildDefinition(result.data.getBuildDefinition)        
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, [])
+
+  return (
+    <h1>{buildDefinition.name}</h1>
+  )
+}
+
 
 const App = () => {
 
@@ -116,6 +136,7 @@ const App = () => {
           <Grid.Column>
             <Route path="/" exact component={AddBuildDefinition}/>
             <Route path="/" exact component={BuildDefinitionsList}/>
+            <Route path="/buildDefinition/:id" component={BuildDefinitionDetails}/>
           </Grid.Column>
          </Grid.Row>
        </Grid>

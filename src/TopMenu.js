@@ -6,15 +6,16 @@ import {
   Menu,
 } from 'semantic-ui-react'
 import { SignOut } from 'aws-amplify-react';
+import {NavLink} from 'react-router-dom'
 
 const TopMenu = () => (
     <Menu fixed='top' inverted>
     <Container>
       <Menu.Item as='a' header>
         <Image size='mini' src='/logo192.png' style={{ marginRight: '1.5em' }} />
-        Project Name
+        Crosslink Firmware Factory
       </Menu.Item>
-      <Menu.Item as='a'>Home</Menu.Item>
+      <Menu.Item><NavLink to={`/`}>Home</NavLink></Menu.Item>
 
       <Dropdown item simple text='Dropdown'>
         <Dropdown.Menu>
