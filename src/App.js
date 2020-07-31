@@ -38,6 +38,7 @@ const BuildDefinitionsList = () => {
 
   const albumItems = () => {
 
+    // see https://reactjs.org/docs/handling-events.html
     const handleDelete = async(event, id) => {
       try {
         console.info("clicked delete "+id)
