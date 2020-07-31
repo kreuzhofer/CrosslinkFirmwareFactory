@@ -8,20 +8,10 @@ export const getBuildDefinition = /* GraphQL */ `
       name
       sourceTree
       configTree
-      environments {
-        items {
-          id
-          name
-          buildDefinitionID
-          printerManufacturer
-          printerModel
-          printerMainboard
-          configurationJSON
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      printerManufacturer
+      printerModel
+      printerMainboard
+      configurationJSON
       createdAt
       updatedAt
     }
@@ -43,65 +33,6 @@ export const listBuildDefinitions = /* GraphQL */ `
         name
         sourceTree
         configTree
-        environments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getBuildConfiguration = /* GraphQL */ `
-  query GetBuildConfiguration($id: ID!) {
-    getBuildConfiguration(id: $id) {
-      id
-      name
-      buildDefinitionID
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        environments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      printerManufacturer
-      printerModel
-      printerMainboard
-      configurationJSON
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listBuildConfigurations = /* GraphQL */ `
-  query ListBuildConfigurations(
-    $filter: ModelBuildConfigurationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listBuildConfigurations(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        buildDefinitionID
-        buildDefinition {
-          id
-          name
-          sourceTree
-          configTree
-          createdAt
-          updatedAt
-        }
         printerManufacturer
         printerModel
         printerMainboard

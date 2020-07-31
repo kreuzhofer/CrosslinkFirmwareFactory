@@ -3,16 +3,8 @@ type BuildDefinition @model {
   name: String!
   sourceTree: String!
   configTree: String!
-  environments: [BuildConfiguration] @connection(keyName: "byBuildDefinition", fields: ["id"])
-}
-
-type BuildConfiguration @model @key(name: "byBuildDefinition", fields: ["buildDefinitionID"]) {
-  id: ID!
-  name: String!
-  buildDefinitionID: ID!
-  buildDefinition: BuildDefinition @connection(fields: ["buildDefinitionID"])
-  printerManufacturer: String!
-  printerModel: String!
+  printerManufacturer: String
+  printerModel: String
   printerMainboard: String
   configurationJSON: String
 }

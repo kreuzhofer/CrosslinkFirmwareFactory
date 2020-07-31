@@ -8,20 +8,10 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       name
       sourceTree
       configTree
-      environments {
-        items {
-          id
-          name
-          buildDefinitionID
-          printerManufacturer
-          printerModel
-          printerMainboard
-          configurationJSON
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      printerManufacturer
+      printerModel
+      printerMainboard
+      configurationJSON
       createdAt
       updatedAt
     }
@@ -34,20 +24,10 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       name
       sourceTree
       configTree
-      environments {
-        items {
-          id
-          name
-          buildDefinitionID
-          printerManufacturer
-          printerModel
-          printerMainboard
-          configurationJSON
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      printerManufacturer
+      printerModel
+      printerMainboard
+      configurationJSON
       createdAt
       updatedAt
     }
@@ -60,94 +40,6 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       name
       sourceTree
       configTree
-      environments {
-        items {
-          id
-          name
-          buildDefinitionID
-          printerManufacturer
-          printerModel
-          printerMainboard
-          configurationJSON
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateBuildConfiguration = /* GraphQL */ `
-  subscription OnCreateBuildConfiguration {
-    onCreateBuildConfiguration {
-      id
-      name
-      buildDefinitionID
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        environments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      printerManufacturer
-      printerModel
-      printerMainboard
-      configurationJSON
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateBuildConfiguration = /* GraphQL */ `
-  subscription OnUpdateBuildConfiguration {
-    onUpdateBuildConfiguration {
-      id
-      name
-      buildDefinitionID
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        environments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      printerManufacturer
-      printerModel
-      printerMainboard
-      configurationJSON
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteBuildConfiguration = /* GraphQL */ `
-  subscription OnDeleteBuildConfiguration {
-    onDeleteBuildConfiguration {
-      id
-      name
-      buildDefinitionID
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        environments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       printerManufacturer
       printerModel
       printerMainboard
