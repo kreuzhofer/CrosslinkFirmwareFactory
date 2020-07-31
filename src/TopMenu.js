@@ -16,6 +16,7 @@ const TopMenu = () => (
         Crosslink Firmware Factory
       </Menu.Item>
       <Menu.Item><NavLink to={`/`}>Home</NavLink></Menu.Item>
+      <Menu.Item><NavLink to={`/Marlin`}>Marlin</NavLink></Menu.Item>
 
       <Dropdown item simple text='Admin'>
         <Dropdown.Menu>

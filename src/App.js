@@ -12,6 +12,7 @@ import {
 } from 'semantic-ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './TopMenu'
+import MarlinFirmwareOverview from './MarlinFirmwareOverview'
 
 import * as queries from './graphql/queries'
 import * as mutations from './graphql/mutations'
@@ -33,11 +34,20 @@ const BuildDefinitionsList = () => {
     fetchData();
   }, [])
 
+  const handleDelete = async(event) => {
+    try {
+      console.info("clicked delete "+event)
+      //const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {id: id}));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const albumItems = () => {
     return buildDefinitions
       .sort(comparator.makeComparator('name'))
       .map(def => <List.Item key={def.id}>
-        <NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink>
+        <NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><Button icon='delete' onClick={handleDelete} />
       </List.Item>)
     }
 
@@ -127,7 +137,12 @@ const BuildDefinitionDetails = (props) => {
 
 const IndexDashboard = () => {
   return (
-    <p>Index</p>
+    <div>
+      <p>Welcome to the Crosslink firmware factory (beta)</p>
+      <p>Here we provide downloads of pre-configured Marlin firmware for specific printers and setups as well as pre-compiled firmware binaries.</p>
+      <p>This website is currently in <strong>beta</strong>, so please excuse roughness in design. Functionality is still limited but you see it first, which is awesome!</p>
+      <p>Currently you will find pre-configured firmware in the "<NavLink to="/Marlin">Marlin</NavLink>" section, linked at the top of this page</p>
+    </div>
   )
 }
 
@@ -145,7 +160,8 @@ const App = () => {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column>
-            <Route path="/" exact component={IndexDashboard} />
+            <Route path="/" exact component={IndexDashboard}/>
+            <Route path="/Marlin" exact component={MarlinFirmwareOverview}/>
             <Route path="/BuildDefinition" exact component={AddBuildDefinition}/>
             <Route path="/BuildDefinition" exact component={BuildDefinitionsList}/>
             <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/>
