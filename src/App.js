@@ -34,20 +34,24 @@ const BuildDefinitionsList = () => {
     fetchData();
   }, [])
 
-  const handleDelete = async(event) => {
-    try {
-      console.info("clicked delete "+event)
-      //const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {id: id}));
-    } catch (error) {
-      console.error(error);
-    }
-  }
+
 
   const albumItems = () => {
+
+    const handleDelete = async(event, id) => {
+      try {
+        console.info("clicked delete "+id)
+        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: id}}));
+        console.info(result)
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     return buildDefinitions
       .sort(comparator.makeComparator('name'))
       .map(def => <List.Item key={def.id}>
-        <NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><Button icon='delete' onClick={handleDelete} />
+        <NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><Button icon='delete' onClick={(e)=>handleDelete(e, def.id)} />
       </List.Item>)
     }
 
