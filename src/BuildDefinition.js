@@ -21,7 +21,7 @@ import * as comparator from './util/comparator';
 
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
-    const [state, setState] = useState({ open: false })
+    const [confirmState, setConfirmState] = useState({ open: false })
   
     useEffect(() => {
       async function fetchData() {
@@ -37,21 +37,21 @@ const BuildDefinitionsList = () => {
 
     const handleConfirm = async() => {
       try {
-        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: state.id}}));
+        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: confirmState.id}}));
         console.info(result)
       } catch (error) {
         console.error(error);
       }
-      setState({ open: false })
+      setConfirmState({ open: false })
     }
-    const handleCancel = () => setState({ open: false })
+    const handleCancel = () => setConfirmState({ open: false })
   
     const buildDefinitionItems = () => {
   
       // see https://reactjs.org/docs/handling-events.html
       const handleDelete = (event, id) => {
         console.info("clicked delete "+id);
-        setState({open: true, id: id});
+        setConfirmState({open: true, id: id});
       }
   
       return buildDefinitions
@@ -88,7 +88,7 @@ const BuildDefinitionsList = () => {
           </Table.Body>
         </Table>
         <Confirm
-            open={state.open}
+            open={confirmState.open}
             cancelButton='Never mind'
             confirmButton="Yes"
             onCancel={handleCancel}
