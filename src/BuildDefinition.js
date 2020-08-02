@@ -33,6 +33,21 @@ const BuildDefinitionsList = () => {
         }
       }
       fetchData();
+      const insertSubscription = API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition)).subscribe({
+        next: (eventData) => {
+          const buildDefinition = eventData.value.data.onCreateBuildDefinition
+          setBuildDefinitions(buildDefinitions => [...buildDefinitions, buildDefinition])
+        }
+      })
+      const deleteSubscription = API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition)).subscribe({
+        next: (eventData) => {
+            fetchData();
+        }
+      })
+      return () => {
+        insertSubscription.unsubscribe();
+        deleteSubscription.unsubscribe();
+      }
     }, [])
 
     const handleConfirm = async() => {
