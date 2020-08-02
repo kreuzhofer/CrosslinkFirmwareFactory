@@ -10,6 +10,8 @@ import {
     TextArea,
     Form
   } from 'semantic-ui-react'
+import TextareaAutosize from 'react-textarea-autosize';
+
 import * as queries from './graphql/queries'
 import * as mutations from './graphql/mutations'
 import * as subscriptions from './graphql/subscriptions'
@@ -135,7 +137,7 @@ const AddBuildDefinition = () => {
             value={printerMainboard}
             onChange={(e) => setPrinterMainboard(e.target.value)}
         /><br/>
-        <TextArea
+        <TextareaAutosize
             label='Config JSON'
             placeholder='Config JSON'
             name='configurationJSON'
@@ -250,7 +252,7 @@ const BuildDefinitionDetails = (props) => {
             value={printerMainboard}
             onChange={(e) => setPrinterMainboard(e.target.value)}
         /><br/>
-        <TextArea
+        <TextareaAutosize
             label='Config JSON'
             placeholder='Config JSON'
             name='configurationJSON'
