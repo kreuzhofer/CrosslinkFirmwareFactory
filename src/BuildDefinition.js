@@ -7,8 +7,10 @@ import {
     List, 
     Segment, 
     Button,
-    TextArea,
-    Form
+    Form,
+    Table,
+    Icon,
+    Confirm
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -19,6 +21,7 @@ import * as comparator from './util/comparator';
 
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
+    const [state, setState] = useState({ open: false })
   
     useEffect(() => {
       async function fetchData() {
@@ -31,33 +34,66 @@ const BuildDefinitionsList = () => {
       }
       fetchData();
     }, [])
+
+    const handleConfirm = async() => {
+      try {
+        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: state.id}}));
+        console.info(result)
+      } catch (error) {
+        console.error(error);
+      }
+      setState({ open: false })
+    }
+    const handleCancel = () => setState({ open: false })
   
-    const albumItems = () => {
+    const buildDefinitionItems = () => {
   
       // see https://reactjs.org/docs/handling-events.html
-      const handleDelete = async(event, id) => {
-        try {
-          console.info("clicked delete "+id)
-          const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: id}}));
-          console.info(result)
-        } catch (error) {
-          console.error(error);
-        }
+      const handleDelete = (event, id) => {
+        console.info("clicked delete "+id);
+        setState({open: true, id: id});
       }
   
       return buildDefinitions
         .sort(comparator.makeComparator('name'))
-        .map(def => <List.Item key={def.id}>
-          <NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><Button icon='delete' onClick={(e)=>handleDelete(e, def.id)} />
-        </List.Item>)
+        .map(def => 
+        <Table.Row key={def.id}>
+          <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink></Table.Cell>
+          <Table.Cell>
+          <Button animated='vertical'>
+              <Button.Content hidden>Build</Button.Content>
+              <Button.Content visible><Icon name='cubes'/></Button.Content>
+          </Button>
+          <Button animated='vertical' onClick={(e)=>handleDelete(e, def.id)} color='red'>
+            <Button.Content hidden>Delete</Button.Content>
+            <Button.Content visible><Icon name='delete'/></Button.Content>
+          </Button>
+          </Table.Cell>
+        </Table.Row>)
       }
   
     return (
       <Segment>
         <Header as='h3'>My Build Definitions</Header>
-        <List divided relaxed>
-          {albumItems()}
-        </List>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Actions</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+
+          <Table.Body>
+            {buildDefinitionItems()}
+          </Table.Body>
+        </Table>
+        <Confirm
+            open={state.open}
+            cancelButton='Never mind'
+            confirmButton="Yes"
+            onCancel={handleCancel}
+            onConfirm={handleConfirm}
+          />
       </Segment>
     );
   }
@@ -201,6 +237,7 @@ const BuildDefinitionDetails = (props) => {
 
     return (
         <Segment>
+        <NavLink to="/BuildDefinition">Back</NavLink>
         <Form>
         <Header as='h3'>Edit build definition</Header>
         <Input
