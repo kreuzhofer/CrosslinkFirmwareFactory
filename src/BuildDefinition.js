@@ -41,7 +41,7 @@ const BuildDefinitionsList = () => {
       })
       const deleteSubscription = API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition)).subscribe({
         next: (eventData) => {
-            fetchData();
+          setBuildDefinitions(buildDefinitions => buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id));
         }
       })
       return () => {
@@ -206,7 +206,7 @@ const AddBuildDefinition = () => {
     }
   
 const BuildDefinitionDetails = (props) => {
-    const [ID, setId] = useState('');
+    const [ID, setID] = useState('');
     const [name, setName] = useState('');
     const [sourceTree, setSourceTree] = useState('');
     const [configTree, setConfigTree] = useState('');
@@ -221,7 +221,7 @@ const BuildDefinitionDetails = (props) => {
         try {
           const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: id}));
           const buildDefinition = result.data.getBuildDefinition
-          setId(buildDefinition.id)
+          setID(buildDefinition.id)
           setName(buildDefinition.name)
           setSourceTree(buildDefinition.sourceTree)
           setConfigTree(buildDefinition.configTree)
