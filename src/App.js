@@ -9,6 +9,11 @@ import {
   Grid, 
 } from 'semantic-ui-react'
 
+/*
+Fix for 404 access denied in amplify deployed app:
+https://github.com/aws-amplify/amplify-console/issues/436
+*/
+
 const IndexDashboard = () => {
   return (
     <div>

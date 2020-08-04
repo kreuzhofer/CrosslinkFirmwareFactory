@@ -20,20 +20,8 @@ const TopMenu = () => (
 
       <Dropdown item simple text='Admin'>
         <Dropdown.Menu>
+          <Dropdown.Header>Configurations</Dropdown.Header>
           <Dropdown.Item href='/BuildDefinition'>Build Definitions</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>List Item</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Header>Header Item</Dropdown.Header>
-          <Dropdown.Item>
-            <i className='dropdown icon' />
-            <span className='text'>Submenu</span>
-            <Dropdown.Menu>
-              <Dropdown.Item>List Item</Dropdown.Item>
-              <Dropdown.Item>List Item</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown.Item>
-          <Dropdown.Item>List Item</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </Container>
