@@ -1,4 +1,5 @@
-type BuildDefinition @model {
+type BuildDefinition @model 
+  @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   sourceTree: String!
@@ -6,7 +7,28 @@ type BuildDefinition @model {
   printerManufacturer: String
   printerModel: String
   printerMainboard: String
+  description: String
   configurationJSON: String
+  buildJobs: [BuildJob!] @connection(name: "BuildDefinitionBuildJobConnection")
+}
+
+type BuildJob @model 
+  @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  buildDefinition: BuildDefinition! @connection(name: "BuildDefinitionBuildJobConnection")
+  status: BuildJobStatus!
+  startTimestamp: Int!
+  endTimestamp: Int
+  message: String
+  log: String
+}
+
+enum BuildJobStatus {
+  QUEUED
+  STARTING
+  RUNNING
+  DONE
+  FAILED
 }
 
 type Patron @model {

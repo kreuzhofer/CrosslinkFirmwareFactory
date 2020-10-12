@@ -11,9 +11,25 @@ export const getBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      description
       configurationJSON
+      buildJobs {
+        items {
+          id
+          status
+          startTimestamp
+          endTimestamp
+          message
+          log
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -36,9 +52,82 @@ export const listBuildDefinitions = /* GraphQL */ `
         printerManufacturer
         printerModel
         printerMainboard
+        description
         configurationJSON
+        buildJobs {
+          nextToken
+        }
         createdAt
         updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getBuildJob = /* GraphQL */ `
+  query GetBuildJob($id: ID!) {
+    getBuildJob(id: $id) {
+      id
+      buildDefinition {
+        id
+        name
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        description
+        configurationJSON
+        buildJobs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      status
+      startTimestamp
+      endTimestamp
+      message
+      log
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listBuildJobs = /* GraphQL */ `
+  query ListBuildJobs(
+    $filter: ModelBuildJobFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBuildJobs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        buildDefinition {
+          id
+          name
+          sourceTree
+          configTree
+          printerManufacturer
+          printerModel
+          printerMainboard
+          description
+          configurationJSON
+          createdAt
+          updatedAt
+          owner
+        }
+        status
+        startTimestamp
+        endTimestamp
+        message
+        log
+        createdAt
+        updatedAt
+        owner
       }
       nextToken
     }

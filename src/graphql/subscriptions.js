@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateBuildDefinition = /* GraphQL */ `
-  subscription OnCreateBuildDefinition {
-    onCreateBuildDefinition {
+  subscription OnCreateBuildDefinition($owner: String!) {
+    onCreateBuildDefinition(owner: $owner) {
       id
       name
       sourceTree
@@ -11,15 +11,31 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      description
       configurationJSON
+      buildJobs {
+        items {
+          id
+          status
+          startTimestamp
+          endTimestamp
+          message
+          log
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onUpdateBuildDefinition = /* GraphQL */ `
-  subscription OnUpdateBuildDefinition {
-    onUpdateBuildDefinition {
+  subscription OnUpdateBuildDefinition($owner: String!) {
+    onUpdateBuildDefinition(owner: $owner) {
       id
       name
       sourceTree
@@ -27,15 +43,31 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      description
       configurationJSON
+      buildJobs {
+        items {
+          id
+          status
+          startTimestamp
+          endTimestamp
+          message
+          log
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onDeleteBuildDefinition = /* GraphQL */ `
-  subscription OnDeleteBuildDefinition {
-    onDeleteBuildDefinition {
+  subscription OnDeleteBuildDefinition($owner: String!) {
+    onDeleteBuildDefinition(owner: $owner) {
       id
       name
       sourceTree
@@ -43,9 +75,121 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      description
       configurationJSON
+      buildJobs {
+        items {
+          id
+          status
+          startTimestamp
+          endTimestamp
+          message
+          log
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
+    }
+  }
+`;
+export const onCreateBuildJob = /* GraphQL */ `
+  subscription OnCreateBuildJob($owner: String!) {
+    onCreateBuildJob(owner: $owner) {
+      id
+      buildDefinition {
+        id
+        name
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        description
+        configurationJSON
+        buildJobs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      status
+      startTimestamp
+      endTimestamp
+      message
+      log
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateBuildJob = /* GraphQL */ `
+  subscription OnUpdateBuildJob($owner: String!) {
+    onUpdateBuildJob(owner: $owner) {
+      id
+      buildDefinition {
+        id
+        name
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        description
+        configurationJSON
+        buildJobs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      status
+      startTimestamp
+      endTimestamp
+      message
+      log
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteBuildJob = /* GraphQL */ `
+  subscription OnDeleteBuildJob($owner: String!) {
+    onDeleteBuildJob(owner: $owner) {
+      id
+      buildDefinition {
+        id
+        name
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        description
+        configurationJSON
+        buildJobs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      status
+      startTimestamp
+      endTimestamp
+      message
+      log
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;

@@ -2,5 +2,11 @@
     "CreateAPIKey": 1,
     "AppSyncApiName": "marlinbuildopsapi",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
-    "DynamoDBEnableServerSideEncryption": "false"
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authmarlinbuildopsfc6385a7",
+            "Outputs.UserPoolId"
+        ]
+    }
 }

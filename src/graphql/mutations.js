@@ -14,9 +14,25 @@ export const createBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      description
       configurationJSON
+      buildJobs {
+        items {
+          id
+          status
+          startTimestamp
+          endTimestamp
+          message
+          log
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -33,9 +49,25 @@ export const updateBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      description
       configurationJSON
+      buildJobs {
+        items {
+          id
+          status
+          startTimestamp
+          endTimestamp
+          message
+          log
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -52,9 +84,130 @@ export const deleteBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      description
       configurationJSON
+      buildJobs {
+        items {
+          id
+          status
+          startTimestamp
+          endTimestamp
+          message
+          log
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      owner
+    }
+  }
+`;
+export const createBuildJob = /* GraphQL */ `
+  mutation CreateBuildJob(
+    $input: CreateBuildJobInput!
+    $condition: ModelBuildJobConditionInput
+  ) {
+    createBuildJob(input: $input, condition: $condition) {
+      id
+      buildDefinition {
+        id
+        name
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        description
+        configurationJSON
+        buildJobs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      status
+      startTimestamp
+      endTimestamp
+      message
+      log
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateBuildJob = /* GraphQL */ `
+  mutation UpdateBuildJob(
+    $input: UpdateBuildJobInput!
+    $condition: ModelBuildJobConditionInput
+  ) {
+    updateBuildJob(input: $input, condition: $condition) {
+      id
+      buildDefinition {
+        id
+        name
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        description
+        configurationJSON
+        buildJobs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      status
+      startTimestamp
+      endTimestamp
+      message
+      log
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteBuildJob = /* GraphQL */ `
+  mutation DeleteBuildJob(
+    $input: DeleteBuildJobInput!
+    $condition: ModelBuildJobConditionInput
+  ) {
+    deleteBuildJob(input: $input, condition: $condition) {
+      id
+      buildDefinition {
+        id
+        name
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        description
+        configurationJSON
+        buildJobs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      status
+      startTimestamp
+      endTimestamp
+      message
+      log
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;

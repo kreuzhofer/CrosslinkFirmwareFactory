@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { API, graphqlOperation } from 'aws-amplify'
+import { API, graphqlOperation, Auth } from 'aws-amplify'
 import {NavLink} from 'react-router-dom'
 import {
     Header, 
@@ -24,6 +24,7 @@ const BuildDefinitionsList = () => {
     const [confirmState, setConfirmState] = useState({ open: false })
   
     useEffect(() => {
+      const subs = [];
       async function fetchData() {
         try {
           const result = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit: 999}));
@@ -31,22 +32,29 @@ const BuildDefinitionsList = () => {
         } catch (error) {
           console.error(error);
         }
+        const user = await Auth.currentUserInfo();
+        console.info("User : "+ JSON.stringify(user));
+        const username = user.username;
+
+        const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
+          next: (eventData) => {
+            const buildDefinition = eventData.value.data.onCreateBuildDefinition
+            setBuildDefinitions(buildDefinitions => [...buildDefinitions, buildDefinition])
+          }
+        })
+        subs.push(insertSubscription);
+        const deleteSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition, {owner: username})).subscribe({
+          next: (eventData) => {
+            setBuildDefinitions(buildDefinitions => buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id));
+          }
+        })
+        subs.push(deleteSubscription);
       }
       fetchData();
-      const insertSubscription = API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition)).subscribe({
-        next: (eventData) => {
-          const buildDefinition = eventData.value.data.onCreateBuildDefinition
-          setBuildDefinitions(buildDefinitions => [...buildDefinitions, buildDefinition])
-        }
-      })
-      const deleteSubscription = API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition)).subscribe({
-        next: (eventData) => {
-          setBuildDefinitions(buildDefinitions => buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id));
-        }
-      })
       return () => {
-        insertSubscription.unsubscribe();
-        deleteSubscription.unsubscribe();
+        subs.forEach(function(item, index, array){
+          item.unsubscribe();
+        })
       }
     }, [])
 
@@ -120,6 +128,7 @@ const AddBuildDefinition = () => {
     const [printerManufacturer, setPrinterManufacturer] = useState('')
     const [printerModel, setPrinterModel] = useState('')
     const [printerMainboard, setPrinterMainboard] = useState('')
+    const [description, setDescription] = useState('')
     const [configurationJSON, setConfigurationJSON] = useState('{}')
 
     const handleSubmit = async(event) => {
@@ -189,6 +198,13 @@ const AddBuildDefinition = () => {
             onChange={(e) => setPrinterMainboard(e.target.value)}
         /><br/>
         <TextareaAutosize
+            label='Description'
+            placeholder='Description'
+            name='description'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+        /><br/>
+        <TextareaAutosize
             label='Config JSON'
             placeholder='Config JSON'
             name='configurationJSON'
@@ -213,6 +229,7 @@ const BuildDefinitionDetails = (props) => {
     const [printerManufacturer, setPrinterManufacturer] = useState('')
     const [printerModel, setPrinterModel] = useState('')
     const [printerMainboard, setPrinterMainboard] = useState('')
+    const [description, setDescription] = useState('')
     const [configurationJSON, setConfigurationJSON] = useState('{}')
     let id = props.match.params.id
   
@@ -228,6 +245,7 @@ const BuildDefinitionDetails = (props) => {
           setPrinterManufacturer(buildDefinition.printerManufacturer)
           setPrinterModel(buildDefinition.printerModel)
           setPrinterMainboard(buildDefinition.printerMainboard)
+          setDescription(buildDefinition.description)
           setConfigurationJSON(buildDefinition.configurationJSON)
         } catch (error) {
           console.error(error);
@@ -244,7 +262,7 @@ const BuildDefinitionDetails = (props) => {
         return false
         }
         let result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
-          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, configurationJSON
+          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, description, configurationJSON
         }}));
         console.log(result);
         alert("Changes saved")
@@ -303,6 +321,13 @@ const BuildDefinitionDetails = (props) => {
             name='printerMainboard'
             value={printerMainboard}
             onChange={(e) => setPrinterMainboard(e.target.value)}
+        /><br/>
+        <TextareaAutosize
+            label='Description'
+            placeholder='Description'
+            name='description'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
         /><br/>
         <TextareaAutosize
             label='Config JSON'
