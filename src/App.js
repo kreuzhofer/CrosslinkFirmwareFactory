@@ -20,7 +20,7 @@ const IndexDashboard = () => {
       <p>Welcome to the Crosslink firmware factory (beta)</p>
       <p>Here we provide downloads of pre-configured Marlin firmware for specific printers and setups as well as pre-compiled firmware binaries.</p>
       <p>This website is currently in <strong>beta</strong>, so please excuse roughness in design. Functionality is still limited but you see it first, which is awesome!</p>
-      <p>Currently you will find pre-configured firmware in the "<NavLink to="/Marlin">Marlin</NavLink>" section, linked at the top of this page</p>
+      <p>Currently you will find pre-configured firmware in the "<NavLink to="/Marlin">Marlin</NavLink>" section, linked at the top of this page.</p>
     </div>
   )
 }

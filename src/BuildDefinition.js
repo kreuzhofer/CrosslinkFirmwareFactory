@@ -139,7 +139,7 @@ const AddBuildDefinition = () => {
         return false
         }
         let result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
-            name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, configurationJSON
+            name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, description, configurationJSON
         }}));
         console.log(result);
         setName('')
