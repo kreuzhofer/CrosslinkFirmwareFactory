@@ -19,6 +19,10 @@ import * as mutations from './graphql/mutations'
 import * as subscriptions from './graphql/subscriptions'
 import * as comparator from './util/comparator';
 
+var AWS = require('aws-sdk');
+AWS.config.update({region: 'eu-west-1'});
+var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
+
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
     const [confirmState, setConfirmState] = useState({ open: false })
@@ -76,6 +80,41 @@ const BuildDefinitionsList = () => {
         console.info("clicked delete "+id);
         setConfirmState({open: true, id: id});
       }
+
+      const handleBuild = (event, id) => {
+        var params = {
+            // Remove DelaySeconds parameter and value for FIFO queues
+          DelaySeconds: 10,
+          MessageAttributes: {
+            "Title": {
+              DataType: "String",
+              StringValue: "The Whistler"
+            },
+            "Author": {
+              DataType: "String",
+              StringValue: "John Grisham"
+            },
+            "WeeksOn": {
+              DataType: "Number",
+              StringValue: "6"
+            }
+          },
+          MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
+          // MessageDeduplicationId: "TheWhistler",  // Required for FIFO queues
+          // MessageGroupId: "Group1",  // Required for FIFO queues
+          QueueUrl: "https://sqs.eu-west-1.amazonaws.com/416703677996/BuildAgentJobQueue"
+        };
+        
+        sqs.sendMessage(params, function(err, data) {
+          if (err) {
+            console.log("Error", err);
+          } else {
+            console.log("Success", data.MessageId);
+          }
+        });
+
+        alert("Build queued");
+      }
   
       return buildDefinitions
         .sort(comparator.makeComparator('name'))
@@ -83,7 +122,7 @@ const BuildDefinitionsList = () => {
         <Table.Row key={def.id}>
           <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink></Table.Cell>
           <Table.Cell>
-          <Button animated='vertical'>
+          <Button animated='vertical' onClick={(e)=>handleBuild(e, def.if)}>
               <Button.Content hidden>Build</Button.Content>
               <Button.Content visible><Icon name='cubes'/></Button.Content>
           </Button>
