@@ -16,9 +16,10 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       buildJobs {
         items {
           id
+          buildDefinitionID
           status
-          startTimestamp
-          endTimestamp
+          startTime
+          endTime
           message
           log
           createdAt
@@ -48,9 +49,10 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       buildJobs {
         items {
           id
+          buildDefinitionID
           status
-          startTimestamp
-          endTimestamp
+          startTime
+          endTime
           message
           log
           createdAt
@@ -80,9 +82,10 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       buildJobs {
         items {
           id
+          buildDefinitionID
           status
-          startTimestamp
-          endTimestamp
+          startTime
+          endTime
           message
           log
           createdAt
@@ -101,26 +104,10 @@ export const onCreateBuildJob = /* GraphQL */ `
   subscription OnCreateBuildJob($owner: String!) {
     onCreateBuildJob(owner: $owner) {
       id
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        printerManufacturer
-        printerModel
-        printerMainboard
-        description
-        configurationJSON
-        buildJobs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
+      buildDefinitionID
       status
-      startTimestamp
-      endTimestamp
+      startTime
+      endTime
       message
       log
       createdAt
@@ -133,26 +120,10 @@ export const onUpdateBuildJob = /* GraphQL */ `
   subscription OnUpdateBuildJob($owner: String!) {
     onUpdateBuildJob(owner: $owner) {
       id
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        printerManufacturer
-        printerModel
-        printerMainboard
-        description
-        configurationJSON
-        buildJobs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
+      buildDefinitionID
       status
-      startTimestamp
-      endTimestamp
+      startTime
+      endTime
       message
       log
       createdAt
@@ -165,26 +136,10 @@ export const onDeleteBuildJob = /* GraphQL */ `
   subscription OnDeleteBuildJob($owner: String!) {
     onDeleteBuildJob(owner: $owner) {
       id
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        printerManufacturer
-        printerModel
-        printerMainboard
-        description
-        configurationJSON
-        buildJobs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
+      buildDefinitionID
       status
-      startTimestamp
-      endTimestamp
+      startTime
+      endTime
       message
       log
       createdAt
@@ -194,8 +149,8 @@ export const onDeleteBuildJob = /* GraphQL */ `
   }
 `;
 export const onCreatePatron = /* GraphQL */ `
-  subscription OnCreatePatron {
-    onCreatePatron {
+  subscription OnCreatePatron($owner: String!) {
+    onCreatePatron(owner: $owner) {
       id
       email
       name
@@ -205,12 +160,13 @@ export const onCreatePatron = /* GraphQL */ `
       last_event
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onUpdatePatron = /* GraphQL */ `
-  subscription OnUpdatePatron {
-    onUpdatePatron {
+  subscription OnUpdatePatron($owner: String!) {
+    onUpdatePatron(owner: $owner) {
       id
       email
       name
@@ -220,12 +176,13 @@ export const onUpdatePatron = /* GraphQL */ `
       last_event
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onDeletePatron = /* GraphQL */ `
-  subscription OnDeletePatron {
-    onDeletePatron {
+  subscription OnDeletePatron($owner: String!) {
+    onDeletePatron(owner: $owner) {
       id
       email
       name
@@ -235,6 +192,7 @@ export const onDeletePatron = /* GraphQL */ `
       last_event
       createdAt
       updatedAt
+      owner
     }
   }
 `;

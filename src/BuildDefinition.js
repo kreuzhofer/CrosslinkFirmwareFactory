@@ -21,6 +21,7 @@ import * as comparator from './util/comparator';
 
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
+AWS.config.update({credentials: {accessKeyId: 'AKIAWCBLZQYWFG3EF247', secretAccessKey:'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'}});
 var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
 const BuildDefinitionsList = () => {
@@ -32,7 +33,11 @@ const BuildDefinitionsList = () => {
       async function fetchData() {
         try {
           const result = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit: 999}));
-          setBuildDefinitions(result.data.listBuildDefinitions.items)        
+          var items = result.data.listBuildDefinitions.items
+          // items.forEach(item => {
+          //   item.disabled = true;
+          // });
+          setBuildDefinitions(items)        
         } catch (error) {
           console.error(error);
         }
@@ -81,27 +86,30 @@ const BuildDefinitionsList = () => {
         setConfirmState({open: true, id: id});
       }
 
-      const handleBuild = (event, id) => {
+      const handleBuild = async(event, def) => {
+        event.preventDefault();
+        console.info("clicked build "+def.id);
+        let buildDefinitionID = def.id;
+
+        // store build job in database (used to be in the lambda, now here)
+        let result = await API.graphql(graphqlOperation(mutations.createBuildJob, {
+          input: {
+            buildDefinitionID,
+            status: 'QUEUED'
+        }}));
+        console.log(result);
+        console.log(result.data.createBuildJob.id)
+
+        // send message to lambda function to process next job
         var params = {
-            // Remove DelaySeconds parameter and value for FIFO queues
           DelaySeconds: 10,
           MessageAttributes: {
-            "Title": {
+            "buildJobId": {
               DataType: "String",
-              StringValue: "The Whistler"
-            },
-            "Author": {
-              DataType: "String",
-              StringValue: "John Grisham"
-            },
-            "WeeksOn": {
-              DataType: "Number",
-              StringValue: "6"
+              StringValue: ""+result.data.createBuildJob.id
             }
           },
-          MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
-          // MessageDeduplicationId: "TheWhistler",  // Required for FIFO queues
-          // MessageGroupId: "Group1",  // Required for FIFO queues
+          MessageBody: "Build queued for buildDefinition "+def.id,
           QueueUrl: "https://sqs.eu-west-1.amazonaws.com/416703677996/BuildAgentJobQueue"
         };
         
@@ -112,17 +120,18 @@ const BuildDefinitionsList = () => {
             console.log("Success", data.MessageId);
           }
         });
-
-        alert("Build queued");
+        buildDefinitions.filter(item => item.id === def.id)[0].disabled = true;
+        setBuildDefinitions(buildDefinitions);
+        console.log(buildDefinitions)
       }
   
       return buildDefinitions
         .sort(comparator.makeComparator('name'))
         .map(def => 
         <Table.Row key={def.id}>
-          <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink></Table.Cell>
+          <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name} {def.disabled}</NavLink></Table.Cell>
           <Table.Cell>
-          <Button animated='vertical' onClick={(e)=>handleBuild(e, def.if)}>
+          <Button loading={def.disabled} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
               <Button.Content hidden>Build</Button.Content>
               <Button.Content visible><Icon name='cubes'/></Button.Content>
           </Button>
@@ -181,6 +190,7 @@ const AddBuildDefinition = () => {
             name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, description, configurationJSON
         }}));
         console.log(result);
+        console.log("ID : "+result.data.createBuildDefinition.id)
         setName('')
     }
 

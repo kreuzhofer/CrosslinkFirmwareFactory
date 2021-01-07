@@ -19,9 +19,10 @@ export const createBuildDefinition = /* GraphQL */ `
       buildJobs {
         items {
           id
+          buildDefinitionID
           status
-          startTimestamp
-          endTimestamp
+          startTime
+          endTime
           message
           log
           createdAt
@@ -54,9 +55,10 @@ export const updateBuildDefinition = /* GraphQL */ `
       buildJobs {
         items {
           id
+          buildDefinitionID
           status
-          startTimestamp
-          endTimestamp
+          startTime
+          endTime
           message
           log
           createdAt
@@ -89,9 +91,10 @@ export const deleteBuildDefinition = /* GraphQL */ `
       buildJobs {
         items {
           id
+          buildDefinitionID
           status
-          startTimestamp
-          endTimestamp
+          startTime
+          endTime
           message
           log
           createdAt
@@ -113,26 +116,10 @@ export const createBuildJob = /* GraphQL */ `
   ) {
     createBuildJob(input: $input, condition: $condition) {
       id
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        printerManufacturer
-        printerModel
-        printerMainboard
-        description
-        configurationJSON
-        buildJobs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
+      buildDefinitionID
       status
-      startTimestamp
-      endTimestamp
+      startTime
+      endTime
       message
       log
       createdAt
@@ -148,26 +135,10 @@ export const updateBuildJob = /* GraphQL */ `
   ) {
     updateBuildJob(input: $input, condition: $condition) {
       id
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        printerManufacturer
-        printerModel
-        printerMainboard
-        description
-        configurationJSON
-        buildJobs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
+      buildDefinitionID
       status
-      startTimestamp
-      endTimestamp
+      startTime
+      endTime
       message
       log
       createdAt
@@ -183,26 +154,10 @@ export const deleteBuildJob = /* GraphQL */ `
   ) {
     deleteBuildJob(input: $input, condition: $condition) {
       id
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        printerManufacturer
-        printerModel
-        printerMainboard
-        description
-        configurationJSON
-        buildJobs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
+      buildDefinitionID
       status
-      startTimestamp
-      endTimestamp
+      startTime
+      endTime
       message
       log
       createdAt
@@ -226,6 +181,7 @@ export const createPatron = /* GraphQL */ `
       last_event
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -244,6 +200,7 @@ export const updatePatron = /* GraphQL */ `
       last_event
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -262,6 +219,7 @@ export const deletePatron = /* GraphQL */ `
       last_event
       createdAt
       updatedAt
+      owner
     }
   }
 `;

@@ -9,16 +9,19 @@ type BuildDefinition @model
   printerMainboard: String
   description: String
   configurationJSON: String
-  buildJobs: [BuildJob!] @connection(name: "BuildDefinitionBuildJobConnection")
+  buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
 }
 
 type BuildJob @model 
-  @auth(rules: [{ allow: owner }]) {
+  @auth(rules: [{ allow: owner }]) 
+  @key(name: "byBuildDefinition", fields: ["buildDefinitionID"])
+{
+  
   id: ID!
-  buildDefinition: BuildDefinition! @connection(name: "BuildDefinitionBuildJobConnection")
+  buildDefinitionID: ID!
   status: BuildJobStatus!
-  startTimestamp: Int!
-  endTimestamp: Int
+  startTime: String
+  endTime: String
   message: String
   log: String
 }
@@ -31,7 +34,8 @@ enum BuildJobStatus {
   FAILED
 }
 
-type Patron @model {
+type Patron @model 
+  @auth(rules: [{ allow: owner }]) {
   id: ID!
   email: String!
   name: String!

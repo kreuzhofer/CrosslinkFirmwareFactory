@@ -16,9 +16,10 @@ export const getBuildDefinition = /* GraphQL */ `
       buildJobs {
         items {
           id
+          buildDefinitionID
           status
-          startTimestamp
-          endTimestamp
+          startTime
+          endTime
           message
           log
           createdAt
@@ -69,26 +70,10 @@ export const getBuildJob = /* GraphQL */ `
   query GetBuildJob($id: ID!) {
     getBuildJob(id: $id) {
       id
-      buildDefinition {
-        id
-        name
-        sourceTree
-        configTree
-        printerManufacturer
-        printerModel
-        printerMainboard
-        description
-        configurationJSON
-        buildJobs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
+      buildDefinitionID
       status
-      startTimestamp
-      endTimestamp
+      startTime
+      endTime
       message
       log
       createdAt
@@ -106,23 +91,10 @@ export const listBuildJobs = /* GraphQL */ `
     listBuildJobs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        buildDefinition {
-          id
-          name
-          sourceTree
-          configTree
-          printerManufacturer
-          printerModel
-          printerMainboard
-          description
-          configurationJSON
-          createdAt
-          updatedAt
-          owner
-        }
+        buildDefinitionID
         status
-        startTimestamp
-        endTimestamp
+        startTime
+        endTime
         message
         log
         createdAt
@@ -145,6 +117,7 @@ export const getPatron = /* GraphQL */ `
       last_event
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -165,6 +138,7 @@ export const listPatrons = /* GraphQL */ `
         last_event
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }
