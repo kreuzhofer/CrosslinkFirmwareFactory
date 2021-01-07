@@ -14,6 +14,7 @@ import {
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
+import * as customqueries from './graphql/customqueries'
 import * as queries from './graphql/queries'
 import * as mutations from './graphql/mutations'
 import * as subscriptions from './graphql/subscriptions'
@@ -32,12 +33,14 @@ const BuildDefinitionsList = () => {
       const subs = [];
       async function fetchData() {
         try {
-          const result = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit: 999}));
+          const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999}));
           var items = result.data.listBuildDefinitions.items
-          // items.forEach(item => {
-          //   item.disabled = true;
-          // });
-          setBuildDefinitions(items)        
+          items.forEach(item => {
+            if(item.buildJobs.items.length>0)
+              item.buildRunning = true;
+          });
+          console.info(items);
+          setBuildDefinitions(items);
         } catch (error) {
           console.error(error);
         }
@@ -121,7 +124,7 @@ const BuildDefinitionsList = () => {
           }
         });
         buildDefinitions.filter(item => item.id === def.id)[0].disabled = true;
-        setBuildDefinitions(buildDefinitions);
+        setBuildDefinitions(buildDefinitions.slice());
         console.log(buildDefinitions)
       }
   
@@ -129,16 +132,19 @@ const BuildDefinitionsList = () => {
         .sort(comparator.makeComparator('name'))
         .map(def => 
         <Table.Row key={def.id}>
-          <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name} {def.disabled}</NavLink></Table.Cell>
+          <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink></Table.Cell>
           <Table.Cell>
-          <Button loading={def.disabled} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
+          <Button loading={def.buildRunning} disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
               <Button.Content hidden>Build</Button.Content>
               <Button.Content visible><Icon name='cubes'/></Button.Content>
           </Button>
-          <Button animated='vertical' onClick={(e)=>handleDelete(e, def.id)} color='red'>
+          <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDelete(e, def.id)} color='red'>
             <Button.Content hidden>Delete</Button.Content>
             <Button.Content visible><Icon name='delete'/></Button.Content>
           </Button>
+          </Table.Cell>
+          <Table.Cell>
+            {def.buildJobs.items.length>0 ? def.buildJobs.items[0].status : ''}
           </Table.Cell>
         </Table.Row>)
       }
@@ -151,6 +157,7 @@ const BuildDefinitionsList = () => {
             <Table.Row>
               <Table.HeaderCell>Name</Table.HeaderCell>
               <Table.HeaderCell>Actions</Table.HeaderCell>
+              <Table.HeaderCell>Status</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 

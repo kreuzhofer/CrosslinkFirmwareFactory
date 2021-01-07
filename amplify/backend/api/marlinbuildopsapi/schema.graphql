@@ -14,7 +14,7 @@ type BuildDefinition @model
 
 type BuildJob @model 
   @auth(rules: [{ allow: owner }]) 
-  @key(name: "byBuildDefinition", fields: ["buildDefinitionID"])
+  @key(name: "byBuildDefinition", fields: ["buildDefinitionID", "id"])
 {
   
   id: ID!
