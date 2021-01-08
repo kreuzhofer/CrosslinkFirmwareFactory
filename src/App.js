@@ -4,7 +4,8 @@ import { withAuthenticator } from '@aws-amplify/ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './TopMenu'
 import MarlinFirmwareOverview from './MarlinFirmwareOverview'
-import {AddBuildDefinition, BuildDefinitionDetails, BuildDefinitionsList} from './BuildDefinition'
+import {AddBuildDefinition, BuildDefinitionDetails} from './BuildDefinition'
+import {BuildDefinitionsList} from './BuildDefinitionsList'
 import {
   Grid, 
 } from 'semantic-ui-react'
