@@ -4,7 +4,6 @@ import {NavLink} from 'react-router-dom'
 import {
     Header, 
     Input, 
-    List, 
     Segment, 
     Button,
     Form,
@@ -34,7 +33,7 @@ const BuildDefinitionsList = () => {
         const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999}));
         var items = result.data.listBuildDefinitions.items
         items.forEach(item => {
-          if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!="DONE" && item.jobState!="FAILED").length>0))
+          if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
             item.buildRunning = true;
         });
         console.info(items);
@@ -48,8 +47,10 @@ const BuildDefinitionsList = () => {
       const subs = [];
       async function fetchData() {
         await reloadData();
-        const user = await Auth.currentUserInfo();
-        console.info("User : "+ JSON.stringify(user));
+        const user =  await Auth.currentAuthenticatedUser();
+        // the array of groups that the user belongs to
+        console.info(user)
+        console.info(user.signInUserSession.accessToken.payload["cognito:groups"])
         const username = user.username;
 
         const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
@@ -150,7 +151,6 @@ const BuildDefinitionsList = () => {
             {def.buildJobs.items.length>0 ? def.buildJobs.items[0].jobState : ''}
           </Table.Cell>
           <Table.Cell>
-            
           </Table.Cell>
         </Table.Row>)
 
@@ -326,7 +326,7 @@ const BuildDefinitionDetails = (props) => {
         }
       }
       fetchData();
-    }, [])
+    })
 
     const handleSubmit = async(event) => {
         event.preventDefault();
