@@ -303,6 +303,17 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
+          "name" : "platformioEnv",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
           "name" : "description",
           "description" : null,
           "args" : [ ],
@@ -514,7 +525,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "status",
+          "name" : "jobState",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -522,7 +533,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "ENUM",
-              "name" : "BuildJobStatus",
+              "name" : "BuildJobState",
               "ofType" : null
             }
           },
@@ -620,7 +631,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "ENUM",
-        "name" : "BuildJobStatus",
+        "name" : "BuildJobState",
         "description" : null,
         "fields" : null,
         "inputFields" : null,
@@ -761,11 +772,11 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "status",
+          "name" : "jobState",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelBuildJobStatusInput",
+            "name" : "ModelBuildJobStateInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -1129,7 +1140,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "ModelBuildJobStatusInput",
+        "name" : "ModelBuildJobStateInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -1137,7 +1148,7 @@
           "description" : null,
           "type" : {
             "kind" : "ENUM",
-            "name" : "BuildJobStatus",
+            "name" : "BuildJobState",
             "ofType" : null
           },
           "defaultValue" : null
@@ -1146,7 +1157,7 @@
           "description" : null,
           "type" : {
             "kind" : "ENUM",
-            "name" : "BuildJobStatus",
+            "name" : "BuildJobState",
             "ofType" : null
           },
           "defaultValue" : null
@@ -1399,6 +1410,15 @@
           "defaultValue" : null
         }, {
           "name" : "printerMainboard",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "platformioEnv",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2233,6 +2253,15 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "platformioEnv",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "description",
           "description" : null,
           "type" : {
@@ -2306,6 +2335,15 @@
           "defaultValue" : null
         }, {
           "name" : "printerMainboard",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "platformioEnv",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2443,6 +2481,15 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "platformioEnv",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "description",
           "description" : null,
           "type" : {
@@ -2510,14 +2557,14 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "status",
+          "name" : "jobState",
           "description" : null,
           "type" : {
             "kind" : "NON_NULL",
             "name" : null,
             "ofType" : {
               "kind" : "ENUM",
-              "name" : "BuildJobStatus",
+              "name" : "BuildJobState",
               "ofType" : null
             }
           },
@@ -2577,11 +2624,11 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "status",
+          "name" : "jobState",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelBuildJobStatusInput",
+            "name" : "ModelBuildJobStateInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -2688,11 +2735,11 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "status",
+          "name" : "jobState",
           "description" : null,
           "type" : {
             "kind" : "ENUM",
-            "name" : "BuildJobStatus",
+            "name" : "BuildJobState",
             "ofType" : null
           },
           "defaultValue" : null
@@ -4212,6 +4259,23 @@
         "onFragment" : false,
         "onField" : false
       }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
         "name" : "aws_publish",
         "description" : "Tells the service which subscriptions will be published to when this mutation is called. This directive is deprecated use @aws_susbscribe directive instead.",
         "locations" : [ "FIELD_DEFINITION" ],
@@ -4257,23 +4321,6 @@
             }
           },
           "defaultValue" : null
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
         } ],
         "onOperation" : false,
         "onFragment" : false,

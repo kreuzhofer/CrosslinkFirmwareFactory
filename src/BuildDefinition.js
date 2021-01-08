@@ -28,22 +28,26 @@ var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
     const [confirmState, setConfirmState] = useState({ open: false })
+
+    const reloadData = async()=>{
+      try {
+        const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999}));
+        var items = result.data.listBuildDefinitions.items
+        items.forEach(item => {
+          if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!="DONE" && item.jobState!="FAILED").length>0))
+            item.buildRunning = true;
+        });
+        console.info(items);
+        setBuildDefinitions(items);
+      } catch (error) {
+        console.error(error);
+      }
+    };
   
     useEffect(() => {
       const subs = [];
       async function fetchData() {
-        try {
-          const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999}));
-          var items = result.data.listBuildDefinitions.items
-          items.forEach(item => {
-            if(item.buildJobs.items.length>0)
-              item.buildRunning = true;
-          });
-          console.info(items);
-          setBuildDefinitions(items);
-        } catch (error) {
-          console.error(error);
-        }
+        await reloadData();
         const user = await Auth.currentUserInfo();
         console.info("User : "+ JSON.stringify(user));
         const username = user.username;
@@ -98,14 +102,14 @@ const BuildDefinitionsList = () => {
         let result = await API.graphql(graphqlOperation(mutations.createBuildJob, {
           input: {
             buildDefinitionID,
-            status: 'QUEUED'
+            jobState: 'QUEUED'
         }}));
         console.log(result);
         console.log(result.data.createBuildJob.id)
 
         // send message to lambda function to process next job
         var params = {
-          DelaySeconds: 10,
+          DelaySeconds: 0,
           MessageAttributes: {
             "buildJobId": {
               DataType: "String",
@@ -123,8 +127,7 @@ const BuildDefinitionsList = () => {
             console.log("Success", data.MessageId);
           }
         });
-        buildDefinitions.filter(item => item.id === def.id)[0].disabled = true;
-        setBuildDefinitions(buildDefinitions.slice());
+        await reloadData();
         console.log(buildDefinitions)
       }
   
@@ -144,10 +147,14 @@ const BuildDefinitionsList = () => {
           </Button>
           </Table.Cell>
           <Table.Cell>
-            {def.buildJobs.items.length>0 ? def.buildJobs.items[0].status : ''}
+            {def.buildJobs.items.length>0 ? def.buildJobs.items[0].jobState : ''}
+          </Table.Cell>
+          <Table.Cell>
+            
           </Table.Cell>
         </Table.Row>)
-      }
+
+    }
   
     return (
       <Segment>
@@ -157,7 +164,8 @@ const BuildDefinitionsList = () => {
             <Table.Row>
               <Table.HeaderCell>Name</Table.HeaderCell>
               <Table.HeaderCell>Actions</Table.HeaderCell>
-              <Table.HeaderCell>Status</Table.HeaderCell>
+              <Table.HeaderCell>State</Table.HeaderCell>
+              <Table.HeaderCell>Artifacts</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
@@ -183,6 +191,7 @@ const AddBuildDefinition = () => {
     const [printerManufacturer, setPrinterManufacturer] = useState('')
     const [printerModel, setPrinterModel] = useState('')
     const [printerMainboard, setPrinterMainboard] = useState('')
+    const [platformioEnv, setPlatformioEnv] = useState('')
     const [description, setDescription] = useState('')
     const [configurationJSON, setConfigurationJSON] = useState('{}')
 
@@ -194,7 +203,7 @@ const AddBuildDefinition = () => {
         return false
         }
         let result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
-            name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, description, configurationJSON
+            name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, platformioEnv, description, configurationJSON
         }}));
         console.log(result);
         console.log("ID : "+result.data.createBuildDefinition.id)
@@ -228,7 +237,6 @@ const AddBuildDefinition = () => {
             value={configTree}
             onChange={(e) => setConfigTree(e.target.value)}
         /><br/>
-
         <Input
             type='text'
             label='Printer manufacturer'
@@ -253,6 +261,14 @@ const AddBuildDefinition = () => {
             value={printerMainboard}
             onChange={(e) => setPrinterMainboard(e.target.value)}
         /><br/>
+        <Input
+            type='text'
+            label='Platformio Environment'
+            placeholder='Platformio Environment'
+            name='platformioEnv'
+            value={platformioEnv}
+            onChange={(e) => setPlatformioEnv(e.target.value)}
+        /><br/>          
         <TextareaAutosize
             label='Description'
             placeholder='Description'
@@ -285,6 +301,7 @@ const BuildDefinitionDetails = (props) => {
     const [printerManufacturer, setPrinterManufacturer] = useState('')
     const [printerModel, setPrinterModel] = useState('')
     const [printerMainboard, setPrinterMainboard] = useState('')
+    const [platformioEnv, setPlatformioEnv] = useState('')
     const [description, setDescription] = useState('')
     const [configurationJSON, setConfigurationJSON] = useState('{}')
     let id = props.match.params.id
@@ -301,6 +318,7 @@ const BuildDefinitionDetails = (props) => {
           setPrinterManufacturer(buildDefinition.printerManufacturer)
           setPrinterModel(buildDefinition.printerModel)
           setPrinterMainboard(buildDefinition.printerMainboard)
+          setPlatformioEnv(buildDefinition.platformioEnv)
           setDescription(buildDefinition.description)
           setConfigurationJSON(buildDefinition.configurationJSON)
         } catch (error) {
@@ -318,7 +336,7 @@ const BuildDefinitionDetails = (props) => {
         return false
         }
         let result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
-          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, description, configurationJSON
+          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, platformioEnv, description, configurationJSON
         }}));
         console.log(result);
         alert("Changes saved")
@@ -378,6 +396,14 @@ const BuildDefinitionDetails = (props) => {
             value={printerMainboard}
             onChange={(e) => setPrinterMainboard(e.target.value)}
         /><br/>
+        <Input
+            type='text'
+            label='Platformio Environment'
+            placeholder='Platformio Environment'
+            name='platformioEnv'
+            value={platformioEnv}
+            onChange={(e) => setPlatformioEnv(e.target.value)}
+        /><br/>        
         <TextareaAutosize
             label='Description'
             placeholder='Description'

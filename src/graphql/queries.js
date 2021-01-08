@@ -11,13 +11,14 @@ export const getBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      platformioEnv
       description
       configurationJSON
       buildJobs {
         items {
           id
           buildDefinitionID
-          status
+          jobState
           startTime
           endTime
           message
@@ -53,6 +54,7 @@ export const listBuildDefinitions = /* GraphQL */ `
         printerManufacturer
         printerModel
         printerMainboard
+        platformioEnv
         description
         configurationJSON
         buildJobs {
@@ -71,7 +73,7 @@ export const getBuildJob = /* GraphQL */ `
     getBuildJob(id: $id) {
       id
       buildDefinitionID
-      status
+      jobState
       startTime
       endTime
       message
@@ -92,7 +94,7 @@ export const listBuildJobs = /* GraphQL */ `
       items {
         id
         buildDefinitionID
-        status
+        jobState
         startTime
         endTime
         message

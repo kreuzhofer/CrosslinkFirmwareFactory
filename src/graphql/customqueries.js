@@ -1,3 +1,5 @@
+// Custom queries
+// https://github.com/aws-amplify/amplify-cli/issues/5878
 export const listBuildDefinitionsWithJobs = /* GraphQL */ `
   query listBuildDefinitions(
     $filter: ModelBuildDefinitionFilterInput
@@ -23,7 +25,7 @@ export const listBuildDefinitionsWithJobs = /* GraphQL */ `
             items {
                 id
                 buildDefinitionID
-                status
+                jobState
                 startTime
                 endTime
                 message

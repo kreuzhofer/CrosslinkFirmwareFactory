@@ -14,13 +14,14 @@ export const createBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      platformioEnv
       description
       configurationJSON
       buildJobs {
         items {
           id
           buildDefinitionID
-          status
+          jobState
           startTime
           endTime
           message
@@ -50,13 +51,14 @@ export const updateBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      platformioEnv
       description
       configurationJSON
       buildJobs {
         items {
           id
           buildDefinitionID
-          status
+          jobState
           startTime
           endTime
           message
@@ -86,13 +88,14 @@ export const deleteBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      platformioEnv
       description
       configurationJSON
       buildJobs {
         items {
           id
           buildDefinitionID
-          status
+          jobState
           startTime
           endTime
           message
@@ -117,7 +120,7 @@ export const createBuildJob = /* GraphQL */ `
     createBuildJob(input: $input, condition: $condition) {
       id
       buildDefinitionID
-      status
+      jobState
       startTime
       endTime
       message
@@ -136,7 +139,7 @@ export const updateBuildJob = /* GraphQL */ `
     updateBuildJob(input: $input, condition: $condition) {
       id
       buildDefinitionID
-      status
+      jobState
       startTime
       endTime
       message
@@ -155,7 +158,7 @@ export const deleteBuildJob = /* GraphQL */ `
     deleteBuildJob(input: $input, condition: $condition) {
       id
       buildDefinitionID
-      status
+      jobState
       startTime
       endTime
       message

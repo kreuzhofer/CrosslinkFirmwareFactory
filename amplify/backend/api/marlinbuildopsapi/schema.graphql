@@ -7,6 +7,7 @@ type BuildDefinition @model
   printerManufacturer: String
   printerModel: String
   printerMainboard: String
+  platformioEnv: String
   description: String
   configurationJSON: String
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
@@ -16,17 +17,16 @@ type BuildJob @model
   @auth(rules: [{ allow: owner }]) 
   @key(name: "byBuildDefinition", fields: ["buildDefinitionID", "id"])
 {
-  
   id: ID!
   buildDefinitionID: ID!
-  status: BuildJobStatus!
+  jobState: BuildJobState!
   startTime: String
   endTime: String
   message: String
   log: String
 }
 
-enum BuildJobStatus {
+enum BuildJobState {
   QUEUED
   STARTING
   RUNNING
