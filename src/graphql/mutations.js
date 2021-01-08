@@ -17,6 +17,9 @@ export const createBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      createdAt
+      updatedAt
+      owner
       buildJobs {
         items {
           id
@@ -32,9 +35,6 @@ export const createBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -54,6 +54,9 @@ export const updateBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      createdAt
+      updatedAt
+      owner
       buildJobs {
         items {
           id
@@ -69,9 +72,6 @@ export const updateBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -91,6 +91,9 @@ export const deleteBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      createdAt
+      updatedAt
+      owner
       buildJobs {
         items {
           id
@@ -106,9 +109,6 @@ export const deleteBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

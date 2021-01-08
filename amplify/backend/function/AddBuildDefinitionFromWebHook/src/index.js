@@ -6,9 +6,15 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const axios = require('axios');
 const gql = require('graphql-tag');
 const graphql = require('graphql');
+const AWS = require("aws-sdk");
+const https = require('https');
+const urlParse = require("url").URL;
+const appsyncUrl = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIENDPOINTOUTPUT;
+const apiKey = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIKEYOUTPUT;
+const region = process.env.REGION;
+const endpoint = new urlParse(appsyncUrl).hostname.toString();
 const { print } = graphql;
 
 const createBuildDefinition = /* GraphQL */ gql`
@@ -38,16 +44,10 @@ const createBuildDefinition = /* GraphQL */ gql`
 
 exports.handler = async (event) => {
     try {
-        const graphqlData = await axios({
-          url: process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIENDPOINTOUTPUT,
-          method: 'post',
-        //   headers: {
-        //     'x-api-key': process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIKEYOUTPUT
-        //   },
-          data: {
-            query: print(createBuildDefinition),
-            variables: {
-              input: {
+        const req = new AWS.HttpRequest(appsyncUrl, region);
+
+        const item = {
+            input: {
                 name: "test", 
                 sourceTree: "test", 
                 configTree: "test",
@@ -57,20 +57,41 @@ exports.handler = async (event) => {
                 platformioEnv: "fanciest",
                 description: "this is it",
                 configurationJSON: "{}"
-              }
             }
-          }
+        };
+    
+        req.method = "POST";
+        req.path = "/graphql";
+        req.headers.host = endpoint;
+        req.headers["Content-Type"] = "application/json";
+        req.body = JSON.stringify({
+            query: print(createBuildDefinition),
+            variables: item
         });
-        const body = {
-          message: "successfully created build definition!"
+    
+        if (apiKey) {
+            req.headers["x-api-key"] = apiKey;
+        } else {
+            const signer = new AWS.Signers.V4(req, "appsync", true);
+            signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
         }
+    
+        const data = await new Promise((resolve, reject) => {
+            const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
+                result.on('data', (data) => {
+                    resolve(JSON.parse(data.toString()));
+                });
+            });
+    
+            httpRequest.write(req.body);
+            httpRequest.end();
+        });
+    
         return {
-          statusCode: 200,
-          body: JSON.stringify(body),
-          headers: {
-              "Access-Control-Allow-Origin": "*",
-          }
-        }
+            statusCode: 200,
+            body: data
+        };
+
       } catch (err) {
         console.log('error creating build definition: ', err);
       } 

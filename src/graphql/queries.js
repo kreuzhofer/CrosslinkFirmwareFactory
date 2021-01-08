@@ -14,6 +14,9 @@ export const getBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      createdAt
+      updatedAt
+      owner
       buildJobs {
         items {
           id
@@ -29,9 +32,6 @@ export const getBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -57,12 +57,12 @@ export const listBuildDefinitions = /* GraphQL */ `
         platformioEnv
         description
         configurationJSON
-        buildJobs {
-          nextToken
-        }
         createdAt
         updatedAt
         owner
+        buildJobs {
+          nextToken
+        }
       }
       nextToken
     }

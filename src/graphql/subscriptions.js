@@ -2,7 +2,7 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateBuildDefinition = /* GraphQL */ `
-  subscription OnCreateBuildDefinition($owner: String!) {
+  subscription OnCreateBuildDefinition($owner: String) {
     onCreateBuildDefinition(owner: $owner) {
       id
       name
@@ -14,6 +14,9 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      createdAt
+      updatedAt
+      owner
       buildJobs {
         items {
           id
@@ -29,14 +32,11 @@ export const onCreateBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
 export const onUpdateBuildDefinition = /* GraphQL */ `
-  subscription OnUpdateBuildDefinition($owner: String!) {
+  subscription OnUpdateBuildDefinition($owner: String) {
     onUpdateBuildDefinition(owner: $owner) {
       id
       name
@@ -48,6 +48,9 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      createdAt
+      updatedAt
+      owner
       buildJobs {
         items {
           id
@@ -63,14 +66,11 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
 export const onDeleteBuildDefinition = /* GraphQL */ `
-  subscription OnDeleteBuildDefinition($owner: String!) {
+  subscription OnDeleteBuildDefinition($owner: String) {
     onDeleteBuildDefinition(owner: $owner) {
       id
       name
@@ -82,6 +82,9 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      createdAt
+      updatedAt
+      owner
       buildJobs {
         items {
           id
@@ -97,14 +100,11 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
 export const onCreateBuildJob = /* GraphQL */ `
-  subscription OnCreateBuildJob($owner: String!) {
+  subscription OnCreateBuildJob($owner: String) {
     onCreateBuildJob(owner: $owner) {
       id
       buildDefinitionID
@@ -120,7 +120,7 @@ export const onCreateBuildJob = /* GraphQL */ `
   }
 `;
 export const onUpdateBuildJob = /* GraphQL */ `
-  subscription OnUpdateBuildJob($owner: String!) {
+  subscription OnUpdateBuildJob($owner: String) {
     onUpdateBuildJob(owner: $owner) {
       id
       buildDefinitionID
@@ -136,7 +136,7 @@ export const onUpdateBuildJob = /* GraphQL */ `
   }
 `;
 export const onDeleteBuildJob = /* GraphQL */ `
-  subscription OnDeleteBuildJob($owner: String!) {
+  subscription OnDeleteBuildJob($owner: String) {
     onDeleteBuildJob(owner: $owner) {
       id
       buildDefinitionID
@@ -152,7 +152,7 @@ export const onDeleteBuildJob = /* GraphQL */ `
   }
 `;
 export const onCreatePatron = /* GraphQL */ `
-  subscription OnCreatePatron($owner: String!) {
+  subscription OnCreatePatron($owner: String) {
     onCreatePatron(owner: $owner) {
       id
       email
@@ -168,7 +168,7 @@ export const onCreatePatron = /* GraphQL */ `
   }
 `;
 export const onUpdatePatron = /* GraphQL */ `
-  subscription OnUpdatePatron($owner: String!) {
+  subscription OnUpdatePatron($owner: String) {
     onUpdatePatron(owner: $owner) {
       id
       email
@@ -184,7 +184,7 @@ export const onUpdatePatron = /* GraphQL */ `
   }
 `;
 export const onDeletePatron = /* GraphQL */ `
-  subscription OnDeletePatron($owner: String!) {
+  subscription OnDeletePatron($owner: String) {
     onDeletePatron(owner: $owner) {
       id
       email
