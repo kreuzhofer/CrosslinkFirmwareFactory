@@ -1,56 +1,57 @@
 {
-    "sampledev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-marlinbuildops-sampledev-183439-authRole",
-            "UnauthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-sampledev-183439-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-sampledev-183439-authRole",
-            "Region": "eu-west-1",
-            "DeploymentBucketName": "amplify-marlinbuildops-sampledev-183439-deployment",
-            "UnauthRoleName": "amplify-marlinbuildops-sampledev-183439-unauthRole",
-            "StackName": "amplify-marlinbuildops-sampledev-183439",
-            "StackId": "arn:aws:cloudformation:eu-west-1:416703677996:stack/amplify-marlinbuildops-sampledev-183439/927e3020-cdcb-11ea-b369-06a6741d3858",
-            "AmplifyAppId": "d1ojj8niqi0wti"
-        },
-        "categories": {
-            "auth": {
-                "marlinbuildopsfc6385a7": {}
-            },
-            "function": {
-                "marlinbuildopsfc6385a7PreSignup": {}
-            },
-            "hosting": {
-                "amplifyhosting": {
-                    "appId": "d1ojj8niqi0wti",
-                    "type": "manual"
-                }
-            }
-        }
+  "sampledev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-marlinbuildops-sampledev-183439-authRole",
+      "UnauthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-sampledev-183439-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-sampledev-183439-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-marlinbuildops-sampledev-183439-deployment",
+      "UnauthRoleName": "amplify-marlinbuildops-sampledev-183439-unauthRole",
+      "StackName": "amplify-marlinbuildops-sampledev-183439",
+      "StackId": "arn:aws:cloudformation:eu-west-1:416703677996:stack/amplify-marlinbuildops-sampledev-183439/927e3020-cdcb-11ea-b369-06a6741d3858",
+      "AmplifyAppId": "d1ojj8niqi0wti"
     },
-    "prod": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-marlinbuildops-prod-185231-authRole",
-            "UnauthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-prod-185231-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-prod-185231-authRole",
-            "Region": "eu-west-1",
-            "DeploymentBucketName": "amplify-marlinbuildops-prod-185231-deployment",
-            "UnauthRoleName": "amplify-marlinbuildops-prod-185231-unauthRole",
-            "StackName": "amplify-marlinbuildops-prod-185231",
-            "StackId": "arn:aws:cloudformation:eu-west-1:416703677996:stack/amplify-marlinbuildops-prod-185231/10acd260-cdce-11ea-83d5-02c03455965c",
-            "AmplifyAppId": "d1ojj8niqi0wti"
-        },
-        "categories": {
-            "auth": {
-                "marlinbuildopsfc6385a7": {}
-            },
-            "function": {
-                "marlinbuildopsfc6385a7PreSignup": {}
-            },
-            "hosting": {
-                "amplifyhosting": {
-                    "appId": "d1ojj8niqi0wti",
-                    "type": "manual"
-                }
-            }
+    "categories": {
+      "auth": {
+        "marlinbuildopsfc6385a7": {}
+      },
+      "function": {
+        "marlinbuildopsfc6385a7PreSignup": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1ojj8niqi0wti",
+          "type": "manual"
         }
+      }
     }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-marlinbuildops-prod-185231-authRole",
+      "UnauthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-prod-185231-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-prod-185231-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-marlinbuildops-prod-185231-deployment",
+      "UnauthRoleName": "amplify-marlinbuildops-prod-185231-unauthRole",
+      "StackName": "amplify-marlinbuildops-prod-185231",
+      "StackId": "arn:aws:cloudformation:eu-west-1:416703677996:stack/amplify-marlinbuildops-prod-185231/10acd260-cdce-11ea-83d5-02c03455965c",
+      "AmplifyAppId": "d1ojj8niqi0wti"
+    },
+    "categories": {
+      "auth": {
+        "marlinbuildopsfc6385a7": {}
+      },
+      "function": {
+        "marlinbuildopsfc6385a7PreSignup": {},
+        "AddBuildDefinitionFromWebHook": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1ojj8niqi0wti",
+          "type": "manual"
+        }
+      }
+    }
+  }
 }
