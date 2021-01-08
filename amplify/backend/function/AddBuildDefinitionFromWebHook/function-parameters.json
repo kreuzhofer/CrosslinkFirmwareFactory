@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "api": {
+      "marlinbuildopsapi": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "auth": {
+      "marlinbuildopsfc6385a7": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
