@@ -1,5 +1,5 @@
 /* src/App.js */
-import React from 'react'
+import React, {useState} from 'react'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './TopMenu'
@@ -8,6 +8,9 @@ import {AddBuildDefinition, BuildDefinitionDetails, BuildDefinitionsList} from '
 import {
   Grid, 
 } from 'semantic-ui-react'
+import { Auth } from 'aws-amplify'
+
+
 
 /*
 Fix for 404 access denied in amplify deployed app:
@@ -26,7 +29,20 @@ const IndexDashboard = () => {
 }
 
 const App = () => {
+  const [authState, setAuthState] = useState(false)
+  const [isAdmin, setisAdmin] = useState(false)
 
+  Auth.currentAuthenticatedUser().then((user)=>{
+    const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
+    console.info(groups)
+    if(groups && groups.filter(f=>f === "Admin").length>0)
+      setisAdmin(true)
+    setAuthState(true)
+  });
+  if(!authState)
+  {
+    return null;
+  }
   return (
     <Router>
       <TopMenu/>
@@ -40,9 +56,9 @@ const App = () => {
           <Grid.Column>
             <Route path="/" exact component={IndexDashboard}/>
             <Route path="/Marlin" exact component={MarlinFirmwareOverview}/>
-            <Route path="/BuildDefinition" exact component={AddBuildDefinition}/>
-            <Route path="/BuildDefinition" exact component={BuildDefinitionsList}/>
-            <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/>
+            { isAdmin ? <Route path="/BuildDefinition" exact component={AddBuildDefinition}/> : null }
+            { isAdmin ? <Route path="/BuildDefinition" exact component={BuildDefinitionsList}/> : null }
+            { isAdmin ? <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/> : null }
           </Grid.Column>
          </Grid.Row>
        </Grid>

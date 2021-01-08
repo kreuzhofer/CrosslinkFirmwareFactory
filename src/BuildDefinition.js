@@ -48,9 +48,6 @@ const BuildDefinitionsList = () => {
       async function fetchData() {
         await reloadData();
         const user =  await Auth.currentAuthenticatedUser();
-        // the array of groups that the user belongs to
-        console.info(user)
-        console.info(user.signInUserSession.accessToken.payload["cognito:groups"])
         const username = user.username;
 
         const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
