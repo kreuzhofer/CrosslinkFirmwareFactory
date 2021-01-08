@@ -137,6 +137,7 @@ const BuildDefinitionDetails = (props) => {
     const [platformioEnv, setPlatformioEnv] = useState('')
     const [description, setDescription] = useState('')
     const [configurationJSON, setConfigurationJSON] = useState('{}')
+    const [dataLoaded, setDataLoaded] = useState(false)
     let id = props.match.params.id
   
     useEffect(() => {
@@ -158,8 +159,11 @@ const BuildDefinitionDetails = (props) => {
           console.error(error);
         }
       }
-      fetchData();
-    })
+      if(!dataLoaded){
+        fetchData()
+        setDataLoaded(true);
+      };
+    }, [dataLoaded, id])
 
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -169,7 +173,7 @@ const BuildDefinitionDetails = (props) => {
         return false
         }
         let result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
-          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, platformioEnv, description, configurationJSON
+          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, platformioEnv:platformioEnv, description, configurationJSON
         }}));
         console.log(result);
         alert("Changes saved")

@@ -146,12 +146,12 @@ const BuildDefinitionsList = () => {
           <Table.Cell>
           </Table.Cell>
         </Table.Row>)
-
     }
   
     return (
       <Segment>
         <Header as='h3'>My Build Definitions</Header>
+        <Button icon="refresh"></Button>
         <Table celled>
           <Table.Header>
             <Table.Row>
