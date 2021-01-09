@@ -7,7 +7,7 @@ import {
     Button,
     Table,
     Icon,
-    Confirm
+    Confirm,
   } from 'semantic-ui-react'
 
 import * as customqueries from './graphql/customqueries'
@@ -78,6 +78,16 @@ const BuildDefinitionsList = () => {
       setConfirmState({ open: false })
     }
     const handleCancel = () => setConfirmState({ open: false })
+
+    const buildJobsList = (jobs) => {
+        console.info(jobs)
+        return jobs.map(job=>
+            <Table.Row key={job.id}>
+                <Table.Cell>{job.jobState}</Table.Cell>
+                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/logfile.txt'}>Log</a></Table.Cell>
+            </Table.Row>
+        )
+    }
   
     const buildDefinitionItems = () => {
   
@@ -141,9 +151,11 @@ const BuildDefinitionsList = () => {
           </Button>
           </Table.Cell>
           <Table.Cell>
-            {def.buildJobs.items.length>0 ? def.buildJobs.items[0].jobState : ''}
-          </Table.Cell>
-          <Table.Cell>
+              <Table celled>
+                    <Table.Body>
+                        {buildJobsList(def.buildJobs.items)}
+                    </Table.Body>
+              </Table>
           </Table.Cell>
         </Table.Row>)
     }
@@ -157,8 +169,7 @@ const BuildDefinitionsList = () => {
             <Table.Row>
               <Table.HeaderCell>Name</Table.HeaderCell>
               <Table.HeaderCell>Actions</Table.HeaderCell>
-              <Table.HeaderCell>State</Table.HeaderCell>
-              <Table.HeaderCell>Artifacts</Table.HeaderCell>
+              <Table.HeaderCell>Build Jobs</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 

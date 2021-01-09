@@ -11,8 +11,6 @@ import {
 } from 'semantic-ui-react'
 import { Auth } from 'aws-amplify'
 
-
-
 /*
 Fix for 404 access denied in amplify deployed app:
 https://github.com/aws-amplify/amplify-console/issues/436
