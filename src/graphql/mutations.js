@@ -128,6 +128,18 @@ export const createBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      buildJobArtifacts {
+        items {
+          id
+          buildJobID
+          artifactName
+          artifactUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -147,6 +159,18 @@ export const updateBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      buildJobArtifacts {
+        items {
+          id
+          buildJobID
+          artifactName
+          artifactUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -163,6 +187,66 @@ export const deleteBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      createdAt
+      updatedAt
+      owner
+      buildJobArtifacts {
+        items {
+          id
+          buildJobID
+          artifactName
+          artifactUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const createBuildJobArtifact = /* GraphQL */ `
+  mutation CreateBuildJobArtifact(
+    $input: CreateBuildJobArtifactInput!
+    $condition: ModelBuildJobArtifactConditionInput
+  ) {
+    createBuildJobArtifact(input: $input, condition: $condition) {
+      id
+      buildJobID
+      artifactName
+      artifactUrl
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateBuildJobArtifact = /* GraphQL */ `
+  mutation UpdateBuildJobArtifact(
+    $input: UpdateBuildJobArtifactInput!
+    $condition: ModelBuildJobArtifactConditionInput
+  ) {
+    updateBuildJobArtifact(input: $input, condition: $condition) {
+      id
+      buildJobID
+      artifactName
+      artifactUrl
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteBuildJobArtifact = /* GraphQL */ `
+  mutation DeleteBuildJobArtifact(
+    $input: DeleteBuildJobArtifactInput!
+    $condition: ModelBuildJobArtifactConditionInput
+  ) {
+    deleteBuildJobArtifact(input: $input, condition: $condition) {
+      id
+      buildJobID
+      artifactName
+      artifactUrl
       createdAt
       updatedAt
       owner

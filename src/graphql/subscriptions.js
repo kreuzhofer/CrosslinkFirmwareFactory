@@ -116,6 +116,18 @@ export const onCreateBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      buildJobArtifacts {
+        items {
+          id
+          buildJobID
+          artifactName
+          artifactUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -132,6 +144,18 @@ export const onUpdateBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      buildJobArtifacts {
+        items {
+          id
+          buildJobID
+          artifactName
+          artifactUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -145,6 +169,57 @@ export const onDeleteBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      createdAt
+      updatedAt
+      owner
+      buildJobArtifacts {
+        items {
+          id
+          buildJobID
+          artifactName
+          artifactUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateBuildJobArtifact = /* GraphQL */ `
+  subscription OnCreateBuildJobArtifact($owner: String) {
+    onCreateBuildJobArtifact(owner: $owner) {
+      id
+      buildJobID
+      artifactName
+      artifactUrl
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateBuildJobArtifact = /* GraphQL */ `
+  subscription OnUpdateBuildJobArtifact($owner: String) {
+    onUpdateBuildJobArtifact(owner: $owner) {
+      id
+      buildJobID
+      artifactName
+      artifactUrl
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteBuildJobArtifact = /* GraphQL */ `
+  subscription OnDeleteBuildJobArtifact($owner: String) {
+    onDeleteBuildJobArtifact(owner: $owner) {
+      id
+      buildJobID
+      artifactName
+      artifactUrl
       createdAt
       updatedAt
       owner

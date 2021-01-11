@@ -7,6 +7,7 @@ import {
     Segment, 
     Button,
     Form,
+    Label,
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -101,7 +102,8 @@ const AddBuildDefinition = () => {
             name='platformioEnv'
             value={platformioEnv}
             onChange={(e) => setPlatformioEnv(e.target.value)}
-        /><br/>          
+        /><br/>
+        <Label>Description</Label>
         <TextareaAutosize
             label='Description'
             placeholder='Description'
@@ -109,6 +111,7 @@ const AddBuildDefinition = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
         /><br/>
+        <Label>Config JSON</Label>
         <TextareaAutosize
             label='Config JSON'
             placeholder='Config JSON'
@@ -241,6 +244,7 @@ const BuildDefinitionDetails = (props) => {
             value={platformioEnv}
             onChange={(e) => setPlatformioEnv(e.target.value)}
         /><br/>        
+        <Label>Description</Label>
         <TextareaAutosize
             label='Description'
             placeholder='Description'
@@ -248,6 +252,7 @@ const BuildDefinitionDetails = (props) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
         /><br/>
+        <Label>Config JSON</Label>
         <TextareaAutosize
             label='Config JSON'
             placeholder='Config JSON'

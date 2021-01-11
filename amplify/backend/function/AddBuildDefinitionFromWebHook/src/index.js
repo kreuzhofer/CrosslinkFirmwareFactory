@@ -56,7 +56,8 @@ exports.handler = async (event) => {
                 printerMainboard: "fancier",
                 platformioEnv: "fanciest",
                 description: "this is it",
-                configurationJSON: "{}"
+                configurationJSON: "{}",
+                owner: "daniel"
             }
         };
     

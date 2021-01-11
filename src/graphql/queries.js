@@ -81,6 +81,18 @@ export const getBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      buildJobArtifacts {
+        items {
+          id
+          buildJobID
+          artifactName
+          artifactUrl
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -99,6 +111,46 @@ export const listBuildJobs = /* GraphQL */ `
         endTime
         message
         log
+        createdAt
+        updatedAt
+        owner
+        buildJobArtifacts {
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getBuildJobArtifact = /* GraphQL */ `
+  query GetBuildJobArtifact($id: ID!) {
+    getBuildJobArtifact(id: $id) {
+      id
+      buildJobID
+      artifactName
+      artifactUrl
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listBuildJobArtifacts = /* GraphQL */ `
+  query ListBuildJobArtifacts(
+    $filter: ModelBuildJobArtifactFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBuildJobArtifacts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        buildJobID
+        artifactName
+        artifactUrl
         createdAt
         updatedAt
         owner

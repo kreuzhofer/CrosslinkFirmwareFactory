@@ -24,6 +24,17 @@ type BuildJob @model
   endTime: String
   message: String
   log: String
+  buildJobArtifacts: [BuildJobArtifact!] @connection(keyName: "byBuildJob", fields: ["id"])
+}
+
+type BuildJobArtifact @model
+  @auth(rules: [{allow: owner}])
+  @key(name: "byBuildJob", fields: ["buildJobID", "id"])
+{
+  id: ID!
+  buildJobID: ID!
+  artifactName: String!
+  artifactUrl: String!
 }
 
 enum BuildJobState {

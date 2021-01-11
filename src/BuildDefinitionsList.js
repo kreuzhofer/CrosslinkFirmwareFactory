@@ -79,12 +79,16 @@ const BuildDefinitionsList = () => {
     }
     const handleCancel = () => setConfirmState({ open: false })
 
-    const buildJobsList = (jobs) => {
+    const buildJobsList = (jobs, def) => {
         console.info(jobs)
-        return jobs.map(job=>
+        return jobs.sort(comparator.makeComparator('createdAt')).map(job=>
             <Table.Row key={job.id}>
+                <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
                 <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/logfile.txt'}>Log</a></Table.Cell>
+                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
+                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
+                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/marlin.zip'}>Marlin.tgz</a></Table.Cell>
             </Table.Row>
         )
     }
@@ -153,7 +157,7 @@ const BuildDefinitionsList = () => {
           <Table.Cell>
               <Table celled>
                     <Table.Body>
-                        {buildJobsList(def.buildJobs.items)}
+                        {buildJobsList(def.buildJobs.items, def)}
                     </Table.Body>
               </Table>
           </Table.Cell>
