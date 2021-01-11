@@ -44,6 +44,8 @@ const createBuildDefinition = /* GraphQL */ gql`
 
 exports.handler = async (event) => {
     try {
+        console.log(print(createBuildDefinition))
+
         const req = new AWS.HttpRequest(appsyncUrl, region);
 
         const item = {

@@ -53,12 +53,21 @@ const BuildDefinitionsList = () => {
           }
         })
         subs.push(insertSubscription);
+
         const deleteSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition, {owner: username})).subscribe({
           next: (eventData) => {
             setBuildDefinitions(buildDefinitions => buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id));
           }
         })
         subs.push(deleteSubscription);
+
+        const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob, {owner: username})).subscribe({
+            next: async (eventData) => {
+                await reloadData();
+            }
+        })
+        subs.push(updateBuildJobSubscription);
+
       }
       fetchData();
       return () => {
@@ -81,14 +90,16 @@ const BuildDefinitionsList = () => {
 
     const buildJobsList = (jobs, def) => {
         console.info(jobs)
+        if(jobs == null)
+            return null;
         return jobs.sort(comparator.makeComparator('createdAt')).map(job=>
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
-                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/logfile.txt'}>Log</a></Table.Cell>
-                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
-                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
-                <Table.Cell><a target="_blank" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/marlin.zip'}>Marlin.tgz</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/logfile.txt'}>Log</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
             </Table.Row>
         )
     }

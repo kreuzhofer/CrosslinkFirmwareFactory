@@ -10,6 +10,7 @@ type BuildDefinition @model
   platformioEnv: String
   description: String
   configurationJSON: String
+  owner: String
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
 }
 

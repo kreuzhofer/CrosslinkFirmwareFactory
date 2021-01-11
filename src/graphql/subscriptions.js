@@ -14,9 +14,9 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      owner
       createdAt
       updatedAt
-      owner
       buildJobs {
         items {
           id
@@ -48,9 +48,9 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      owner
       createdAt
       updatedAt
-      owner
       buildJobs {
         items {
           id
@@ -82,9 +82,9 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       platformioEnv
       description
       configurationJSON
+      owner
       createdAt
       updatedAt
-      owner
       buildJobs {
         items {
           id
