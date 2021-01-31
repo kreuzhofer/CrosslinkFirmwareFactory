@@ -31,7 +31,13 @@ const TopMenu = () => {
         Crosslink Firmware Factory
       </Menu.Item>
       <Menu.Item><NavLink to={`/`}>Home</NavLink></Menu.Item>
-      <Menu.Item><NavLink to={`/Marlin`}>Marlin</NavLink></Menu.Item>
+      <Dropdown item simple text='Firmware'>
+        <Dropdown.Menu>
+          <Dropdown.Header>Marlin</Dropdown.Header>
+          <Dropdown.Item href='/MarlinDownloads'>Marlin Firmware Downloads</Dropdown.Item>
+          <Dropdown.Item href='/BuildDefinition'>Marlin Firmware Build Definitions</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
 
       { isAdmin ? 
       <Dropdown item simple text='Admin'>

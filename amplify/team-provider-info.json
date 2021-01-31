@@ -40,7 +40,8 @@
     },
     "categories": {
       "auth": {
-        "marlinbuildopsfc6385a7": {}
+        "marlinbuildopsfc6385a7": {},
+        "userPoolGroups": {}
       },
       "function": {
         "marlinbuildopsfc6385a7PreSignup": {},

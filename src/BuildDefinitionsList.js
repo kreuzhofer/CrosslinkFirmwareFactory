@@ -14,11 +14,10 @@ import * as customqueries from './graphql/customqueries'
 import * as mutations from './graphql/mutations'
 import * as subscriptions from './graphql/subscriptions'
 import * as comparator from './util/comparator';
+import Lambda from 'aws-sdk/clients/lambda';
 
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
-AWS.config.update({credentials: {accessKeyId: 'AKIAWCBLZQYWFG3EF247', secretAccessKey:'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'}});
-var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
@@ -92,7 +91,7 @@ const BuildDefinitionsList = () => {
         console.info(jobs)
         if(jobs == null)
             return null;
-        return jobs.sort(comparator.makeComparator('createdAt')).map(job=>
+        return jobs.sort(comparator.makeComparator('createdAt')).filter(job=>job.jobState === "DONE").slice(0,3).map(job=>
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
@@ -139,6 +138,26 @@ const BuildDefinitionsList = () => {
           QueueUrl: "https://sqs.eu-west-1.amazonaws.com/416703677996/BuildAgentJobQueue"
         };
         
+
+        
+
+        var credentials = await Auth.currentCredentials()
+        console.info(credentials)
+        var sqs = new AWS.SQS({apiVersion: '2012-11-05', credentials: Auth.essentialCredentials(credentials)});
+
+        // test calling a lambda function
+        const lambda = new Lambda({
+          credentials: Auth.essentialCredentials(credentials)
+        });
+        var lambdaResult = lambda.invoke({
+          FunctionName: 'AddBuildDefinitionFromWebHook-prod',
+          Payload: JSON.stringify({ "hello": "world" })
+        }, (err, data) => {
+          console.info(err)
+          console.info(data)
+        });
+        console.info(lambdaResult);
+
         sqs.sendMessage(params, function(err, data) {
           if (err) {
             console.log("Error", err);
@@ -154,7 +173,7 @@ const BuildDefinitionsList = () => {
         .sort(comparator.makeComparator('name'))
         .map(def => 
         <Table.Row key={def.id}>
-          <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink></Table.Cell>
+          <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><br/><br/>{def.description}</Table.Cell>
           <Table.Cell>
           <Button loading={def.buildRunning} disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
               <Button.Content hidden>Build</Button.Content>
