@@ -95,5 +95,20 @@
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }
+  },
+  "customresources": {
+    "iamroles": {
+      "service": "IamRoles",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+              "AdminGroupRole"
+            ]
+        }
+      ]
+    }
   }
 }
