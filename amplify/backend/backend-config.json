@@ -18,6 +18,20 @@
           }
         }
       }
+    },
+    "patreonapi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "patreonwebhookapifunction",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "auth": {
@@ -88,6 +102,12 @@
           ]
         }
       ]
+    },
+    "patreonwebhookapifunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
     }
   },
   "storage": {
@@ -105,8 +125,8 @@
           "category": "auth",
           "resourceName": "userPoolGroups",
           "attributes": [
-              "AdminGroupRole"
-            ]
+            "AdminGroupRole"
+          ]
         }
       ]
     }
