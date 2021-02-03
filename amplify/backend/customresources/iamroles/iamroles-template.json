@@ -1,0 +1,107 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "env": {
+            "Type": "String"
+        }
+    },
+	"Conditions": {
+		"ShouldNotCreateEnvResources": {
+			"Fn::Equals": [
+				{
+					"Ref": "env"
+				},
+				"NONE"
+			]
+        }
+    },
+    "Resources": {
+		"AdminGroupInvokeLambdaManagedPolicy": {
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+                "PolicyName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "AdminGroupInvokeLambdaManagedPolicy",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "AdminGroupInvokeLambdaManagedPolicy",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]                
+                },
+				"Roles": [
+					"eu-west-1_2zz1Y58Rr-AdminGroupRole"
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "lambda:InvokeFunction"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+				}
+			}
+        },
+		"AdminGroupInvokeSQSPolicy": {
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+                "PolicyName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "AdminGroupInvokeSQSPolicy",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "AdminGroupInvokeSQSPolicy",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]                
+                },
+				"Roles": [
+					"eu-west-1_2zz1Y58Rr-AdminGroupRole"
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "sqs:DeleteMessage",
+                                "sqs:GetQueueUrl",
+                                "sqs:ListDeadLetterSourceQueues",
+                                "sqs:ChangeMessageVisibility",
+                                "sqs:DeleteMessageBatch",
+                                "sqs:SendMessageBatch",
+                                "sqs:ReceiveMessage",
+                                "sqs:SendMessage",
+                                "sqs:GetQueueAttributes",
+                                "sqs:ListQueueTags",
+                                "sqs:ChangeMessageVisibilityBatch",
+                                "sqs:ListQueues"                                
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+				}
+			}
+		}        
+    }
+}

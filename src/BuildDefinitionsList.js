@@ -91,7 +91,7 @@ const BuildDefinitionsList = () => {
         console.info(jobs)
         if(jobs == null)
             return null;
-        return jobs.sort(comparator.makeComparator('createdAt')).filter(job=>job.jobState === "DONE").slice(0,3).map(job=>
+        return jobs.sort(comparator.makeComparator('createdAt')).slice(0,3).map(job=>
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
@@ -138,25 +138,22 @@ const BuildDefinitionsList = () => {
           QueueUrl: "https://sqs.eu-west-1.amazonaws.com/416703677996/BuildAgentJobQueue"
         };
         
-
-        
-
         var credentials = await Auth.currentCredentials()
         console.info(credentials)
         var sqs = new AWS.SQS({apiVersion: '2012-11-05', credentials: Auth.essentialCredentials(credentials)});
 
-        // test calling a lambda function
-        const lambda = new Lambda({
-          credentials: Auth.essentialCredentials(credentials)
-        });
-        var lambdaResult = lambda.invoke({
-          FunctionName: 'AddBuildDefinitionFromWebHook-prod',
-          Payload: JSON.stringify({ "hello": "world" })
-        }, (err, data) => {
-          console.info(err)
-          console.info(data)
-        });
-        console.info(lambdaResult);
+        // // test calling a lambda function
+        // const lambda = new Lambda({
+        //   credentials: Auth.essentialCredentials(credentials)
+        // });
+        // var lambdaResult = lambda.invoke({
+        //   FunctionName: 'AddBuildDefinitionFromWebHook-prod',
+        //   Payload: JSON.stringify({ "hello": "world" })
+        // }, (err, data) => {
+        //   console.info(err)
+        //   console.info(data)
+        // });
+        // console.info(lambdaResult);
 
         sqs.sendMessage(params, function(err, data) {
           if (err) {
