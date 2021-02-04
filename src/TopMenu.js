@@ -5,9 +5,11 @@ import {
   Image,
   Menu,
 } from 'semantic-ui-react'
-import { SignOut } from 'aws-amplify-react';
+//import { SignOut } from 'aws-amplify-react';
 import {NavLink} from 'react-router-dom'
 import { Auth } from 'aws-amplify'
+import {AmplifySignOut} from "@aws-amplify/ui-react";
+
 
 const TopMenu = () => { 
   const [authState, setAuthState] = useState(false)
@@ -48,7 +50,7 @@ const TopMenu = () => {
       </Dropdown> : null}
     </Container>
     <Container>
-      <Menu.Item as="a"><SignOut/></Menu.Item>
+      <Menu.Item><AmplifySignOut /></Menu.Item>
     </Container>
   </Menu> 
 )}
