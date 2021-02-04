@@ -261,11 +261,18 @@ export const createPatron = /* GraphQL */ `
     createPatron(input: $input, condition: $condition) {
       id
       email
-      name
-      pledge
+      full_name
       patron_status
-      will_pay_amount_cents
       last_event
+      access_expires_at
+      campaign_currency
+      campaign_lifetime_support_cents
+      currently_entitled_amount_cents
+      last_charge_date
+      last_charge_status
+      lifetime_support_cents
+      will_pay_amount_cents
+      pledge_relationship_start
       createdAt
       updatedAt
       owner
@@ -280,11 +287,18 @@ export const updatePatron = /* GraphQL */ `
     updatePatron(input: $input, condition: $condition) {
       id
       email
-      name
-      pledge
+      full_name
       patron_status
-      will_pay_amount_cents
       last_event
+      access_expires_at
+      campaign_currency
+      campaign_lifetime_support_cents
+      currently_entitled_amount_cents
+      last_charge_date
+      last_charge_status
+      lifetime_support_cents
+      will_pay_amount_cents
+      pledge_relationship_start
       createdAt
       updatedAt
       owner
@@ -299,11 +313,66 @@ export const deletePatron = /* GraphQL */ `
     deletePatron(input: $input, condition: $condition) {
       id
       email
-      name
-      pledge
+      full_name
       patron_status
-      will_pay_amount_cents
       last_event
+      access_expires_at
+      campaign_currency
+      campaign_lifetime_support_cents
+      currently_entitled_amount_cents
+      last_charge_date
+      last_charge_status
+      lifetime_support_cents
+      will_pay_amount_cents
+      pledge_relationship_start
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createPatronActivityLog = /* GraphQL */ `
+  mutation CreatePatronActivityLog(
+    $input: CreatePatronActivityLogInput!
+    $condition: ModelPatronActivityLogConditionInput
+  ) {
+    createPatronActivityLog(input: $input, condition: $condition) {
+      id
+      patron_event
+      event_timestamp
+      body
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updatePatronActivityLog = /* GraphQL */ `
+  mutation UpdatePatronActivityLog(
+    $input: UpdatePatronActivityLogInput!
+    $condition: ModelPatronActivityLogConditionInput
+  ) {
+    updatePatronActivityLog(input: $input, condition: $condition) {
+      id
+      patron_event
+      event_timestamp
+      body
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deletePatronActivityLog = /* GraphQL */ `
+  mutation DeletePatronActivityLog(
+    $input: DeletePatronActivityLogInput!
+    $condition: ModelPatronActivityLogConditionInput
+  ) {
+    deletePatronActivityLog(input: $input, condition: $condition) {
+      id
+      patron_event
+      event_timestamp
+      body
       createdAt
       updatedAt
       owner

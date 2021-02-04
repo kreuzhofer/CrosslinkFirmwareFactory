@@ -231,11 +231,18 @@ export const onCreatePatron = /* GraphQL */ `
     onCreatePatron(owner: $owner) {
       id
       email
-      name
-      pledge
+      full_name
       patron_status
-      will_pay_amount_cents
       last_event
+      access_expires_at
+      campaign_currency
+      campaign_lifetime_support_cents
+      currently_entitled_amount_cents
+      last_charge_date
+      last_charge_status
+      lifetime_support_cents
+      will_pay_amount_cents
+      pledge_relationship_start
       createdAt
       updatedAt
       owner
@@ -247,11 +254,18 @@ export const onUpdatePatron = /* GraphQL */ `
     onUpdatePatron(owner: $owner) {
       id
       email
-      name
-      pledge
+      full_name
       patron_status
-      will_pay_amount_cents
       last_event
+      access_expires_at
+      campaign_currency
+      campaign_lifetime_support_cents
+      currently_entitled_amount_cents
+      last_charge_date
+      last_charge_status
+      lifetime_support_cents
+      will_pay_amount_cents
+      pledge_relationship_start
       createdAt
       updatedAt
       owner
@@ -263,11 +277,57 @@ export const onDeletePatron = /* GraphQL */ `
     onDeletePatron(owner: $owner) {
       id
       email
-      name
-      pledge
+      full_name
       patron_status
-      will_pay_amount_cents
       last_event
+      access_expires_at
+      campaign_currency
+      campaign_lifetime_support_cents
+      currently_entitled_amount_cents
+      last_charge_date
+      last_charge_status
+      lifetime_support_cents
+      will_pay_amount_cents
+      pledge_relationship_start
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onCreatePatronActivityLog = /* GraphQL */ `
+  subscription OnCreatePatronActivityLog($owner: String) {
+    onCreatePatronActivityLog(owner: $owner) {
+      id
+      patron_event
+      event_timestamp
+      body
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdatePatronActivityLog = /* GraphQL */ `
+  subscription OnUpdatePatronActivityLog($owner: String) {
+    onUpdatePatronActivityLog(owner: $owner) {
+      id
+      patron_event
+      event_timestamp
+      body
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeletePatronActivityLog = /* GraphQL */ `
+  subscription OnDeletePatronActivityLog($owner: String) {
+    onDeletePatronActivityLog(owner: $owner) {
+      id
+      patron_event
+      event_timestamp
+      body
       createdAt
       updatedAt
       owner

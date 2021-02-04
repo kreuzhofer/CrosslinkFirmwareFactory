@@ -164,11 +164,18 @@ export const getPatron = /* GraphQL */ `
     getPatron(id: $id) {
       id
       email
-      name
-      pledge
+      full_name
       patron_status
-      will_pay_amount_cents
       last_event
+      access_expires_at
+      campaign_currency
+      campaign_lifetime_support_cents
+      currently_entitled_amount_cents
+      last_charge_date
+      last_charge_status
+      lifetime_support_cents
+      will_pay_amount_cents
+      pledge_relationship_start
       createdAt
       updatedAt
       owner
@@ -185,11 +192,55 @@ export const listPatrons = /* GraphQL */ `
       items {
         id
         email
-        name
-        pledge
+        full_name
         patron_status
-        will_pay_amount_cents
         last_event
+        access_expires_at
+        campaign_currency
+        campaign_lifetime_support_cents
+        currently_entitled_amount_cents
+        last_charge_date
+        last_charge_status
+        lifetime_support_cents
+        will_pay_amount_cents
+        pledge_relationship_start
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getPatronActivityLog = /* GraphQL */ `
+  query GetPatronActivityLog($id: ID!) {
+    getPatronActivityLog(id: $id) {
+      id
+      patron_event
+      event_timestamp
+      body
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listPatronActivityLogs = /* GraphQL */ `
+  query ListPatronActivityLogs(
+    $filter: ModelPatronActivityLogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPatronActivityLogs(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        patron_event
+        event_timestamp
+        body
         createdAt
         updatedAt
         owner
