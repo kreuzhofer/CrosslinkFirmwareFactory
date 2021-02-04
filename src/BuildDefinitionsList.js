@@ -14,7 +14,7 @@ import * as customqueries from './graphql/customqueries'
 import * as mutations from './graphql/mutations'
 import * as subscriptions from './graphql/subscriptions'
 import * as comparator from './util/comparator';
-import Lambda from 'aws-sdk/clients/lambda';
+//import Lambda from 'aws-sdk/clients/lambda';
 
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
