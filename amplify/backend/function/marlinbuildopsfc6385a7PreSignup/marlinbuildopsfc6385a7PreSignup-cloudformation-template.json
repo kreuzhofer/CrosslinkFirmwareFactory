@@ -109,7 +109,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-marlinbuildops-prod-185231-deployment",
-          "S3Key": "amplify-builds/marlinbuildopsfc6385a7PreSignup-485a2b415576564a6d36-build.zip"
+          "S3Key": "amplify-builds/marlinbuildopsfc6385a7PreSignup-686c625154744f626552-build.zip"
         }
       }
     },
@@ -190,6 +190,24 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:Describe*",
+                "dynamodb:List*",
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:PartiQLSelect"
+              ],
+              "Resource": "arn:aws:dynamodb:*:*:table/*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:Query",
+              "Resource": "arn:aws:dynamodb:*:*:table/*/index/*"
             }
           ]
         }
