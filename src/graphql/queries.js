@@ -163,6 +163,7 @@ export const getPatron = /* GraphQL */ `
   query GetPatron($id: ID!) {
     getPatron(id: $id) {
       id
+      owner
       email
       full_name
       patron_status
@@ -178,7 +179,6 @@ export const getPatron = /* GraphQL */ `
       pledge_relationship_start
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -191,6 +191,7 @@ export const listPatrons = /* GraphQL */ `
     listPatrons(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        owner
         email
         full_name
         patron_status
@@ -206,7 +207,44 @@ export const listPatrons = /* GraphQL */ `
         pledge_relationship_start
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const patronsByEmail = /* GraphQL */ `
+  query PatronsByEmail(
+    $email: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelPatronFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    patronsByEmail(
+      email: $email
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
         owner
+        email
+        full_name
+        patron_status
+        last_event
+        access_expires_at
+        campaign_currency
+        campaign_lifetime_support_cents
+        currently_entitled_amount_cents
+        last_charge_date
+        last_charge_status
+        lifetime_support_cents
+        will_pay_amount_cents
+        pledge_relationship_start
+        createdAt
+        updatedAt
       }
       nextToken
     }

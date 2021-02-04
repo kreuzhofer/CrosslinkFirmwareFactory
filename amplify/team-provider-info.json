@@ -45,7 +45,8 @@
       },
       "function": {
         "marlinbuildopsfc6385a7PreSignup": {},
-        "AddBuildDefinitionFromWebHook": {}
+        "AddBuildDefinitionFromWebHook": {},
+        "marlinbuildopsfc6385a7PreAuthentication": {}
       },
       "hosting": {
         "amplifyhosting": {

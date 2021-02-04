@@ -21,7 +21,7 @@
         "email"
     ],
     "userpoolClientGenerateSecret": true,
-    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientRefreshTokenValidity": "1",
     "userpoolClientWriteAttributes": [
         "email"
     ],
@@ -46,11 +46,22 @@
         ]
     },
     "useDefault": "manual",
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+        "Admin"
+    ],
     "dependsOn": [
         {
             "category": "function",
             "resourceName": "marlinbuildopsfc6385a7PreSignup",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "marlinbuildopsfc6385a7PreAuthentication",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",
@@ -61,10 +72,11 @@
     "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
-    "triggers": "{\"PreSignup\":[\"custom\"]}",
+    "triggers": "{\n  \"PreAuthentication\": [\n    \"custom\"\n  ],\n  \"PreSignup\": [\n    \"custom\"\n  ]\n}",
     "hostedUI": false,
     "parentStack": {
         "Ref": "AWS::StackId"
     },
-    "permissions": []
+    "permissions": [],
+    "serviceName": "Cognito"
 }

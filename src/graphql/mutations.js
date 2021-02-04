@@ -260,6 +260,7 @@ export const createPatron = /* GraphQL */ `
   ) {
     createPatron(input: $input, condition: $condition) {
       id
+      owner
       email
       full_name
       patron_status
@@ -275,7 +276,6 @@ export const createPatron = /* GraphQL */ `
       pledge_relationship_start
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -286,6 +286,7 @@ export const updatePatron = /* GraphQL */ `
   ) {
     updatePatron(input: $input, condition: $condition) {
       id
+      owner
       email
       full_name
       patron_status
@@ -301,7 +302,6 @@ export const updatePatron = /* GraphQL */ `
       pledge_relationship_start
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -312,6 +312,7 @@ export const deletePatron = /* GraphQL */ `
   ) {
     deletePatron(input: $input, condition: $condition) {
       id
+      owner
       email
       full_name
       patron_status
@@ -327,7 +328,6 @@ export const deletePatron = /* GraphQL */ `
       pledge_relationship_start
       createdAt
       updatedAt
-      owner
     }
   }
 `;
