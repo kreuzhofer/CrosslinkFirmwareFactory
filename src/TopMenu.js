@@ -26,7 +26,7 @@ const TopMenu = () => {
     return null;
   }
   return (
-    <Menu fixed='top' inverted>
+    <Menu fixed='top' stackable inverted>
     <Container>
       <Menu.Item as='a' header>
         <Image size='mini' src='/logo192.png' style={{ marginRight: '1.5em' }} />
