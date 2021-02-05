@@ -18,6 +18,7 @@ import * as comparator from './util/comparator';
 
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
+const buildArtifactsBucketUrl = "https://s3firmwarefactory185231-prod.s3-eu-west-1.amazonaws.com/"
 
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
@@ -95,10 +96,10 @@ const BuildDefinitionsList = () => {
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/logfile.txt'}>Log</a></Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={'https://marlinbuildartifacts.s3-eu-west-1.amazonaws.com/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/logfile.txt'}>Log</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
             </Table.Row>
         )
     }
