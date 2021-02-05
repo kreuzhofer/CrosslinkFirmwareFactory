@@ -14,10 +14,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import * as queries from './graphql/queries'
 import * as mutations from './graphql/mutations'
 
-var AWS = require('aws-sdk');
-AWS.config.update({region: 'eu-west-1'});
-AWS.config.update({credentials: {accessKeyId: 'AKIAWCBLZQYWFG3EF247', secretAccessKey:'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'}});
-  
 const AddBuildDefinition = () => {
     const [name, setName] = useState('');
     const [sourceTree, setSourceTree] = useState('');
