@@ -133,8 +133,9 @@ Parameters:
             
   useDefault:
     Type: String
-  
-            
+
+  usernameAttributes:
+    Type: CommaDelimitedList
         
   userPoolGroupList:
     Type: CommaDelimitedList
@@ -228,7 +229,10 @@ Resources:
           Required: true
           Mutable: true
         
-      
+        -
+          Name: phone_number
+          Required: true
+          Mutable: true
       
       LambdaConfig:
         
@@ -259,7 +263,9 @@ Resources:
           RequireNumbers: false
           RequireSymbols: false
           RequireUppercase: false
-      
+
+      UsernameAttributes: !Ref usernameAttributes
+
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsConfiguration:
