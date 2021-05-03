@@ -53,7 +53,7 @@ exports.handler = (event, context, callback) => {
     },
     // Set the projection expression, which the the attributes that you want.
     ProjectionExpression: "email, patron_status, currently_entitled_amount_cents",
-    TableName: "Patron-nnf2gyqbpzc7fiethifhs24yqq-prod",
+    TableName: "Patron",
   };
   
   ddb.scan(params, function (err, data) {
