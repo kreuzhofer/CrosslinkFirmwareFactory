@@ -18,7 +18,7 @@ import * as comparator from './util/comparator';
 
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
-const buildAgentJobQueueUrl = process.env["BUILDAGENTJOBQUEUEURL"]
+const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 console.log(buildAgentJobQueueUrl)
 const buildArtifactsBucketUrl = "https://s3firmwarefactory185231-prod.s3-eu-west-1.amazonaws.com/"
 
