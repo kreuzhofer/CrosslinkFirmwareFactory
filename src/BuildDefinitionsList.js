@@ -70,6 +70,9 @@ const BuildDefinitionsList = () => {
 
       }
       fetchData();
+
+      console.log(process.env)
+
       return () => {
         subs.forEach(function(item, index, array){
           item.unsubscribe();
