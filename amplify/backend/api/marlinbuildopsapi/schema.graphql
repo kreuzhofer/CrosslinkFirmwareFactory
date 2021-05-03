@@ -45,32 +45,3 @@ enum BuildJobState {
   DONE
   FAILED
 }
-
-type Patron @model 
-  @auth(rules: [{ allow: owner }]) 
-  @key(name: "patronsByEmail", fields: ["email"], queryField: "patronsByEmail")
-{
-  id: ID!
-  owner: String
-  email: String
-  full_name: String
-  patron_status: String
-  last_event: String
-  access_expires_at: String
-  campaign_currency: String
-  campaign_lifetime_support_cents: Int
-  currently_entitled_amount_cents: Int
-  last_charge_date: String
-  last_charge_status: String
-  lifetime_support_cents: Int
-  will_pay_amount_cents: Int
-  pledge_relationship_start: String
-}
-
-type PatronActivityLog @model 
-  @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  patron_event: String
-  event_timestamp: String
-  body: String
-}
