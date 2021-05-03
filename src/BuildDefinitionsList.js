@@ -71,6 +71,7 @@ const BuildDefinitionsList = () => {
       }
       fetchData();
 
+      
       console.log(process.env)
 
       return () => {
