@@ -3,7 +3,10 @@
     "Parameters": {
         "env": {
             "Type": "String"
-        }
+        },
+        "authuserPoolGroupsAdminGroupRole" : {
+            "Type" : "String"
+            }
     },
 	"Conditions": {
 		"ShouldNotCreateEnvResources": {
@@ -38,7 +41,8 @@
                     ]                
                 },
 				"Roles": [
-					"eu-west-1_2zz1Y58Rr-AdminGroupRole"
+                    { "Fn::Select" : [ "1", { "Fn::Split" : [ "/", { "Ref" : "authuserPoolGroupsAdminGroupRole" } ] } ] }
+                    
 				],
 				"PolicyDocument": {
 					"Version": "2012-10-17",
@@ -76,7 +80,7 @@
                     ]                
                 },
 				"Roles": [
-					"eu-west-1_2zz1Y58Rr-AdminGroupRole"
+                    { "Fn::Select" : [ "1", { "Fn::Split" : [ "/", { "Ref" : "authuserPoolGroupsAdminGroupRole" } ] } ] }
 				],
 				"PolicyDocument": {
 					"Version": "2012-10-17",
