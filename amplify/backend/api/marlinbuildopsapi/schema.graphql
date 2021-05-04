@@ -15,7 +15,11 @@ type BuildDefinition @model
 }
 
 type BuildJob @model 
-  @auth(rules: [{ allow: owner }]) 
+  @auth(rules: [
+    { allow: owner },
+    { allow: private, provider: iam, operations: [create, delete, read, update] },
+    { allow: private, operations: [read]}
+    ]) 
   @key(name: "byBuildDefinition", fields: ["buildDefinitionID", "id"])
 {
   id: ID!
