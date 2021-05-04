@@ -21,6 +21,8 @@ AWS.config.update({region: 'eu-west-1'});
 const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 console.log(buildAgentJobQueueUrl)
 
+// https://stackoverflow.com/questions/64072288/how-to-add-environment-variables-to-aws-amplify
+// https://create-react-app.dev/docs/adding-custom-environment-variables/
 const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
 const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
 const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
