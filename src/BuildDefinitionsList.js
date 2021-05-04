@@ -20,6 +20,11 @@ var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
 const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 console.log(buildAgentJobQueueUrl)
+
+const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
+const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
+const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
+
 const buildArtifactsBucketUrl = "https://s3firmwarefactory185231-prod.s3-eu-west-1.amazonaws.com/"
 
 const BuildDefinitionsList = () => {
@@ -138,6 +143,18 @@ const BuildDefinitionsList = () => {
             "buildJobId": {
               DataType: "String",
               StringValue: ""+result.data.createBuildJob.id
+            },
+            "buildJobTableName":{
+              DataType:"String",
+              StringValue:buildJobTableName
+            },
+            "buildDefinitionTableName":{
+              DataType:"String",
+              StringValue:buildDefinitionTableName
+            },
+            "graphQLApiUrl":{
+              DataType:"String",
+              StringValue:graphQLApiUrl
             }
           },
           MessageBody: "Build queued for buildDefinition "+def.id,
