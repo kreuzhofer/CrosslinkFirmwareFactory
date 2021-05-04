@@ -55,28 +55,39 @@ const BuildDefinitionsList = () => {
         const user =  await Auth.currentAuthenticatedUser();
         const username = user.username;
 
-        const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
-          next: (eventData) => {
-            const buildDefinition = eventData.value.data.onCreateBuildDefinition
-            setBuildDefinitions(buildDefinitions => [...buildDefinitions, buildDefinition])
-          }
-        })
-        subs.push(insertSubscription);
+        try {
+          const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
+            next: (eventData) => {
+              const buildDefinition = eventData.value.data.onCreateBuildDefinition
+              setBuildDefinitions(buildDefinitions => [...buildDefinitions, buildDefinition])
+            }
+          })
+          subs.push(insertSubscription);
+        } catch (error) {
+          console.error(error)
+        }
 
-        const deleteSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition, {owner: username})).subscribe({
-          next: (eventData) => {
-            setBuildDefinitions(buildDefinitions => buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id));
-          }
-        })
-        subs.push(deleteSubscription);
+        try {
+          const deleteSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition, {owner: username})).subscribe({
+            next: (eventData) => {
+              setBuildDefinitions(buildDefinitions => buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id));
+            }
+          })
+          subs.push(deleteSubscription);
+        } catch (error) {
+          console.error(error)
+        }
 
-        const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob, {owner: username})).subscribe({
+        try {
+          const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob, {owner: username})).subscribe({
             next: async (eventData) => {
                 await reloadData();
             }
-        })
-        subs.push(updateBuildJobSubscription);
-
+          })
+          subs.push(updateBuildJobSubscription);
+        } catch (error) {
+          console.error(error)
+        }
       }
       fetchData();
 
