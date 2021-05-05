@@ -53,7 +53,9 @@ const BuildDefinitionsList = () => {
       async function fetchData() {
         await reloadData();
         const user =  await Auth.currentAuthenticatedUser();
+        console.log(user);
         const username = user.username;
+        console.log(username);
 
         try {
           const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
