@@ -29,9 +29,9 @@ export const createBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -66,9 +66,9 @@ export const updateBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -103,9 +103,9 @@ export const deleteBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -125,18 +125,18 @@ export const createBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
           artifactUrl
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -156,18 +156,18 @@ export const updateBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
           artifactUrl
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -187,18 +187,18 @@ export const deleteBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
           artifactUrl
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -215,9 +215,9 @@ export const createBuildJobArtifact = /* GraphQL */ `
       buildJobID
       artifactName
       artifactUrl
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -231,9 +231,9 @@ export const updateBuildJobArtifact = /* GraphQL */ `
       buildJobID
       artifactName
       artifactUrl
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -247,9 +247,9 @@ export const deleteBuildJobArtifact = /* GraphQL */ `
       buildJobID
       artifactName
       artifactUrl
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;

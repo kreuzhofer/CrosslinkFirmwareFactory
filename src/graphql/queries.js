@@ -26,9 +26,9 @@ export const getBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -78,18 +78,18 @@ export const getBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
           artifactUrl
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -111,9 +111,9 @@ export const listBuildJobs = /* GraphQL */ `
         endTime
         message
         log
+        owner
         createdAt
         updatedAt
-        owner
         buildJobArtifacts {
           nextToken
         }
@@ -129,9 +129,9 @@ export const getBuildJobArtifact = /* GraphQL */ `
       buildJobID
       artifactName
       artifactUrl
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -151,9 +151,9 @@ export const listBuildJobArtifacts = /* GraphQL */ `
         buildJobID
         artifactName
         artifactUrl
+        owner
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
