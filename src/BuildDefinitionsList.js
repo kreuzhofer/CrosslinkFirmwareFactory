@@ -114,6 +114,28 @@ const BuildDefinitionsList = () => {
     }
     const handleCancel = () => setConfirmState({ open: false })
 
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename || 'download';
+      const clickHandler = () => {
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+          a.removeEventListener('click', clickHandler);
+        }, 150);
+      };
+      a.addEventListener('click', clickHandler, false);
+      a.click();
+      return a;
+    }
+
+    const handleDownload = async(e, job, file) => {
+      e.preventDefault();
+      const result = await Storage.get(job.id+file, { download: true });
+      downloadBlob(result.Body, file);
+    }
+
     const buildJobsList = (jobs, def) => {
         console.info(jobs)
         if(jobs == null)
@@ -122,7 +144,7 @@ const BuildDefinitionsList = () => {
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/logfile.txt'}>Log</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/logfile.txt'}>Log</a><Button onClick={(e)=>handleDownload(e, job, "logfile.txt")}><Button.Content><Icon name="download"/></Button.Content></Button></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
