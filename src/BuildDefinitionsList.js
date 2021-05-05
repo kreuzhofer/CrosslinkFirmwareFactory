@@ -58,7 +58,7 @@ const BuildDefinitionsList = () => {
         console.log(username);
 
         try {
-          const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
+          const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition)).subscribe({
             next: (eventData) => {
               const buildDefinition = eventData.value.data.onCreateBuildDefinition
               setBuildDefinitions(buildDefinitions => [...buildDefinitions, buildDefinition])
@@ -70,7 +70,7 @@ const BuildDefinitionsList = () => {
         }
 
         try {
-          const deleteSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition, {owner: username})).subscribe({
+          const deleteSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition)).subscribe({
             next: (eventData) => {
               setBuildDefinitions(buildDefinitions => buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id));
             }
