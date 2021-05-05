@@ -1,5 +1,10 @@
 type BuildDefinition @model 
-  @auth(rules: [{ allow: owner }]) {
+  @auth(rules: [
+    {allow: owner},
+    {allow: private, provider: iam, operations: [create, delete, read, update]},
+    {allow: private, operations: [read]}
+  ]) 
+{
   id: ID!
   name: String!
   sourceTree: String!
@@ -17,10 +22,10 @@ type BuildDefinition @model
 # https://github.com/aws-amplify/amplify-cli/issues/2926
 type BuildJob @model 
   @auth(rules: [
-    { allow: owner },
-    { allow: private, provider: iam, operations: [create, delete, read, update] },
-    { allow: private, operations: [read]}
-    ]) 
+    {allow: owner},
+    {allow: private, provider: iam, operations: [create, delete, read, update]},
+    {allow: private, operations: [read]}
+  ]) 
   @key(name: "byBuildDefinition", fields: ["buildDefinitionID", "id"])
 {
   id: ID!
@@ -35,7 +40,11 @@ type BuildJob @model
 }
 
 type BuildJobArtifact @model
-  @auth(rules: [{allow: owner}])
+  @auth(rules: [
+    {allow: owner},
+    {allow: private, provider: iam, operations: [create, delete, read, update]},
+    {allow: private, operations: [read]}
+  ])
   @key(name: "byBuildJob", fields: ["buildJobID", "id"])
 {
   id: ID!
