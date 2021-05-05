@@ -2,7 +2,7 @@ type BuildDefinition @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
-    {allow: private, operations: [read]}
+#    {allow: private, operations: [read]}
   ]) 
 {
   id: ID!
@@ -24,7 +24,7 @@ type BuildJob @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
-    {allow: private, operations: [read]}
+#    {allow: private, operations: [read]}
   ]) 
   @key(name: "byBuildDefinition", fields: ["buildDefinitionID", "id"])
 {
@@ -43,7 +43,7 @@ type BuildJobArtifact @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
-    {allow: private, operations: [read]}
+#    {allow: private, operations: [read]}
   ])
   @key(name: "byBuildJob", fields: ["buildJobID", "id"])
 {
