@@ -81,8 +81,9 @@ const BuildDefinitionsList = () => {
         }
 
         try {
-          const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob, {owner: username})).subscribe({
-            next: async (eventData) => {
+          const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob)).subscribe({
+          //const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob, {owner: username})).subscribe({
+              next: async (eventData) => {
                 await reloadData();
             }
           })
