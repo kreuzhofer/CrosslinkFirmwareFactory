@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { API, graphqlOperation, Auth } from 'aws-amplify'
+import { API, graphqlOperation, Auth, Storage } from 'aws-amplify'
 import {NavLink} from 'react-router-dom'
 import {
     Header, 
