@@ -1,4 +1,9 @@
-type BuildDefinition @model 
+type BuildDefinition @model(
+  subscriptions: { 
+    onCreate: ["onCreateBuildDefinition"]
+    onDelete: ["onDeleteBuildDefinition"]
+    level: public }
+  ) 
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
@@ -20,7 +25,11 @@ type BuildDefinition @model
 }
 
 # https://github.com/aws-amplify/amplify-cli/issues/2926
-type BuildJob @model 
+type BuildJob @model(
+  subscriptions: { 
+    onUpdate: ["onUpdateBuildJob"]
+    level: public }
+  ) 
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
