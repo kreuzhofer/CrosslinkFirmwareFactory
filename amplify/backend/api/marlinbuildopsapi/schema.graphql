@@ -20,7 +20,6 @@ type BuildDefinition @model(
   platformioEnv: String
   description: String
   configurationJSON: String
-  owner: String
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
 }
 
@@ -44,7 +43,6 @@ type BuildJob @model(
   endTime: String
   message: String
   log: String
-  owner: String
   buildJobArtifacts: [BuildJobArtifact!] @connection(keyName: "byBuildJob", fields: ["id"])
 }
 
@@ -60,7 +58,6 @@ type BuildJobArtifact @model
   buildJobID: ID!
   artifactName: String!
   artifactUrl: String!
-  owner: String
 }
 
 enum BuildJobState {
