@@ -26,8 +26,7 @@ console.log(buildAgentJobQueueUrl)
 const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
 const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
 const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
-
-const buildArtifactsBucketUrl = "https://s3firmwarefactory185231-prod.s3-eu-west-1.amazonaws.com/"
+const buildArtifactsBucketUrl = process.env["REACT_APP_BUILDARTIFACTS_BUCKETURL"]
 
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
