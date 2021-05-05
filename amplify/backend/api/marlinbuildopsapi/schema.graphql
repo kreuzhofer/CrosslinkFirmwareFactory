@@ -16,7 +16,7 @@ type BuildDefinition @model
   description: String
   configurationJSON: String
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
-  owner: String!
+  owner: String
 }
 
 # https://github.com/aws-amplify/amplify-cli/issues/2926
@@ -36,7 +36,7 @@ type BuildJob @model
   message: String
   log: String
   buildJobArtifacts: [BuildJobArtifact!] @connection(keyName: "byBuildJob", fields: ["id"])
-  owner: String!
+  owner: String
 }
 
 type BuildJobArtifact @model
@@ -51,7 +51,7 @@ type BuildJobArtifact @model
   buildJobID: ID!
   artifactName: String!
   artifactUrl: String!
-  owner: String!
+  owner: String
 }
 
 enum BuildJobState {
