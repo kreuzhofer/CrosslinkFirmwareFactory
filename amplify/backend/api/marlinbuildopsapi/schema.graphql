@@ -14,6 +14,7 @@ type BuildDefinition @model
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
 }
 
+# https://github.com/aws-amplify/amplify-cli/issues/2926
 type BuildJob @model 
   @auth(rules: [
     { allow: owner },
