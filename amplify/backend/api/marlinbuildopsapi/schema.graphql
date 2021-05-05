@@ -1,9 +1,4 @@
-type BuildDefinition @model(
-  subscriptions: { 
-    onCreate: ["onCreateBuildDefinition"]
-    onDelete: ["onDeleteBuildDefinition"]
-    level: public }
-  ) 
+type BuildDefinition @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
@@ -21,14 +16,11 @@ type BuildDefinition @model(
   description: String
   configurationJSON: String
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
+  owner: String!
 }
 
 # https://github.com/aws-amplify/amplify-cli/issues/2926
-type BuildJob @model(
-  subscriptions: { 
-    onUpdate: ["onUpdateBuildJob"]
-    level: public }
-  ) 
+type BuildJob @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
@@ -44,6 +36,7 @@ type BuildJob @model(
   message: String
   log: String
   buildJobArtifacts: [BuildJobArtifact!] @connection(keyName: "byBuildJob", fields: ["id"])
+  owner: String!
 }
 
 type BuildJobArtifact @model
@@ -58,6 +51,7 @@ type BuildJobArtifact @model
   buildJobID: ID!
   artifactName: String!
   artifactUrl: String!
+  owner: String!
 }
 
 enum BuildJobState {
