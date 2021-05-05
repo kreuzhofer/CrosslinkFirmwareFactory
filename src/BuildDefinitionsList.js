@@ -192,6 +192,10 @@ const BuildDefinitionsList = () => {
             "graphQLApiUrl":{
               DataType:"String",
               StringValue:graphQLApiUrl
+            },
+            "buildArtifactsBucketUrl":{
+              DataType:"String",
+              StringValue:buildArtifactsBucketUrl
             }
           },
           MessageBody: "Build queued for buildDefinition "+def.id,
