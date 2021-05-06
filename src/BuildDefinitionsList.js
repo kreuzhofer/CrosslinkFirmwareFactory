@@ -286,6 +286,13 @@ const BuildDefinitionsList = () => {
           </Table.Cell>
           <Table.Cell>
               <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Time started</Table.HeaderCell>
+                      <Table.HeaderCell>State</Table.HeaderCell>
+                      <Table.HeaderCell>Artifacts</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
                     <Table.Body>
                         {buildJobsList(def.buildJobs.items, def)}
                     </Table.Body>
