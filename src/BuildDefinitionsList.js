@@ -172,25 +172,25 @@ const BuildDefinitionsList = () => {
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
                 <Table.Cell>Logfile.txt
-                  <Button animated='vertical' onClick={(e)=>handleDownload(e, job, "logfile.txt")}>
+                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "logfile.txt")}>
                     <Button.Content hidden>Download</Button.Content>
                     <Button.Content visible><Icon name="download"/></Button.Content>
                   </Button>
                 </Table.Cell>
                 <Table.Cell>Firmware.hex
-                  <Button animated='vertical' onClick={(e)=>handleDownload(e, job, "firmware.hex")}>
+                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "firmware.hex")}>
                     <Button.Content hidden>Download</Button.Content>
                     <Button.Content visible><Icon name="download"/></Button.Content>
                   </Button>
                 </Table.Cell>
                 <Table.Cell>Firmware.bin
-                  <Button animated='vertical' onClick={(e)=>handleDownload(e, job, "firmware.bin")}>
+                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "firmware.bin")}>
                     <Button.Content hidden>Download</Button.Content>
                     <Button.Content visible><Icon name="download"/></Button.Content>
                   </Button>
                 </Table.Cell>
                 <Table.Cell>Marlin.zip
-                  <Button animated='vertical' onClick={(e)=>handleDownload(e, job, "marlin.zip")}>
+                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "marlin.zip")}>
                     <Button.Content hidden>Download</Button.Content>
                     <Button.Content visible><Icon name="download"/></Button.Content>
                   </Button>
