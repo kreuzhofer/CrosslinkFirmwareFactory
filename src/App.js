@@ -59,7 +59,7 @@ const App = () => {
             <Route path="/" exact component={IndexDashboard}/>
             <Route path="/Marlin" exact component={MarlinFirmwareDownloads}/>
             { isAdmin ? <Route path="/BuildDefinition" exact component={AddBuildDefinition}/> : null }
-            { isAdmin ? <Route path="/BuildDefinition" exact component={BuildDefinitionsList}/> : null }
+            { isAdmin ? <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} /> : null }
             { isAdmin ? <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/> : null }
           </Grid.Column>
          </Grid.Row>

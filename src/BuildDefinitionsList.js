@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { API, graphqlOperation, Auth, Storage } from 'aws-amplify'
-import {NavLink} from 'react-router-dom'
+import {NavLink, useParams} from 'react-router-dom'
 import {
     Header, 
     Segment, 
@@ -29,6 +29,8 @@ const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
 
 const BuildDefinitionsList = () => {
+    let { isAdmin } = useParams();
+    console.log("IsAdmin in BuildDefinitionsList: "+isAdmin);
     const [buildDefinitions, setBuildDefinitions] = useState([])
     const [definitionDeleteConfirmState, setDefinitionDeleteConfirmState] = useState({ open: false })
     const [jobDeleteConfirmState, setJobDeleteConfirmState] = useState({ open: false })
