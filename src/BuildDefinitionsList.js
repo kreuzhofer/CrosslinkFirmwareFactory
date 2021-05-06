@@ -171,7 +171,7 @@ const BuildDefinitionsList = () => {
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
                 <Table.Cell>
-                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, def.id)} color='red'>
+                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, job.id)} color='red'>
                     <Button.Content hidden>Delete</Button.Content>
                     <Button.Content visible><Icon name='delete'/></Button.Content>
                     </Button>
