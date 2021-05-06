@@ -307,8 +307,8 @@ const BuildDefinitionsList = () => {
             open={jobDeleteConfirmState.open}
             cancelButton='Never mind'
             confirmButton="Yes"
-            onCancel={handleDefinitionDeleteCancel}
-            onConfirm={handleDefinitionDeleteConfirm}
+            onCancel={handleJobDeleteCancel}
+            onConfirm={handleJobDeleteConfirm}
           />
       </Segment>
     );
