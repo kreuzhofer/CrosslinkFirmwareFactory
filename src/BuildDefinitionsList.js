@@ -323,6 +323,7 @@ const BuildDefinitionsList = () => {
       const file = e.target.files[0];
       try {
         await Storage.put(file.name, file, {
+          level: 'private',
           contentType: 'image/png' // contentType is optional
         });
       } catch (error) {
