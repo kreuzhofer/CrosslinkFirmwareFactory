@@ -30,7 +30,8 @@ const buildArtifactsBucketUrl = process.env["REACT_APP_BUILDARTIFACTS_BUCKETURL"
 
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
-    const [confirmState, setConfirmState] = useState({ open: false })
+    const [definitionDeleteConfirmState, setDefinitionDeleteConfirmState] = useState({ open: false })
+    const [jobDeleteConfirmState, setJobDeleteConfirmState] = useState({ open: false })
 
     const reloadData = async()=>{
       try {
@@ -102,16 +103,27 @@ const BuildDefinitionsList = () => {
       }
     }, [])
 
-    const handleConfirm = async() => {
+    const handleDefinitionDeleteConfirm = async() => {
       try {
-        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: confirmState.id}}));
+        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: definitionDeleteConfirmState.id}}));
         console.info(result)
       } catch (error) {
         console.error(error);
       }
-      setConfirmState({ open: false })
+      setDefinitionDeleteConfirmState({ open: false })
     }
-    const handleCancel = () => setConfirmState({ open: false })
+    const handleDefinitionDeleteCancel = () => setDefinitionDeleteConfirmState({ open: false })
+
+    const handleJobDeleteConfirm = async() => {
+      try {
+        const result = await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: jobDeleteConfirmState.id}}));
+        console.info(result)
+      } catch (error) {
+        console.error(error);
+      }
+      setJobDeleteConfirmState({ open: false })
+    }
+    const handleJobDeleteCancel = () => setJobDeleteConfirmState({ open: false })
 
     function downloadBlob(blob, filename) {
       const url = URL.createObjectURL(blob);
@@ -139,6 +151,12 @@ const BuildDefinitionsList = () => {
         console.info(jobs)
         if(jobs == null)
             return null;
+
+        const handleJobDelete = (event, id) => {
+          console.info("clicked delete "+id);
+          setJobDeleteConfirmState({open: true, id: id});
+        }
+
         return jobs.sort(comparator.makeComparator('createdAt')).slice(0,3).map(job=>
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
@@ -147,6 +165,12 @@ const BuildDefinitionsList = () => {
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
+                <Table.Cell>
+                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, def.id)} color='red'>
+                    <Button.Content hidden>Delete</Button.Content>
+                    <Button.Content visible><Icon name='delete'/></Button.Content>
+                    </Button>
+                  </Table.Cell>
             </Table.Row>
         )
     }
@@ -156,7 +180,7 @@ const BuildDefinitionsList = () => {
       // see https://reactjs.org/docs/handling-events.html
       const handleDelete = (event, id) => {
         console.info("clicked delete "+id);
-        setConfirmState({open: true, id: id});
+        setDefinitionDeleteConfirmState({open: true, id: id});
       }
 
       const handleBuild = async(event, def) => {
@@ -273,11 +297,18 @@ const BuildDefinitionsList = () => {
           </Table.Body>
         </Table>
         <Confirm
-            open={confirmState.open}
+            open={definitionDeleteConfirmState.open}
             cancelButton='Never mind'
             confirmButton="Yes"
-            onCancel={handleCancel}
-            onConfirm={handleConfirm}
+            onCancel={handleDefinitionDeleteCancel}
+            onConfirm={handleDefinitionDeleteConfirm}
+          />
+        <Confirm
+            open={jobDeleteConfirmState.open}
+            cancelButton='Never mind'
+            confirmButton="Yes"
+            onCancel={handleDefinitionDeleteCancel}
+            onConfirm={handleDefinitionDeleteConfirm}
           />
       </Segment>
     );
