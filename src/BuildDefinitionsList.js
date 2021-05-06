@@ -161,7 +161,12 @@ const BuildDefinitionsList = () => {
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/logfile.txt'}>Log</a><Button onClick={(e)=>handleDownload(e, job, "logfile.txt")}><Button.Content><Icon name="download"/></Button.Content></Button></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/logfile.txt'}>Log</a>
+                  <Button animated='vertical' onClick={(e)=>handleDownload(e, job, "logfile.txt")}>
+                    <Button.Content hidden>Download</Button.Content>
+                    <Button.Content visible><Icon name="download"/></Button.Content>
+                  </Button>
+                </Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
                 <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
