@@ -26,7 +26,7 @@ console.log(buildAgentJobQueueUrl)
 const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
 const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
 const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
-const buildArtifactsBucketUrl = process.env["REACT_APP_BUILDARTIFACTS_BUCKETURL"]
+const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
 
 const BuildDefinitionsList = () => {
     const [buildDefinitions, setBuildDefinitions] = useState([])
@@ -161,10 +161,10 @@ const BuildDefinitionsList = () => {
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/logfile.txt'}>Log</a><Button onClick={(e)=>handleDownload(e, job, "logfile.txt")}><Button.Content><Icon name="download"/></Button.Content></Button></Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
-                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucketUrl+'public/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/logfile.txt'}>Log</a><Button onClick={(e)=>handleDownload(e, job, "logfile.txt")}><Button.Content><Icon name="download"/></Button.Content></Button></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/firmware.hex'}>Firmware.hex</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/firmware.bin'}>Firmware.bin</a></Table.Cell>
+                <Table.Cell><a target="_blank" rel="noopener noreferrer" href={buildArtifactsBucket+'public/'+job.id+'/marlin.zip'}>Marlin.zip</a></Table.Cell>
                 <Table.Cell>
                   <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, def.id)} color='red'>
                     <Button.Content hidden>Delete</Button.Content>
@@ -217,9 +217,9 @@ const BuildDefinitionsList = () => {
               DataType:"String",
               StringValue:graphQLApiUrl
             },
-            "buildArtifactsBucketUrl":{
+            "buildArtifactsBucket":{
               DataType:"String",
-              StringValue:buildArtifactsBucketUrl
+              StringValue:buildArtifactsBucket
             }
           },
           MessageBody: "Build queued for buildDefinition "+def.id,
