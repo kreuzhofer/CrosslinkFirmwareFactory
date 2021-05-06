@@ -141,6 +141,7 @@ const BuildDefinitionsList = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
+      console.log("Download URL for "+filename+": "+url);
       a.download = filename || 'download';
       const clickHandler = () => {
         setTimeout(() => {
