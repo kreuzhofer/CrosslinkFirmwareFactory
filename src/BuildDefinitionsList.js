@@ -156,8 +156,10 @@ const BuildDefinitionsList = () => {
 
     const handleDownload = async(e, job, file) => {
       e.preventDefault();
-      const result = await Storage.get(job.id+'/'+file, { download: true });
-      downloadBlob(result.Body, file);
+      //const result = await Storage.get(job.id+'/'+file, { download: true });
+      const result = await Storage.get(job.id+'/'+file);
+      console.log(result);
+      //downloadBlob(result.Body, file);
     }
 
     const buildJobsList = (jobs, def) => {
