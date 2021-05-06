@@ -82,12 +82,22 @@ const BuildDefinitionsList = () => {
 
         try {
           const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob, {owner: username})).subscribe({
-          //const updateBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onUpdateBuildJob, {owner: username})).subscribe({
               next: async (eventData) => {
                 await reloadData();
             }
           })
           subs.push(updateBuildJobSubscription);
+        } catch (error) {
+          console.error(error)
+        }
+
+        try {
+          const deleteBuildJobSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildJob, {owner: username})).subscribe({
+              next: async (eventData) => {
+                await reloadData();
+            }
+          })
+          subs.push(deleteBuildJobSubscription);
         } catch (error) {
           console.error(error)
         }
