@@ -124,12 +124,7 @@
       "service": "Lambda"
     }
   },
-  "storage": {
-    "buildartifacts": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation"
-    }
-  },
+  "storage": {},
   "customresources": {
     "iamroles": {
       "service": "IamRoles",
