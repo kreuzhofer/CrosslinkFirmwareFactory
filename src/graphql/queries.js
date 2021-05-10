@@ -159,3 +159,40 @@ export const listBuildJobArtifacts = /* GraphQL */ `
     }
   }
 `;
+export const getFirmwareVersion = /* GraphQL */ `
+  query GetFirmwareVersion($id: ID!) {
+    getFirmwareVersion(id: $id) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFirmwareVersions = /* GraphQL */ `
+  query ListFirmwareVersions(
+    $filter: ModelFirmwareVersionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFirmwareVersions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

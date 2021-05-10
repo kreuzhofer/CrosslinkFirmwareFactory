@@ -226,3 +226,42 @@ export const onDeleteBuildJobArtifact = /* GraphQL */ `
     }
   }
 `;
+export const onCreateFirmwareVersion = /* GraphQL */ `
+  subscription OnCreateFirmwareVersion($owner: String) {
+    onCreateFirmwareVersion(owner: $owner) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFirmwareVersion = /* GraphQL */ `
+  subscription OnUpdateFirmwareVersion($owner: String) {
+    onUpdateFirmwareVersion(owner: $owner) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFirmwareVersion = /* GraphQL */ `
+  subscription OnDeleteFirmwareVersion($owner: String) {
+    onDeleteFirmwareVersion(owner: $owner) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;

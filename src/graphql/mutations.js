@@ -253,3 +253,51 @@ export const deleteBuildJobArtifact = /* GraphQL */ `
     }
   }
 `;
+export const createFirmwareVersion = /* GraphQL */ `
+  mutation CreateFirmwareVersion(
+    $input: CreateFirmwareVersionInput!
+    $condition: ModelFirmwareVersionConditionInput
+  ) {
+    createFirmwareVersion(input: $input, condition: $condition) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFirmwareVersion = /* GraphQL */ `
+  mutation UpdateFirmwareVersion(
+    $input: UpdateFirmwareVersionInput!
+    $condition: ModelFirmwareVersionConditionInput
+  ) {
+    updateFirmwareVersion(input: $input, condition: $condition) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFirmwareVersion = /* GraphQL */ `
+  mutation DeleteFirmwareVersion(
+    $input: DeleteFirmwareVersionInput!
+    $condition: ModelFirmwareVersionConditionInput
+  ) {
+    deleteFirmwareVersion(input: $input, condition: $condition) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;

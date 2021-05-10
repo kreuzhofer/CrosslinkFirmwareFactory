@@ -2,7 +2,7 @@
 import React, {useState} from 'react'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
-import TopMenu from './TopMenu'
+import TopMenu from './components/TopMenu'
 import MarlinFirmwareDownloads from './MarlinFirmwareDownloads'
 import {AddBuildDefinition, BuildDefinitionDetails} from './BuildDefinition'
 import {BuildDefinitionsList} from './BuildDefinitionsList'
@@ -10,6 +10,7 @@ import {
   Grid, 
 } from 'semantic-ui-react'
 import { Auth } from 'aws-amplify'
+import { FirmwareVersionsList } from './components/FirmwareVersionsList'
 
 /*
 Fix for 404 access denied in amplify deployed app:
@@ -61,6 +62,7 @@ const App = () => {
             { isAdmin ? <Route path="/BuildDefinition" exact component={AddBuildDefinition}/> : null }
             { isAdmin ? <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} /> : null }
             { isAdmin ? <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/> : null }
+            { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
           </Grid.Column>
          </Grid.Row>
        </Grid>

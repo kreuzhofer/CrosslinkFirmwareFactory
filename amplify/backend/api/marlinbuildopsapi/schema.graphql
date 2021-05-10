@@ -54,6 +54,18 @@ type BuildJobArtifact @model
   owner: String
 }
 
+type FirmwareVersion @model
+  @auth(rules: [
+    {allow: owner}
+  ])
+{
+  id: ID!
+  owner: String
+  name: String!
+  sourceTree: String!
+  configTree: String!
+}
+
 enum BuildJobState {
   QUEUED
   STARTING
