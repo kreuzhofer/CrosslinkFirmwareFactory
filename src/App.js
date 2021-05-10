@@ -11,6 +11,7 @@ import {
 } from 'semantic-ui-react'
 import { Auth } from 'aws-amplify'
 import { FirmwareVersionsList } from './components/FirmwareVersionsList'
+import { AddFirmwareVersion } from './components/AddFirmwareVersion'
 
 /*
 Fix for 404 access denied in amplify deployed app:
@@ -63,6 +64,7 @@ const App = () => {
             { isAdmin ? <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} /> : null }
             { isAdmin ? <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/> : null }
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
+            { isAdmin ? <Route path="/AddFirmwareVersion" exact component={AddFirmwareVersion}/> : null }
           </Grid.Column>
          </Grid.Row>
        </Grid>
