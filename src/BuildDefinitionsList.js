@@ -327,8 +327,8 @@ const BuildDefinitionsList = () => {
       try {
         await Storage.put(file.name, file, {
           level: 'private',
-          identityId: identityId,
-          contentType: 'image/png' // contentType is optional
+//          identityId: identityId,
+//          contentType: 'image/png' // contentType is optional
         });
       } catch (error) {
         console.log('Error uploading file: ', error);
