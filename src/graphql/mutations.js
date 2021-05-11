@@ -31,7 +31,6 @@ export const createBuildDefinition = /* GraphQL */ `
           message
           log
           owner
-          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -70,7 +69,6 @@ export const updateBuildDefinition = /* GraphQL */ `
           message
           log
           owner
-          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -109,7 +107,6 @@ export const deleteBuildDefinition = /* GraphQL */ `
           message
           log
           owner
-          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -132,7 +129,6 @@ export const createBuildJob = /* GraphQL */ `
       message
       log
       owner
-      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -140,7 +136,7 @@ export const createBuildJob = /* GraphQL */ `
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
           owner
           createdAt
           updatedAt
@@ -164,7 +160,6 @@ export const updateBuildJob = /* GraphQL */ `
       message
       log
       owner
-      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -172,7 +167,7 @@ export const updateBuildJob = /* GraphQL */ `
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
           owner
           createdAt
           updatedAt
@@ -196,7 +191,6 @@ export const deleteBuildJob = /* GraphQL */ `
       message
       log
       owner
-      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -204,7 +198,7 @@ export const deleteBuildJob = /* GraphQL */ `
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
           owner
           createdAt
           updatedAt
@@ -223,7 +217,7 @@ export const createBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
       owner
       createdAt
       updatedAt
@@ -239,7 +233,7 @@ export const updateBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
       owner
       createdAt
       updatedAt
@@ -255,7 +249,7 @@ export const deleteBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
       owner
       createdAt
       updatedAt

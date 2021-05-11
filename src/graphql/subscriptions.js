@@ -28,7 +28,6 @@ export const onCreateBuildDefinition = /* GraphQL */ `
           message
           log
           owner
-          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -64,7 +63,6 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
           message
           log
           owner
-          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -100,7 +98,6 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
           message
           log
           owner
-          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -110,8 +107,8 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
   }
 `;
 export const onCreateBuildJob = /* GraphQL */ `
-  subscription OnCreateBuildJob($owner: String) {
-    onCreateBuildJob(owner: $owner) {
+  subscription OnCreateBuildJob {
+    onCreateBuildJob {
       id
       buildDefinitionID
       jobState
@@ -120,7 +117,6 @@ export const onCreateBuildJob = /* GraphQL */ `
       message
       log
       owner
-      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -128,7 +124,7 @@ export const onCreateBuildJob = /* GraphQL */ `
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
           owner
           createdAt
           updatedAt
@@ -139,8 +135,8 @@ export const onCreateBuildJob = /* GraphQL */ `
   }
 `;
 export const onUpdateBuildJob = /* GraphQL */ `
-  subscription OnUpdateBuildJob($owner: String) {
-    onUpdateBuildJob(owner: $owner) {
+  subscription OnUpdateBuildJob {
+    onUpdateBuildJob {
       id
       buildDefinitionID
       jobState
@@ -149,7 +145,6 @@ export const onUpdateBuildJob = /* GraphQL */ `
       message
       log
       owner
-      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -157,7 +152,7 @@ export const onUpdateBuildJob = /* GraphQL */ `
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
           owner
           createdAt
           updatedAt
@@ -168,8 +163,8 @@ export const onUpdateBuildJob = /* GraphQL */ `
   }
 `;
 export const onDeleteBuildJob = /* GraphQL */ `
-  subscription OnDeleteBuildJob($owner: String) {
-    onDeleteBuildJob(owner: $owner) {
+  subscription OnDeleteBuildJob {
+    onDeleteBuildJob {
       id
       buildDefinitionID
       jobState
@@ -178,7 +173,6 @@ export const onDeleteBuildJob = /* GraphQL */ `
       message
       log
       owner
-      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -186,7 +180,7 @@ export const onDeleteBuildJob = /* GraphQL */ `
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
           owner
           createdAt
           updatedAt
@@ -197,12 +191,12 @@ export const onDeleteBuildJob = /* GraphQL */ `
   }
 `;
 export const onCreateBuildJobArtifact = /* GraphQL */ `
-  subscription OnCreateBuildJobArtifact($owner: String) {
-    onCreateBuildJobArtifact(owner: $owner) {
+  subscription OnCreateBuildJobArtifact {
+    onCreateBuildJobArtifact {
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
       owner
       createdAt
       updatedAt
@@ -210,12 +204,12 @@ export const onCreateBuildJobArtifact = /* GraphQL */ `
   }
 `;
 export const onUpdateBuildJobArtifact = /* GraphQL */ `
-  subscription OnUpdateBuildJobArtifact($owner: String) {
-    onUpdateBuildJobArtifact(owner: $owner) {
+  subscription OnUpdateBuildJobArtifact {
+    onUpdateBuildJobArtifact {
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
       owner
       createdAt
       updatedAt
@@ -223,12 +217,12 @@ export const onUpdateBuildJobArtifact = /* GraphQL */ `
   }
 `;
 export const onDeleteBuildJobArtifact = /* GraphQL */ `
-  subscription OnDeleteBuildJobArtifact($owner: String) {
-    onDeleteBuildJobArtifact(owner: $owner) {
+  subscription OnDeleteBuildJobArtifact {
+    onDeleteBuildJobArtifact {
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
       owner
       createdAt
       updatedAt

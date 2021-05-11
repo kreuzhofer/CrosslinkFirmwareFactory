@@ -11,8 +11,8 @@ import {
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
-import * as queries from './graphql/queries'
-import * as mutations from './graphql/mutations'
+import * as queries from '../graphql/queries'
+import * as mutations from '../graphql/mutations'
 
 const AddBuildDefinition = () => {
     const [name, setName] = useState('');

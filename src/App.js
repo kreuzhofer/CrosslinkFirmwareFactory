@@ -3,8 +3,8 @@ import React, {useState} from 'react'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './components/TopMenu'
-import {AddBuildDefinition, BuildDefinitionDetails} from './BuildDefinition'
-import {BuildDefinitionsList} from './BuildDefinitionsList'
+import {AddBuildDefinition, BuildDefinitionDetails} from './components/BuildDefinition'
+import {BuildDefinitionsList} from './components/BuildDefinitionsList'
 import {
   Grid, 
 } from 'semantic-ui-react'

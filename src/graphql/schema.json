@@ -681,21 +681,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "groupsCanAccess",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "LIST",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "createdAt",
           "description" : null,
           "args" : [ ],
@@ -905,7 +890,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "artifactUrl",
+          "name" : "artifactFileName",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -1074,7 +1059,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "artifactUrl",
+          "name" : "artifactFileName",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1632,15 +1617,6 @@
           "defaultValue" : null
         }, {
           "name" : "owner",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "groupsCanAccess",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -3026,19 +3002,6 @@
             "ofType" : null
           },
           "defaultValue" : null
-        }, {
-          "name" : "groupsCanAccess",
-          "description" : null,
-          "type" : {
-            "kind" : "LIST",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
         } ],
         "interfaces" : null,
         "enumValues" : null,
@@ -3222,19 +3185,6 @@
             "ofType" : null
           },
           "defaultValue" : null
-        }, {
-          "name" : "groupsCanAccess",
-          "description" : null,
-          "type" : {
-            "kind" : "LIST",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
         } ],
         "interfaces" : null,
         "enumValues" : null,
@@ -3298,7 +3248,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "artifactUrl",
+          "name" : "artifactFileName",
           "description" : null,
           "type" : {
             "kind" : "NON_NULL",
@@ -3347,7 +3297,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "artifactUrl",
+          "name" : "artifactFileName",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -3431,7 +3381,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "artifactUrl",
+          "name" : "artifactFileName",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -3750,16 +3700,7 @@
         }, {
           "name" : "onCreateBuildJob",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "BuildJob",
@@ -3770,16 +3711,7 @@
         }, {
           "name" : "onUpdateBuildJob",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "BuildJob",
@@ -3790,16 +3722,7 @@
         }, {
           "name" : "onDeleteBuildJob",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "BuildJob",
@@ -3810,16 +3733,7 @@
         }, {
           "name" : "onCreateBuildJobArtifact",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "BuildJobArtifact",
@@ -3830,16 +3744,7 @@
         }, {
           "name" : "onUpdateBuildJobArtifact",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "BuildJobArtifact",
@@ -3850,16 +3755,7 @@
         }, {
           "name" : "onDeleteBuildJobArtifact",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "BuildJobArtifact",
@@ -4987,23 +4883,6 @@
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
         "name" : "aws_publish",
         "description" : "Tells the service which subscriptions will be published to when this mutation is called. This directive is deprecated use @aws_susbscribe directive instead.",
         "locations" : [ "FIELD_DEFINITION" ],
@@ -5049,6 +4928,23 @@
             }
           },
           "defaultValue" : null
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
         } ],
         "onOperation" : false,
         "onFragment" : false,

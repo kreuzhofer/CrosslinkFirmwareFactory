@@ -33,12 +33,25 @@ export const listBuildDefinitionsWithJobs = /* GraphQL */ `
                 createdAt
                 updatedAt
                 owner
+                buildJobArtifacts {
+                  items {
+                    id
+                    buildJobID
+                    artifactName
+                    artifactFileName
+                    owner
+                    createdAt
+                    updatedAt
+                  }
+                  nextToken
+                }
             }            
           nextToken
         }
         createdAt
         updatedAt
         owner
+        groupsCanAccess
       }
       nextToken
     }

@@ -28,7 +28,6 @@ export const getBuildDefinition = /* GraphQL */ `
           message
           log
           owner
-          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -82,7 +81,6 @@ export const getBuildJob = /* GraphQL */ `
       message
       log
       owner
-      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -90,7 +88,7 @@ export const getBuildJob = /* GraphQL */ `
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
           owner
           createdAt
           updatedAt
@@ -116,7 +114,6 @@ export const listBuildJobs = /* GraphQL */ `
         message
         log
         owner
-        groupsCanAccess
         createdAt
         updatedAt
         buildJobArtifacts {
@@ -133,7 +130,7 @@ export const getBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
       owner
       createdAt
       updatedAt
@@ -155,7 +152,7 @@ export const listBuildJobArtifacts = /* GraphQL */ `
         id
         buildJobID
         artifactName
-        artifactUrl
+        artifactFileName
         owner
         createdAt
         updatedAt

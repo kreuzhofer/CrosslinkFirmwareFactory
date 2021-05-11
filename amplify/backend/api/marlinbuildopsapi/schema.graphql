@@ -26,8 +26,7 @@ type BuildJob @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
-    {allow: groups, groupsField: "groupsCanAccess", operations: [read]}    
-#    {allow: private, operations: [read]}
+    {allow: private, operations: [read]}
   ]) 
   @key(name: "byBuildDefinition", fields: ["buildDefinitionID", "id"])
 {
@@ -40,21 +39,20 @@ type BuildJob @model
   log: String
   buildJobArtifacts: [BuildJobArtifact!] @connection(keyName: "byBuildJob", fields: ["id"])
   owner: String
-  groupsCanAccess: [String]
 }
 
 type BuildJobArtifact @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
-#    {allow: private, operations: [read]}
+    {allow: private, operations: [read]}
   ])
   @key(name: "byBuildJob", fields: ["buildJobID", "id"])
 {
   id: ID!
   buildJobID: ID!
   artifactName: String!
-  artifactUrl: String!
+  artifactFileName: String!
   owner: String
 }
 
