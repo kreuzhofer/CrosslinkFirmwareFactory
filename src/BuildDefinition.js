@@ -137,6 +137,7 @@ const BuildDefinitionDetails = (props) => {
     const [description, setDescription] = useState('')
     const [configurationJSON, setConfigurationJSON] = useState('{}')
     const [dataLoaded, setDataLoaded] = useState(false)
+    const [sharedWithEveryone, setSharedWithEveryone] = useState(false)
     let id = props.match.params.id
   
     useEffect(() => {
@@ -154,6 +155,7 @@ const BuildDefinitionDetails = (props) => {
           setPlatformioEnv(buildDefinition.platformioEnv)
           setDescription(buildDefinition.description)
           setConfigurationJSON(buildDefinition.configurationJSON)
+          setSharedWithEveryone(buildDefinition.groupsCanAccess.includes("Everyone"))
         } catch (error) {
           console.error(error);
         }
@@ -171,8 +173,9 @@ const BuildDefinitionDetails = (props) => {
         alert("All fields have to be filled")
         return false
         }
+        let groupsCanAccess = sharedWithEveryone ? ["Everyone"] : [];
         let result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
-          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, platformioEnv:platformioEnv, description, configurationJSON
+          id:ID, name, sourceTree, configTree, printerManufacturer, printerModel, printerMainboard, platformioEnv:platformioEnv, description, configurationJSON, groupsCanAccess
         }}));
         console.log(result);
         alert("Changes saved")
@@ -255,9 +258,17 @@ const BuildDefinitionDetails = (props) => {
             name='configurationJSON'
             value={configurationJSON}
             onChange={(e) => setConfigurationJSON(e.target.value)}
-        /><br/>            
+        /><br/>
+        <Input 
+            type='Checkbox'
+            label='Shared with everyone'
+            name='sharedWithEveryone'
+            checked={sharedWithEveryone}
+            onChange={(e)=>setSharedWithEveryone(e.target.checked)}
+            >
+        </Input><br/><br/>
         <Button
-            content='Update'
+            content='Save'
             onClick={handleSubmit}
         />
         </Form>
