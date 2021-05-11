@@ -28,13 +28,10 @@ export class AddFirmwareVersion extends React.Component
             alert("All fields have to be filled")
             return false
         }
-        let name = this.state.name;
-        let sourceTree = this.state.sourceTree;
-        let configTree = this.state.configTree;
+        let inputData = { name: this.state.name,  sourceTree: this.state.sourceTree,  configTree: this.state.configTree };
 
-        let result = await API.graphql(graphqlOperation(mutations.createFirmwareVersion, {input: {
-            name, sourceTree, configTree
-        }}));
+        let result = await API.graphql(graphqlOperation(mutations.createFirmwareVersion, {input: inputData}
+        ));
         console.log(result);
         console.log("ID : "+result.data.createFirmwareVersion.id)
         this.props.history.push('/FirmwareVersions');
