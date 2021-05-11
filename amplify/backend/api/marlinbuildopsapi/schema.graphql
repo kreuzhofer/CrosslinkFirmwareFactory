@@ -2,6 +2,7 @@ type BuildDefinition @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
+    {allow: groups, groupsField: "groupsCanAccess", operations: [read]}    
 #    {allow: private, operations: [read]}
   ]) 
 {
@@ -17,6 +18,7 @@ type BuildDefinition @model
   configurationJSON: String
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
   owner: String
+  groupsCanAccess: [String]
 }
 
 # https://github.com/aws-amplify/amplify-cli/issues/2926
@@ -24,6 +26,7 @@ type BuildJob @model
   @auth(rules: [
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
+    {allow: groups, groupsField: "groupsCanAccess", operations: [read]}    
 #    {allow: private, operations: [read]}
   ]) 
   @key(name: "byBuildDefinition", fields: ["buildDefinitionID", "id"])
@@ -37,6 +40,7 @@ type BuildJob @model
   log: String
   buildJobArtifacts: [BuildJobArtifact!] @connection(keyName: "byBuildJob", fields: ["id"])
   owner: String
+  groupsCanAccess: [String]
 }
 
 type BuildJobArtifact @model

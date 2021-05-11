@@ -35,8 +35,7 @@ const TopMenu = () => {
       <Dropdown item simple text='Firmware'>
         <Dropdown.Menu>
           <Dropdown.Header>Marlin</Dropdown.Header>
-          <Dropdown.Item href='/MarlinDownloads'>Marlin Firmware Downloads</Dropdown.Item>
-          <Dropdown.Item href='/BuildDefinition'>Marlin Firmware Build Definitions</Dropdown.Item>
+          <Dropdown.Item href='/Marlin'>Marlin Firmware Downloads</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
 

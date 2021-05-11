@@ -18,6 +18,7 @@ export const createBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -30,6 +31,7 @@ export const createBuildDefinition = /* GraphQL */ `
           message
           log
           owner
+          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -55,6 +57,7 @@ export const updateBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -67,6 +70,7 @@ export const updateBuildDefinition = /* GraphQL */ `
           message
           log
           owner
+          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -92,6 +96,7 @@ export const deleteBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -104,6 +109,7 @@ export const deleteBuildDefinition = /* GraphQL */ `
           message
           log
           owner
+          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -126,6 +132,7 @@ export const createBuildJob = /* GraphQL */ `
       message
       log
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -157,6 +164,7 @@ export const updateBuildJob = /* GraphQL */ `
       message
       log
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -188,6 +196,7 @@ export const deleteBuildJob = /* GraphQL */ `
       message
       log
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {

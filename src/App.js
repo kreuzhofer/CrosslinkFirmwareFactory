@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './components/TopMenu'
-import MarlinFirmwareDownloads from './MarlinFirmwareDownloads'
 import {AddBuildDefinition, BuildDefinitionDetails} from './BuildDefinition'
 import {BuildDefinitionsList} from './BuildDefinitionsList'
 import {
@@ -12,6 +11,7 @@ import {
 import { Auth } from 'aws-amplify'
 import { FirmwareVersionsList } from './components/FirmwareVersionsList'
 import { AddFirmwareVersion } from './components/AddFirmwareVersion'
+import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
 
 /*
 Fix for 404 access denied in amplify deployed app:

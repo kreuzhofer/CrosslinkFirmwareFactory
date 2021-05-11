@@ -323,7 +323,7 @@ const BuildDefinitionsList = () => {
 
     async function onChange(e) {
       const file = e.target.files[0];
-      const { identityId } = await Auth.currentAuthenticatedUser();
+//      const { identityId } = await Auth.currentAuthenticatedUser();
       try {
         await Storage.put(file.name, file, {
           level: 'private',

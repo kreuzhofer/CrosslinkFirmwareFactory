@@ -5,8 +5,7 @@ import {
     Segment, 
     Button,
     Form,
-    Input,
-    Label
+    Input
   } from 'semantic-ui-react'
 import * as mutations from '../graphql/mutations'
 import { API, graphqlOperation } from 'aws-amplify'

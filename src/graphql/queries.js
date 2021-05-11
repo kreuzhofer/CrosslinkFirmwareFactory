@@ -15,6 +15,7 @@ export const getBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -27,6 +28,7 @@ export const getBuildDefinition = /* GraphQL */ `
           message
           log
           owner
+          groupsCanAccess
           createdAt
           updatedAt
         }
@@ -58,6 +60,7 @@ export const listBuildDefinitions = /* GraphQL */ `
         description
         configurationJSON
         owner
+        groupsCanAccess
         createdAt
         updatedAt
         buildJobs {
@@ -79,6 +82,7 @@ export const getBuildJob = /* GraphQL */ `
       message
       log
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobArtifacts {
@@ -112,6 +116,7 @@ export const listBuildJobs = /* GraphQL */ `
         message
         log
         owner
+        groupsCanAccess
         createdAt
         updatedAt
         buildJobArtifacts {
