@@ -125,6 +125,7 @@ export class MarlinFirmwareDownloads extends React.Component {
                     {this.firmwareBuilds()}
                 </Table.Body>
                 </Table>
+                <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
             </Segment>
         )
     }
