@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { API, graphqlOperation, Auth, Storage } from 'aws-amplify'
-import {NavLink, useParams} from 'react-router-dom'
+import {Route, NavLink, useParams} from 'react-router-dom'
 import {
     Header, 
     Segment, 
@@ -338,7 +338,11 @@ const BuildDefinitionsList = () => {
     return (
       <Segment>
         <Header as='h3'>My Build Definitions</Header>
-        <Button icon="refresh"></Button>
+        <Route render={({history}) => (
+            <Button icon='add' onClick={()=>history.push('/AddBuildDefinition')}>                 
+            </Button>
+          )}>
+        </Route>
         <Table celled>
           <Table.Header>
             <Table.Row>

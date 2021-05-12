@@ -2,7 +2,7 @@
 import React, {useState} from 'react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './components/TopMenu'
-import {AddBuildDefinition, BuildDefinitionDetails} from './components/BuildDefinition'
+import {BuildDefinitionDetails} from './components/BuildDefinition'
 import {BuildDefinitionsList} from './components/BuildDefinitionsList'
 import {
   Grid, 
@@ -11,6 +11,7 @@ import { Auth } from 'aws-amplify'
 import { FirmwareVersionsList } from './components/FirmwareVersionsList'
 import { AddFirmwareVersion } from './components/AddFirmwareVersion'
 import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
+import { AddBuildDefinition } from './components/AddBuildDefinition'
 
 const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 console.log(buildAgentJobQueueUrl)
@@ -70,11 +71,11 @@ const App = () => {
           <Grid.Column>
             <Route path="/" exact component={IndexDashboard}/>
             <Route path="/Marlin" exact component={MarlinFirmwareDownloads}/>
-            { isAdmin ? <Route path="/BuildDefinition" exact component={AddBuildDefinition}/> : null }
             { isAdmin ? <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} /> : null }
             { isAdmin ? <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/> : null }
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
             { isAdmin ? <Route path="/AddFirmwareVersion" exact component={AddFirmwareVersion}/> : null }
+            { isAdmin ? <Route path="/AddBuildDefinition" exact component={AddBuildDefinition}/> : null }
           </Grid.Column>
          </Grid.Row>
        </Grid>
