@@ -1,6 +1,5 @@
 /* src/App.js */
 import React, {useState} from 'react'
-import { withAuthenticator } from '@aws-amplify/ui-react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './components/TopMenu'
 import {AddBuildDefinition, BuildDefinitionDetails} from './components/BuildDefinition'
@@ -84,9 +83,4 @@ const App = () => {
   )
 }
 
-export default withAuthenticator(App, {
-   includeGreetings: true,
-   signUpConfig: {
-     hiddenDefaults: ["phone_number"]
-   }
-});
+export default App

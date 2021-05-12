@@ -91,7 +91,8 @@ export class MarlinFirmwareDownloads extends React.Component {
                                         <Button.Content visible><Icon name="download"/></Button.Content>
                                     </Button>
                                 </Table.Cell>
-                            </Table.Row>)}
+                            </Table.Row>
+                        )}
                     </Table.Body>
                 </Table>
             )
