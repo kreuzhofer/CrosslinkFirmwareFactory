@@ -172,7 +172,7 @@ const BuildDefinitionsList = () => {
           setJobDeleteConfirmState({open: true, id: id});
         }
 
-        return jobs.sort(comparator.makeComparator('createdAt')).slice(0,3).map(job=>
+        return jobs.sort(comparator.makeComparator('createdAt', 'desc')).slice(0,3).map(job=>
             <Table.Row key={job.id}>
                 <Table.Cell>{job.createdAt}</Table.Cell>
                 <Table.Cell>{job.jobState}</Table.Cell>
