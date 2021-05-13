@@ -162,6 +162,60 @@ const BuildDefinitionsList = () => {
       downloadBlob(result.Body, file);
     }
 
+    function firmwareArtifacts(artifacts){
+
+      function downloadBlob(blob, filename) {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          console.log("Download URL for "+filename+": "+url);
+          a.download = filename || 'download';
+          const clickHandler = () => {
+            setTimeout(() => {
+              URL.revokeObjectURL(url);
+              a.removeEventListener('click', clickHandler);
+            }, 150);
+          };
+          a.addEventListener('click', clickHandler, false);
+          a.click();
+          return a;
+        }
+
+      const handleDownload = async(e, jobId, file) => {
+          e.preventDefault();
+          const result = await Storage.get(jobId+'/'+file, { download: true });
+          //const result = await Storage.get(job.id+'/'+file);
+          console.log(result);
+          downloadBlob(result.Body, file);
+        }
+
+      return (
+          <Table celled>
+              <Table.Header>
+                  <Table.Row>
+                  <Table.HeaderCell>Name</Table.HeaderCell>
+                  <Table.HeaderCell>File</Table.HeaderCell>
+                  </Table.Row>
+              </Table.Header>
+
+              <Table.Body>
+                  {artifacts.map(a=>
+                      <Table.Row key={a.id}>
+                          <Table.Cell>{a.artifactName}</Table.Cell>
+                          <Table.Cell>
+                              {a.artifactFileName}
+                              <Button animated='vertical' onClick={(e)=>handleDownload(e, a.buildJobID, a.artifactFileName)}>
+                                  <Button.Content hidden>Download</Button.Content>
+                                  <Button.Content visible><Icon name="download"/></Button.Content>
+                              </Button>
+                          </Table.Cell>
+                      </Table.Row>
+                  )}
+              </Table.Body>
+          </Table>
+      )
+    }    
+
     const buildJobsList = (jobs, def) => {
         console.info(jobs)
         if(jobs == null)
@@ -182,23 +236,8 @@ const BuildDefinitionsList = () => {
                     <Button.Content visible><Icon name="download"/></Button.Content>
                   </Button>
                 </Table.Cell>
-                <Table.Cell>Firmware.hex
-                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "firmware.hex")}>
-                    <Button.Content hidden>Download</Button.Content>
-                    <Button.Content visible><Icon name="download"/></Button.Content>
-                  </Button>
-                </Table.Cell>
-                <Table.Cell>Firmware.bin
-                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "firmware.bin")}>
-                    <Button.Content hidden>Download</Button.Content>
-                    <Button.Content visible><Icon name="download"/></Button.Content>
-                  </Button>
-                </Table.Cell>
-                <Table.Cell>Marlin.zip
-                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "marlin.zip")}>
-                    <Button.Content hidden>Download</Button.Content>
-                    <Button.Content visible><Icon name="download"/></Button.Content>
-                  </Button>
+                <Table.Cell>
+                  {firmwareArtifacts(job.buildJobArtifacts.items)}
                 </Table.Cell>
                 <Table.Cell>
                   <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, job.id)} color='red'>
@@ -322,6 +361,7 @@ const BuildDefinitionsList = () => {
                       <Table.HeaderCell>Time started</Table.HeaderCell>
                       <Table.HeaderCell>State</Table.HeaderCell>
                       <Table.HeaderCell>Artifacts</Table.HeaderCell>
+                      <Table.HeaderCell>Actions</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
                     <Table.Body>
