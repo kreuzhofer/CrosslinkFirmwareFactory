@@ -44,7 +44,8 @@ const BuildDefinitionDetails = (props) => {
           setPlatformioEnv(buildDefinition.platformioEnv)
           setDescription(buildDefinition.description)
           setConfigurationJSON(buildDefinition.configurationJSON)
-          setSharedWithEveryone(buildDefinition.groupsCanAccess.includes("Everyone"))
+          if(buildDefinition.groupsCanAccess)
+              setSharedWithEveryone(buildDefinition.groupsCanAccess.includes("Everyone"))
         } catch (error) {
           console.error(error);
         }
