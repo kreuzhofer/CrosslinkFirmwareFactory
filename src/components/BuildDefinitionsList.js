@@ -288,13 +288,21 @@ const BuildDefinitionsList = () => {
         await reloadData();
         console.log(buildDefinitions)
       }
-  
+ 
       return buildDefinitions
         .sort(comparator.makeComparator('name'))
         .map(def => 
         <Table.Row key={def.id}>
           <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><br/><br/>{def.description}</Table.Cell>
           <Table.Cell>
+          <Route render={({history}) => (
+            <Button animated='vertical' onClick={()=>history.push('/AddBuildDefinition/'+def.id)}>
+              <Button.Content hidden>Clone</Button.Content>
+              <Button.Content visible><Icon name='clone'/></Button.Content>
+            </Button>            
+          )}>
+          </Route>
+
           <Button loading={def.buildRunning} disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
               <Button.Content hidden>Build</Button.Content>
               <Button.Content visible><Icon name='cubes'/></Button.Content>

@@ -44,25 +44,31 @@ function MyApp({ Component, pageProps }) {
     <>
     <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
       <table>
+          <tbody>
           <tr>
-              <h1>Welcome to the Crosslink firmware factory</h1>
+              <td><h1>Welcome to the Crosslink firmware factory</h1></td>
           </tr>
           <tr>
-            <AmplifyAuthenticator usernameAlias="email">
-                {/* don't include phone number for signup */}
-                <AmplifySignUp
-                slot="sign-up"
-                formFields={[
-                    { type: 'username', label: 'Email Address *', placeholder: 'Ender your email address', required: true },
-                    { type: 'phone_number'},
-                    { type: 'password' },
-                ]}
-                />
-            </AmplifyAuthenticator>
+            <td>
+                <AmplifyAuthenticator usernameAlias="email">
+                    {/* don't include phone number for signup */}
+                    <AmplifySignUp
+                    slot="sign-up"
+                    formFields={[
+                        { type: 'username', label: 'Email Address *', placeholder: 'Ender your email address', required: true },
+                        { type: 'phone_number'},
+                        { type: 'password' },
+                    ]}
+                    />
+                </AmplifyAuthenticator>
+            </td>
         </tr>
         <tr>
-          <footer>* required field<br/><br/>(C)2021 Daniel Crosslink Media 3D</footer>
+            <td>
+                <footer>* required field<br/><br/>(C)2021 Daniel Crosslink Media 3D</footer>
+            </td>
         </tr>
+        </tbody>
       </table>
     </div>
     </>

@@ -12,11 +12,15 @@ import TextareaAutosize from 'react-textarea-autosize';
 import {Route} from 'react-router-dom';
 
 import * as mutations from '../graphql/mutations'
+import * as queries from '../graphql/queries'
 
 export class AddBuildDefinition extends React.Component {
 
     constructor(props){
         super(props);
+        console.log(props);
+        let id = props.match.params.id ? props.match.params.id : ""
+        console.log("id: "+id);
         this.state = {
             name: '',
             sourceTree: '',
@@ -26,12 +30,42 @@ export class AddBuildDefinition extends React.Component {
             printerMainboard: '',
             platformioEnv: '',
             description: '',
-            configurationJSON: '{}'
+            configurationJSON: '{}',
+            id: id
         }
+    }
+
+    async reloadData(){
+        console.log("reloadData");
+        try {
+          const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
+          const buildDefinition = result.data.getBuildDefinition
+          this.setState({
+              name: buildDefinition.name,
+              sourceTree: buildDefinition.sourceTree,
+              configTree: buildDefinition.configTree,
+              printerManufacturer: buildDefinition.printerManufacturer,
+              printerModel: buildDefinition.printerModel,
+              printerMainboard: buildDefinition.printerMainboard,
+              platformioEnv: buildDefinition.platformioEnv,
+              description: buildDefinition.description,
+              configurationJSON: buildDefinition.configurationJSON
+            });
+            console.log(this.state)
+        } catch (error) {
+          console.error(error);
+        }
+    }
+
+    async componentDidMount()
+    {
+        if(this.state.id)
+            await this.reloadData();
     }
 
     async handleSubmit(event) {
         event.preventDefault();
+        console.log('State: '+this.state)
         if(this.state.name === '' || this.state.sourceTree === '' || this.state.configTree === '')
         {
             alert("All fields have to be filled")
@@ -50,7 +84,7 @@ export class AddBuildDefinition extends React.Component {
         }}));
         console.log(result);
         console.log("ID : "+result.data.createBuildDefinition.id)
-        this.props.history.push('/BuildDefinitions');
+        this.props.history.push('/BuildDefinition');
     }
 
     render() {
@@ -132,7 +166,7 @@ export class AddBuildDefinition extends React.Component {
 
             <Button
                 content='Create'
-                onClick={this.handleSubmit}
+                onClick={(e)=>this.handleSubmit(e)}
             />
             <Route render={({history}) => (
                 <Button onClick={()=>history.push('/BuildDefinition')}>     

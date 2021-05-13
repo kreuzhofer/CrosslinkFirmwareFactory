@@ -76,6 +76,7 @@ const App = () => {
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
             { isAdmin ? <Route path="/AddFirmwareVersion" exact component={AddFirmwareVersion}/> : null }
             { isAdmin ? <Route path="/AddBuildDefinition" exact component={AddBuildDefinition}/> : null }
+            { isAdmin ? <Route path="/AddBuildDefinition/:id" component={AddBuildDefinition}/> : null }
           </Grid.Column>
          </Grid.Row>
        </Grid>
