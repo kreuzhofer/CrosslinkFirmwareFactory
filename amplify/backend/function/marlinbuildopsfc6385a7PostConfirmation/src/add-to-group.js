@@ -12,6 +12,7 @@ exports.handler = async (event, context, callback) => {
     UserPoolId: event.userPoolId,
     Username: event.userName,
   };
+  console.log(addUserParams);
 
   try {
     await cognitoidentityserviceprovider.getGroup(groupParams).promise();
