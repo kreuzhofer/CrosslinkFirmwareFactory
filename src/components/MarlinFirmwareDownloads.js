@@ -99,13 +99,16 @@ export class MarlinFirmwareDownloads extends React.Component {
         }
     }
 
-    firmwareBuilds() {
+    buildDefinitions() {
         return this.state.buildDefinitions
         .sort(comparator.makeComparator('name'))
-        .map(build => 
-        <Table.Row key={build.id}>
-          <Table.Cell><h4>{build.name}</h4><br/>{build.description}</Table.Cell>
-          <Table.Cell>{this.firmwareArtifacts(build.buildJobs.items)}</Table.Cell>
+        .map(def => 
+        <Table.Row key={def.id}>
+          <Table.Cell>{def.printerManufacturer}</Table.Cell>
+          <Table.Cell>{def.printerModel}</Table.Cell>
+          <Table.Cell>{def.printerMainboard}</Table.Cell>            
+          <Table.Cell><h4>{def.name}</h4><br/>{def.description}</Table.Cell>
+          <Table.Cell>{this.firmwareArtifacts(def.buildJobs.items)}</Table.Cell>
         </Table.Row>)
     }
 
@@ -113,16 +116,20 @@ export class MarlinFirmwareDownloads extends React.Component {
         return (
             <Segment>
                 <Header as='h3'>Firmware builds</Header>
+                <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
                 <Table celled>
                 <Table.Header>
                     <Table.Row>
+                    <Table.HeaderCell>Manufacturer</Table.HeaderCell>
+                    <Table.HeaderCell>Model</Table.HeaderCell>
+                    <Table.HeaderCell>Mainboard</Table.HeaderCell>                        
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Artifacts</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                    {this.firmwareBuilds()}
+                    {this.buildDefinitions()}
                 </Table.Body>
                 </Table>
                 <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>

@@ -293,6 +293,9 @@ const BuildDefinitionsList = () => {
         .sort(comparator.makeComparator('name'))
         .map(def => 
         <Table.Row key={def.id}>
+          <Table.Cell>{def.printerManufacturer}</Table.Cell>
+          <Table.Cell>{def.printerModel}</Table.Cell>
+          <Table.Cell>{def.printerMainboard}</Table.Cell>
           <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><br/><br/>{def.description}</Table.Cell>
           <Table.Cell>
           <Route render={({history}) => (
@@ -354,6 +357,9 @@ const BuildDefinitionsList = () => {
         <Table celled>
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell>Manufacturer</Table.HeaderCell>
+              <Table.HeaderCell>Model</Table.HeaderCell>
+              <Table.HeaderCell>Mainboard</Table.HeaderCell>
               <Table.HeaderCell>Name</Table.HeaderCell>
               <Table.HeaderCell>Actions</Table.HeaderCell>
               <Table.HeaderCell>Build Jobs</Table.HeaderCell>
