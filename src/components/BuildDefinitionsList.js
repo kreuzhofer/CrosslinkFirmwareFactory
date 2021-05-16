@@ -329,7 +329,9 @@ const BuildDefinitionsList = () => {
       }
  
       return buildDefinitions
-        .sort(comparator.makeComparator('name'))
+        .sort((a,b)=>{
+          return comparator.makeComparator('printerManufacturer')(a,b)+comparator.makeComparator('printerModel')(a,b)+comparator.makeComparator('printerMainboard')(a,b)
+        })
         .map(def => 
         <Table.Row key={def.id}>
           <Table.Cell>{def.printerManufacturer}</Table.Cell>
