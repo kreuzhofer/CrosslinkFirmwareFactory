@@ -8,6 +8,7 @@ import {
     Button,
     Form,
     Label,
+    Dropdown,
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -22,6 +23,7 @@ export class EditBuildDefinition extends React.Component {
     this.state = {
       id: id,
       name: '',
+      firmwareVersionId: undefined,
       sourceTree: '',
       configTree: '',
       printerManufacturer: '',
@@ -30,7 +32,8 @@ export class EditBuildDefinition extends React.Component {
       platformioEnv: '',
       description: '',
       configurationJSON: '{}',
-      sharedWithEveryone: false
+      sharedWithEveryone: false,
+      firmwareOptions: []
     }
   }
 
@@ -38,9 +41,17 @@ export class EditBuildDefinition extends React.Component {
     try {
       const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
       const buildDefinition = result.data.getBuildDefinition
+
+      const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
+      const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.map(v=>{return {
+        key: v.id,
+        text: v.name,
+        value: v.id
+      }})
       this.setState({
         id: buildDefinition.id,
         name: buildDefinition.name,
+        firmwareVersionId: buildDefinition.firmwareVersionId,
         sourceTree: buildDefinition.sourceTree,
         configTree: buildDefinition.configTree,
         printerManufacturer: buildDefinition.printerManufacturer,
@@ -49,7 +60,8 @@ export class EditBuildDefinition extends React.Component {
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
         configurationJSON: buildDefinition.configurationJSON,
-        sharedWithEveryone: buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined
+        sharedWithEveryone: buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
+        firmwareOptions: firmwareOptions
       });
     } catch (error) {
       console.error(error);
@@ -73,6 +85,7 @@ export class EditBuildDefinition extends React.Component {
       let result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
         id:this.state.id, 
         name: this.state.name, 
+        firmwareVersionId: this.state.firmwareVersionId,
         sourceTree: this.state.sourceTree,
         configTree: this.state.configTree,
         printerManufacturer: this.state.printerManufacturer,
@@ -83,7 +96,6 @@ export class EditBuildDefinition extends React.Component {
         configurationJSON: this.state.configurationJSON, 
         groupsCanAccess: groupsCanAccess
       }}));
-      console.log(result);
       this.props.history.push('/BuildDefinition');
     }    
 
@@ -98,6 +110,14 @@ export class EditBuildDefinition extends React.Component {
           name='name'
           value={this.state.name}
           onChange={(e) => this.setState({name: e.target.value})}/>
+      <br/>
+      <Label>Firmware version</Label>
+      <Dropdown
+        placeholder='select firmware version'
+        selection
+        options={this.state.firmwareOptions}
+        value={this.state.firmwareVersionId}
+        onChange={(e, {value}) => this.setState({firmwareVersionId: value})}/>
       <br/>
       <Input
           label='Source tree URL'
