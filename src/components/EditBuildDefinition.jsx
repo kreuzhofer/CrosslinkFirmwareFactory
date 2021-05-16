@@ -96,7 +96,10 @@ export class EditBuildDefinition extends React.Component {
         configurationJSON: this.state.configurationJSON, 
         groupsCanAccess: groupsCanAccess
       }}));
-      this.props.history.push('/BuildDefinition');
+      if(result)
+        this.props.history.push('/BuildDefinition');
+      else
+        console.error(result);
     }    
 
   render() { return (

@@ -7,6 +7,7 @@ import {
     Button,
     Form,
     Label,
+    Dropdown
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 import {Route} from 'react-router-dom';
@@ -23,6 +24,7 @@ export class AddBuildDefinition extends React.Component {
         console.log("id: "+id);
         this.state = {
             name: '',
+            firmwareVersionId: undefined,
             sourceTree: '',
             configTree: '',
             printerManufacturer: '',
@@ -31,7 +33,8 @@ export class AddBuildDefinition extends React.Component {
             platformioEnv: '',
             description: '',
             configurationJSON: '{}',
-            id: id
+            id: id,
+            firmwareOptions: []
         }
     }
 
@@ -42,6 +45,7 @@ export class AddBuildDefinition extends React.Component {
           const buildDefinition = result.data.getBuildDefinition
           this.setState({
               name: buildDefinition.name,
+              firmwareVersionId: buildDefinition.firmwareVersionId,
               sourceTree: buildDefinition.sourceTree,
               configTree: buildDefinition.configTree,
               printerManufacturer: buildDefinition.printerManufacturer,
@@ -57,10 +61,21 @@ export class AddBuildDefinition extends React.Component {
         }
     }
 
+    async loadFirmwareVersions() {
+        const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
+        const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.map(v=>{return {
+          key: v.id,
+          text: v.name,
+          value: v.id
+        }})
+        this.setState({firmwareOptions: firmwareOptions});
+    }
+
     async componentDidMount()
     {
         if(this.state.id)
             await this.reloadData();
+        await this.loadFirmwareVersions();
     }
 
     async handleSubmit(event) {
@@ -73,6 +88,7 @@ export class AddBuildDefinition extends React.Component {
         }
         let result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
             name: this.state.name,
+            firmwareVersionId: this.state.firmwareVersionId,
             sourceTree: this.state.sourceTree,
             configTree: this.state.configTree,
             printerManufacturer: this.state.printerManufacturer,
@@ -99,6 +115,14 @@ export class AddBuildDefinition extends React.Component {
                 name='name'
                 value={this.state.name}
                 onChange={(e) => this.setState({name : e.target.value})}/><br/>
+            <Label>Firmware version</Label>
+            <Dropdown
+                placeholder='select firmware version'
+                selection
+                options={this.state.firmwareOptions}
+                value={this.state.firmwareVersionId}
+                onChange={(e, {value}) => this.setState({firmwareVersionId: value})}/>
+            <br/>                
             <Input
                 label='Source tree URL'
                 type='text'
