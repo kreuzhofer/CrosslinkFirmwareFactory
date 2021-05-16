@@ -2,7 +2,7 @@
 import React, {useState} from 'react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
 import TopMenu from './components/TopMenu'
-import {BuildDefinitionDetails} from './components/BuildDefinition'
+import {EditBuildDefinition} from './components/EditBuildDefinition'
 import {BuildDefinitionsList} from './components/BuildDefinitionsList'
 import {
   Grid, 
@@ -72,7 +72,7 @@ const App = () => {
             <Route path="/" exact component={IndexDashboard}/>
             <Route path="/Marlin" exact component={MarlinFirmwareDownloads}/>
             { isAdmin ? <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} /> : null }
-            { isAdmin ? <Route path="/BuildDefinition/:id" component={BuildDefinitionDetails}/> : null }
+            { isAdmin ? <Route path="/BuildDefinition/:id" component={EditBuildDefinition}/> : null }
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
             { isAdmin ? <Route path="/AddFirmwareVersion" exact component={AddFirmwareVersion}/> : null }
             { isAdmin ? <Route path="/AddBuildDefinition" exact component={AddBuildDefinition}/> : null }
