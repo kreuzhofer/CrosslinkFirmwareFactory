@@ -6,6 +6,7 @@ export const getBuildDefinition = /* GraphQL */ `
     getBuildDefinition(id: $id) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -33,6 +34,15 @@ export const getBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -50,6 +60,7 @@ export const listBuildDefinitions = /* GraphQL */ `
       items {
         id
         name
+        firmwareVersionId
         sourceTree
         configTree
         printerManufacturer
@@ -64,6 +75,15 @@ export const listBuildDefinitions = /* GraphQL */ `
         updatedAt
         buildJobs {
           nextToken
+        }
+        firmwareVersion {
+          id
+          owner
+          name
+          sourceTree
+          configTree
+          createdAt
+          updatedAt
         }
       }
       nextToken

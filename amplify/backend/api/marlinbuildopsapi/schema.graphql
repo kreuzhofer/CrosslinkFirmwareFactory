@@ -8,6 +8,8 @@ type BuildDefinition @model
 {
   id: ID!
   name: String!
+  firmwareVersionId : ID!
+  firmwareVersion: FirmwareVersion @connection(fields: ["firmwareVersionId"])
   sourceTree: String!
   configTree: String!
   printerManufacturer: String

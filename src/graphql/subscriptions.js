@@ -6,6 +6,7 @@ export const onCreateBuildDefinition = /* GraphQL */ `
     onCreateBuildDefinition(owner: $owner) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -32,6 +33,15 @@ export const onCreateBuildDefinition = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -41,6 +51,7 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
     onUpdateBuildDefinition(owner: $owner) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -68,6 +79,15 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
         }
         nextToken
       }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -76,6 +96,7 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
     onDeleteBuildDefinition(owner: $owner) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -102,6 +123,15 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
