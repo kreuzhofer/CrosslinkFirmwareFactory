@@ -107,6 +107,7 @@ export class MarlinFirmwareDownloads extends React.Component {
           <Table.Cell>{def.printerManufacturer}</Table.Cell>
           <Table.Cell>{def.printerModel}</Table.Cell>
           <Table.Cell>{def.printerMainboard}</Table.Cell>            
+          <Table.Cell>{def.firmwareVersion ? def.firmwareVersion.name : "custom"}</Table.Cell>
           <Table.Cell><h4>{def.name}</h4><br/>{def.description}</Table.Cell>
           <Table.Cell>{this.firmwareArtifacts(def.buildJobs.items)}</Table.Cell>
         </Table.Row>)
@@ -123,6 +124,7 @@ export class MarlinFirmwareDownloads extends React.Component {
                     <Table.HeaderCell>Manufacturer</Table.HeaderCell>
                     <Table.HeaderCell>Model</Table.HeaderCell>
                     <Table.HeaderCell>Mainboard</Table.HeaderCell>                        
+                    <Table.HeaderCell>Firmware</Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Artifacts</Table.HeaderCell>
                     </Table.Row>
