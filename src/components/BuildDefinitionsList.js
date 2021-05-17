@@ -128,6 +128,9 @@ const BuildDefinitionsList = () => {
 
     const handleJobDeleteConfirm = async() => {
       try {
+
+        await Storage.remove()
+
         const result = await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: jobDeleteConfirmState.id}}));
         console.info(result)
       } catch (error) {
