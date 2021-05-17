@@ -118,7 +118,7 @@ const BuildDefinitionsList = () => {
     const handleDefinitionDeleteConfirm = async() => {
       try {
         const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: definitionDeleteConfirmState.id}}));
-        console.info(result)
+//        console.info(result)
       } catch (error) {
         console.error(error);
       }
@@ -128,11 +128,19 @@ const BuildDefinitionsList = () => {
 
     const handleJobDeleteConfirm = async() => {
       try {
-
-        await Storage.remove()
+        let list = await Storage.list(jobDeleteConfirmState.id+'/');
+//        console.log(list);
+        try {
+          list.forEach(async(file)=>{
+//            console.log("remove "+file.key);
+            await Storage.remove(file.key);
+            });
+        } catch (error) {
+          console.error(error);
+        }
 
         const result = await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: jobDeleteConfirmState.id}}));
-        console.info(result)
+//        console.info(result)
       } catch (error) {
         console.error(error);
       }
