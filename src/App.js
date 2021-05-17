@@ -72,7 +72,7 @@ const App = () => {
             <Route path="/" exact component={IndexDashboard}/>
             <Route path="/Marlin" exact component={MarlinFirmwareDownloads}/>
             <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} />
-            <Route path="/BuildDefinition/:id" component={EditBuildDefinition}/>
+            <Route path="/BuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} isAdmin={isAdmin} />)}/>
             <Route path="/AddBuildDefinition" exact component={AddBuildDefinition}/>
             <Route path="/AddBuildDefinition/:id" component={AddBuildDefinition}/>
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }

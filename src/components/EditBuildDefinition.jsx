@@ -19,7 +19,9 @@ export class EditBuildDefinition extends React.Component {
 
   constructor(props){
     super(props);
-    let id = props.match.params.id ? props.match.params.id : ""
+    let id = props.match.params.id ? props.match.params.id : "";
+		let isAdmin = props.isAdmin ? props.isAdmin : false;
+		console.log("IsAdmin "+isAdmin)
     this.state = {
       id: id,
       name: '',
@@ -33,7 +35,8 @@ export class EditBuildDefinition extends React.Component {
       description: '',
       configurationJSON: '{}',
       sharedWithEveryone: false,
-      firmwareOptions: []
+      firmwareOptions: [],
+			isAdmin: isAdmin
     }
   }
 
@@ -187,7 +190,9 @@ export class EditBuildDefinition extends React.Component {
           value={this.state.configurationJSON}
           onChange={(e) => this.setState({configurationJSON: e.target.value})}
       /><br/>
-      <Input 
+      
+			{ this.state.isAdmin ? <>
+			<Input 
           type='Checkbox'
           label='Shared with everyone'
           name='sharedWithEveryone'
@@ -195,6 +200,7 @@ export class EditBuildDefinition extends React.Component {
           onChange={(e)=>this.setState({sharedWithEveryone: e.target.checked})}
           >
       </Input><br/><br/>
+			</> : null }
       <Button
           content='Save'
           onClick={(e)=>this.handleSubmit(e)}
