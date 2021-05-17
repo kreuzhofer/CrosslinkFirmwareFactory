@@ -40,7 +40,7 @@ export class MarlinFirmwareDownloads extends React.Component {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            console.log("Download URL for "+filename+": "+url);
+//            console.log("Download URL for "+filename+": "+url);
             a.download = filename || 'download';
             const clickHandler = () => {
               setTimeout(() => {
@@ -57,19 +57,19 @@ export class MarlinFirmwareDownloads extends React.Component {
             e.preventDefault();
             const result = await Storage.get(jobId+'/'+file, { download: true });
             //const result = await Storage.get(job.id+'/'+file);
-            console.log(result);
+//            console.log(result);
             downloadBlob(result.Body, file);
           }
 
         if(jobs == null)
             return null;
         let finishedJobs = jobs.sort(comparator.makeComparator('createdAt', 'desc')).filter(j=>j.jobState === 'DONE').slice(0,1);
-        console.log(finishedJobs);
+//        console.log(finishedJobs);
         if(finishedJobs){
             let first = finishedJobs[0];
             if(!first)
                 return null;
-            console.log(first);
+//            console.log(first);
             let artifacts = first.buildJobArtifacts.items
             return (
                 <Table celled>
