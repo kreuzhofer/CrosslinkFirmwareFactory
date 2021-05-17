@@ -49,8 +49,8 @@ function MyApp({ Component, pageProps }) {
               <td>
                 <h1>Welcome to the Crosslink firmware factory</h1>
                 <h2>the place to download and build your custom 3D printer firmware</h2>
-                <h3>Access only for Patrons of Daniel Crosslink. <a href="https://www.patreon.com/crosslink" target='_blank'>Click here, to become a Patron now!</a></h3>
-                <h3>More support in our discord channel <a href='https://discord.com/channels/554332400998547486/738041652282916895' target='_blank'>#firmware-factory-alpha</a> for Patrons.</h3>
+                <h3>Access only for Patrons of Daniel Crosslink. <a href="https://www.patreon.com/crosslink" target='_blank' rel="noopener noreferrer">Click here, to become a Patron now!</a></h3>
+                <h3>More support in our discord channel <a href='https://discord.com/channels/554332400998547486/738041652282916895' target='_blank' rel="noopener noreferrer">#firmware-factory-alpha</a> for Patrons.</h3>
               </td>
           </tr>
           <tr>
