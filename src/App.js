@@ -14,15 +14,15 @@ import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
 import { AddBuildDefinition } from './components/AddBuildDefinition'
 
 const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
-console.log(buildAgentJobQueueUrl)
+//console.log(buildAgentJobQueueUrl)
 const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
-console.log(buildJobTableName)
+//console.log(buildJobTableName)
 const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
-console.log(buildDefinitionTableName)
+//console.log(buildDefinitionTableName)
 const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
-console.log(graphQLApiUrl);
+//console.log(graphQLApiUrl);
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
-console.log(buildArtifactsBucket);
+//console.log(buildArtifactsBucket);
 
 /*
 Fix for 404 access denied in amplify deployed app:
