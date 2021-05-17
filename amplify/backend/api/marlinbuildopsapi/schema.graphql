@@ -46,6 +46,7 @@ type BuildJob @model
 type BuildJobArtifact @model
   @auth(rules: [
     {allow: owner},
+    {allow: groups, groups: ["Admin"]},    
     {allow: private, provider: iam, operations: [create, delete, read, update]},
     {allow: private, operations: [read]}
   ])

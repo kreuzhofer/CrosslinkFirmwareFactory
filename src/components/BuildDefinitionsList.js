@@ -43,7 +43,7 @@ const BuildDefinitionsList = () => {
           if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
             item.buildRunning = true;
         });
-        console.info(items);
+//        console.info(items);
         setBuildDefinitions(items);
       } catch (error) {
         console.error(error);
@@ -55,9 +55,9 @@ const BuildDefinitionsList = () => {
       async function fetchData() {
         await reloadData();
         const user =  await Auth.currentAuthenticatedUser();
-        console.log(user);
+//        console.log(user);
         const username = user.username;
-        console.log(username);
+//        console.log(username);
 
         try {
           const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
@@ -106,7 +106,7 @@ const BuildDefinitionsList = () => {
       }
       fetchData();
 
-      console.log(process.env)
+//      console.log(process.env)
 
       return () => {
         subs.forEach(function(item, index, array){
@@ -128,7 +128,7 @@ const BuildDefinitionsList = () => {
 
     const handleJobDeleteConfirm = async() => {
       try {
-        let list = await Storage.list(jobDeleteConfirmState.id+'/');
+        let list = await Storage.list(jobDeleteConfirmState.job.id+'/');
 //        console.log(list);
         try {
           list.forEach(async(file)=>{
@@ -139,7 +139,11 @@ const BuildDefinitionsList = () => {
           console.error(error);
         }
 
-        const result = await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: jobDeleteConfirmState.id}}));
+        let jobArtifacts = jobDeleteConfirmState.job.buildJobArtifacts;
+        console.log(jobArtifacts.items);
+        jobArtifacts.items.forEach(async(artifact)=>await API.graphql(graphqlOperation(mutations.deleteBuildJobArtifact, {input: {id: artifact.id}})));
+
+        const result = await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: jobDeleteConfirmState.job.id}}));
 //        console.info(result)
       } catch (error) {
         console.error(error);
@@ -228,13 +232,13 @@ const BuildDefinitionsList = () => {
     }    
 
     const buildJobsList = (jobs, def) => {
-        console.info(jobs)
+//        console.info(jobs)
         if(jobs == null)
             return null;
 
-        const handleJobDelete = (event, id) => {
-          console.info("clicked delete "+id);
-          setJobDeleteConfirmState({open: true, id: id});
+        const handleJobDelete = (event, job) => {
+//          console.info("clicked delete "+job.id);
+          setJobDeleteConfirmState({open: true, job: job});
         }
 
         return jobs.sort(comparator.makeComparator('createdAt', 'desc')).slice(0,3).map(job=>
@@ -251,7 +255,7 @@ const BuildDefinitionsList = () => {
                   {firmwareArtifacts(job.buildJobArtifacts.items)}
                 </Table.Cell>
                 <Table.Cell>
-                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, job.id)} color='red'>
+                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, job)} color='red'>
                     <Button.Content hidden>Delete</Button.Content>
                     <Button.Content visible><Icon name='delete'/></Button.Content>
                     </Button>
