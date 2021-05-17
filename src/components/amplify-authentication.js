@@ -46,7 +46,11 @@ function MyApp({ Component, pageProps }) {
       <table>
           <tbody>
           <tr>
-              <td><h1>Welcome to the Crosslink firmware factory</h1></td>
+              <td>
+                <h1>Welcome to the Crosslink firmware factory</h1>
+                <h2>the place to download and build your custom 3D printer firmware</h2>
+                <h3>Access only for Patrons of Daniel Crosslink. <a href="https://www.patreon.com/crosslink">Click here, to become a Patron now!</a></h3>
+              </td>
           </tr>
           <tr>
             <td>
