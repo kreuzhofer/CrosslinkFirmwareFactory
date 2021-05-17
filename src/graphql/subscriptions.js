@@ -260,8 +260,8 @@ export const onDeleteBuildJobArtifact = /* GraphQL */ `
   }
 `;
 export const onCreateFirmwareVersion = /* GraphQL */ `
-  subscription OnCreateFirmwareVersion($owner: String) {
-    onCreateFirmwareVersion(owner: $owner) {
+  subscription OnCreateFirmwareVersion {
+    onCreateFirmwareVersion {
       id
       owner
       name
@@ -273,8 +273,8 @@ export const onCreateFirmwareVersion = /* GraphQL */ `
   }
 `;
 export const onUpdateFirmwareVersion = /* GraphQL */ `
-  subscription OnUpdateFirmwareVersion($owner: String) {
-    onUpdateFirmwareVersion(owner: $owner) {
+  subscription OnUpdateFirmwareVersion {
+    onUpdateFirmwareVersion {
       id
       owner
       name
@@ -286,8 +286,8 @@ export const onUpdateFirmwareVersion = /* GraphQL */ `
   }
 `;
 export const onDeleteFirmwareVersion = /* GraphQL */ `
-  subscription OnDeleteFirmwareVersion($owner: String) {
-    onDeleteFirmwareVersion(owner: $owner) {
+  subscription OnDeleteFirmwareVersion {
+    onDeleteFirmwareVersion {
       id
       owner
       name
