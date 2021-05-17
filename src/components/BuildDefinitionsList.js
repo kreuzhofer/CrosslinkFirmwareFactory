@@ -14,7 +14,7 @@ import * as customqueries from '../graphql/customqueries'
 import * as mutations from '../graphql/mutations'
 import * as subscriptions from '../graphql/subscriptions'
 import * as comparator from '../util/comparator';
-import { FirmwareArtifactsList } from './FirmwareArtifactsList'
+import { BuildJobsList } from './BuildJobsList'
 //import Lambda from 'aws-sdk/clients/lambda';
 
 var AWS = require('aws-sdk');
@@ -134,90 +134,6 @@ const BuildDefinitionsList = () => {
     }
     const handleDefinitionDeleteCancel = () => setDefinitionDeleteConfirmState({ open: false })
 
-    const handleJobDeleteConfirm = async() => {
-      try {
-        let list = await Storage.list(jobDeleteConfirmState.job.id+'/');
-//        console.log(list);
-        try {
-          list.forEach(async(file)=>{
-//            console.log("remove "+file.key);
-            await Storage.remove(file.key);
-            });
-        } catch (error) {
-          console.error(error);
-        }
-
-        let jobArtifacts = jobDeleteConfirmState.job.buildJobArtifacts;
-        console.log(jobArtifacts.items);
-        jobArtifacts.items.forEach(async(artifact)=>await API.graphql(graphqlOperation(mutations.deleteBuildJobArtifact, {input: {id: artifact.id}})));
-
-        const result = await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: jobDeleteConfirmState.job.id}}));
-//        console.info(result)
-      } catch (error) {
-        console.error(error);
-      }
-      setJobDeleteConfirmState({ open: false })
-    }
-    const handleJobDeleteCancel = () => setJobDeleteConfirmState({ open: false })
-
-    function downloadBlob(blob, filename) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      console.log("Download URL for "+filename+": "+url);
-      a.download = filename || 'download';
-      const clickHandler = () => {
-        setTimeout(() => {
-          URL.revokeObjectURL(url);
-          a.removeEventListener('click', clickHandler);
-        }, 150);
-      };
-      a.addEventListener('click', clickHandler, false);
-      a.click();
-      return a;
-    }
-
-    const handleDownload = async(e, job, file) => {
-      e.preventDefault();
-      const result = await Storage.get(job.id+'/'+file, { download: true });
-      //const result = await Storage.get(job.id+'/'+file);
-      console.log(result);
-      downloadBlob(result.Body, file);
-    }
-
-    const buildJobsList = (jobs, def) => {
-//        console.info(jobs)
-        if(jobs == null)
-            return null;
-
-        const handleJobDelete = (event, job) => {
-//          console.info("clicked delete "+job.id);
-          setJobDeleteConfirmState({open: true, job: job});
-        }
-
-        return jobs.sort(comparator.makeComparator('createdAt', 'desc')).slice(0,3).map(job=>
-            <Table.Row key={job.id}>
-                <Table.Cell>{job.createdAt}</Table.Cell>
-                <Table.Cell>{job.jobState}</Table.Cell>
-                <Table.Cell>Logfile.txt
-                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDownload(e, job, "logfile.txt")}>
-                    <Button.Content hidden>Download</Button.Content>
-                    <Button.Content visible><Icon name="download"/></Button.Content>
-                  </Button>
-                </Table.Cell>
-                <Table.Cell>
-									<FirmwareArtifactsList artifacts={job.buildJobArtifacts.items}/>
-                </Table.Cell>
-                <Table.Cell>
-                  <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, job)} color='red'>
-                    <Button.Content hidden>Delete</Button.Content>
-                    <Button.Content visible><Icon name='delete'/></Button.Content>
-                    </Button>
-                  </Table.Cell>
-            </Table.Row>
-        )
-    }
-  
     const buildDefinitionItems = () => {
   
       // see https://reactjs.org/docs/handling-events.html
@@ -327,20 +243,7 @@ const BuildDefinitionsList = () => {
           </Button>
           </Table.Cell>
           <Table.Cell>
-              <Table celled>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>Time started</Table.HeaderCell>
-                      <Table.HeaderCell>State</Table.HeaderCell>
-											<Table.HeaderCell>Logs</Table.HeaderCell>
-                      <Table.HeaderCell>Artifacts</Table.HeaderCell>
-                      <Table.HeaderCell>Actions</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                    <Table.Body>
-                        {buildJobsList(def.buildJobs.items, def)}
-                    </Table.Body>
-              </Table>
+						<BuildJobsList buildDefinition={def} />
           </Table.Cell>
         </Table.Row>)
     }
@@ -391,13 +294,7 @@ const BuildDefinitionsList = () => {
             onCancel={handleDefinitionDeleteCancel}
             onConfirm={handleDefinitionDeleteConfirm}
           />
-        <Confirm
-            open={jobDeleteConfirmState.open}
-            cancelButton='Never mind'
-            confirmButton="Yes"
-            onCancel={handleJobDeleteCancel}
-            onConfirm={handleJobDeleteConfirm}
-          />
+
 
       <input
         type="file"
