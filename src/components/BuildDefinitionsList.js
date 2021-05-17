@@ -14,12 +14,13 @@ import * as customqueries from '../graphql/customqueries'
 import * as mutations from '../graphql/mutations'
 import * as subscriptions from '../graphql/subscriptions'
 import * as comparator from '../util/comparator';
+import { FirmwareArtifactsList } from './FirmwareArtifactsList'
 //import Lambda from 'aws-sdk/clients/lambda';
 
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
 const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
-console.log(buildAgentJobQueueUrl)
+//console.log(buildAgentJobQueueUrl)
 
 // https://stackoverflow.com/questions/64072288/how-to-add-environment-variables-to-aws-amplify
 // https://create-react-app.dev/docs/adding-custom-environment-variables/
@@ -37,13 +38,20 @@ const BuildDefinitionsList = () => {
 
     const reloadData = async()=>{
       try {
-        const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999}));
+        const user =  await Auth.currentAuthenticatedUser();
+        const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999, 
+          filter: {
+            owner : {
+              eq : user.username
+            }
+          }
+        }));
         var items = result.data.listBuildDefinitions.items
         items.forEach(item => {
           if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
             item.buildRunning = true;
         });
-//        console.info(items);
+        console.info(items);
         setBuildDefinitions(items);
       } catch (error) {
         console.error(error);
@@ -55,9 +63,9 @@ const BuildDefinitionsList = () => {
       async function fetchData() {
         await reloadData();
         const user =  await Auth.currentAuthenticatedUser();
-//        console.log(user);
+        console.log(user);
         const username = user.username;
-//        console.log(username);
+        console.log(username);
 
         try {
           const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
@@ -177,60 +185,6 @@ const BuildDefinitionsList = () => {
       downloadBlob(result.Body, file);
     }
 
-    function firmwareArtifacts(artifacts){
-
-      function downloadBlob(blob, filename) {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          console.log("Download URL for "+filename+": "+url);
-          a.download = filename || 'download';
-          const clickHandler = () => {
-            setTimeout(() => {
-              URL.revokeObjectURL(url);
-              a.removeEventListener('click', clickHandler);
-            }, 150);
-          };
-          a.addEventListener('click', clickHandler, false);
-          a.click();
-          return a;
-        }
-
-      const handleDownload = async(e, jobId, file) => {
-          e.preventDefault();
-          const result = await Storage.get(jobId+'/'+file, { download: true });
-          //const result = await Storage.get(job.id+'/'+file);
-          console.log(result);
-          downloadBlob(result.Body, file);
-        }
-
-      return (
-          <Table celled>
-              <Table.Header>
-                  <Table.Row>
-                  <Table.HeaderCell>Name</Table.HeaderCell>
-                  <Table.HeaderCell>File</Table.HeaderCell>
-                  </Table.Row>
-              </Table.Header>
-
-              <Table.Body>
-                  {artifacts.map(a=>
-                      <Table.Row key={a.id}>
-                          <Table.Cell>{a.artifactName}</Table.Cell>
-                          <Table.Cell>
-                              {a.artifactFileName}
-                              <Button animated='vertical' onClick={(e)=>handleDownload(e, a.buildJobID, a.artifactFileName)}>
-                                  <Button.Content hidden>Download</Button.Content>
-                                  <Button.Content visible><Icon name="download"/></Button.Content>
-                              </Button>
-                          </Table.Cell>
-                      </Table.Row>
-                  )}
-              </Table.Body>
-          </Table>
-      )
-    }    
-
     const buildJobsList = (jobs, def) => {
 //        console.info(jobs)
         if(jobs == null)
@@ -252,7 +206,7 @@ const BuildDefinitionsList = () => {
                   </Button>
                 </Table.Cell>
                 <Table.Cell>
-                  {firmwareArtifacts(job.buildJobArtifacts.items)}
+									<FirmwareArtifactsList artifacts={job.buildJobArtifacts.items}/>
                 </Table.Cell>
                 <Table.Cell>
                   <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleJobDelete(e, job)} color='red'>
@@ -378,6 +332,7 @@ const BuildDefinitionsList = () => {
                     <Table.Row>
                       <Table.HeaderCell>Time started</Table.HeaderCell>
                       <Table.HeaderCell>State</Table.HeaderCell>
+											<Table.HeaderCell>Logs</Table.HeaderCell>
                       <Table.HeaderCell>Artifacts</Table.HeaderCell>
                       <Table.HeaderCell>Actions</Table.HeaderCell>
                     </Table.Row>
