@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { API, graphqlOperation, Auth, Storage } from 'aws-amplify'
-import {Route, NavLink, useParams} from 'react-router-dom'
+import { API, graphqlOperation, Auth } from 'aws-amplify'
+import {Route, NavLink} from 'react-router-dom'
 import {
     Header, 
     Segment, 
@@ -29,12 +29,11 @@ const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME
 const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
 
-const BuildDefinitionsList = () => {
-    let { isAdmin } = useParams();
+const BuildDefinitionsList = (props) => {
+    let isAdmin = props.isAdmin;
     console.log("IsAdmin in BuildDefinitionsList: "+isAdmin);
     const [buildDefinitions, setBuildDefinitions] = useState([])
     const [definitionDeleteConfirmState, setDefinitionDeleteConfirmState] = useState({ open: false })
-    const [jobDeleteConfirmState, setJobDeleteConfirmState] = useState({ open: false })
 
     const reloadData = async()=>{
       try {
@@ -51,7 +50,7 @@ const BuildDefinitionsList = () => {
           if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
             item.buildRunning = true;
         });
-        console.info(items);
+//        console.info(items);
         setBuildDefinitions(items);
       } catch (error) {
         console.error(error);
@@ -63,9 +62,9 @@ const BuildDefinitionsList = () => {
       async function fetchData() {
         await reloadData();
         const user =  await Auth.currentAuthenticatedUser();
-        console.log(user);
+//        console.log(user);
         const username = user.username;
-        console.log(username);
+//        console.log(username);
 
         try {
           const insertSubscription = await API.graphql(graphqlOperation(subscriptions.onCreateBuildDefinition, {owner: username})).subscribe({
@@ -125,7 +124,7 @@ const BuildDefinitionsList = () => {
 
     const handleDefinitionDeleteConfirm = async() => {
       try {
-        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: definitionDeleteConfirmState.id}}));
+        /*const result =*/ await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: definitionDeleteConfirmState.id}}));
 //        console.info(result)
       } catch (error) {
         console.error(error);
@@ -248,7 +247,7 @@ const BuildDefinitionsList = () => {
         </Table.Row>)
     }
 
-    async function onChange(e) {
+/*     async function onChange(e) {
       const file = e.target.files[0];
 //      const { identityId } = await Auth.currentAuthenticatedUser();
       try {
@@ -260,7 +259,7 @@ const BuildDefinitionsList = () => {
       } catch (error) {
         console.log('Error uploading file: ', error);
       }  
-    }
+    } */
   
     return (
       <Segment>
@@ -295,12 +294,12 @@ const BuildDefinitionsList = () => {
             onConfirm={handleDefinitionDeleteConfirm}
           />
 
-
-      <input
+{/*       <input
         type="file"
         onChange={onChange}
       />
-      </Segment>
+ */}      
+			</Segment>
     );
   }
 

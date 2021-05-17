@@ -37,10 +37,10 @@ export class BuildJobsList extends React.Component {
         }
 
         let jobArtifacts = this.state.jobDeleteConfirmState.job.buildJobArtifacts;
-        console.log(jobArtifacts.items);
+//        console.log(jobArtifacts.items);
         jobArtifacts.items.forEach(async(artifact)=>await API.graphql(graphqlOperation(mutations.deleteBuildJobArtifact, {input: {id: artifact.id}})));
 
-        const result = await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: this.state.jobDeleteConfirmState.job.id}}));
+        /*const result =*/ await API.graphql(graphqlOperation(mutations.deleteBuildJob, {input: {id: this.state.jobDeleteConfirmState.job.id}}));
 //        console.info(result)
       } catch (error) {
         console.error(error);
@@ -58,7 +58,7 @@ export class BuildJobsList extends React.Component {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      console.log("Download URL for "+filename+": "+url);
+      //console.log("Download URL for "+filename+": "+url);
       a.download = filename || 'download';
       const clickHandler = () => {
         setTimeout(() => {
@@ -75,7 +75,7 @@ export class BuildJobsList extends React.Component {
       e.preventDefault();
       const result = await Storage.get(job.id+'/'+file, { download: true });
       //const result = await Storage.get(job.id+'/'+file);
-      console.log(result);
+      //console.log(result);
       this.downloadBlob(result.Body, file);
     }
 

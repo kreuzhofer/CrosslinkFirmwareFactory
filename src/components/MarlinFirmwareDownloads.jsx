@@ -112,6 +112,12 @@ export class MarlinFirmwareDownloads extends React.Component {
           <Table.Cell>{def.firmwareVersion ? def.firmwareVersion.name : "custom"}</Table.Cell>
           <Table.Cell><h4>{def.name}</h4><br/>{def.description}</Table.Cell>
           <Table.Cell>{this.firmwareArtifacts(def.buildJobs.items)}</Table.Cell>
+					<Table.Cell>
+							<Button animated='vertical' onClick={()=>this.props.history.push('/AddBuildDefinition/'+def.id)}>
+								<Button.Content hidden>Clone</Button.Content>
+								<Button.Content visible><Icon name='clone'/></Button.Content>
+							</Button>            
+					</Table.Cell>
         </Table.Row>)
     }
 
@@ -129,6 +135,7 @@ export class MarlinFirmwareDownloads extends React.Component {
                     <Table.HeaderCell>Firmware</Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Artifacts</Table.HeaderCell>
+										<Table.HeaderCell>Actions</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
