@@ -73,6 +73,20 @@ type FirmwareVersion @model
   configTree: String!
 }
 
+type MembershipException @model
+  @auth(rules: [
+    {allow: groups, groups: ["Admin"]}
+    {allow: private, provider: iam, operations: [create, delete, read, update]},
+    {allow: private, operations: [read]}
+  ])
+{
+  id: ID!
+  owner: String
+  email: String!
+  patronLevel: Int!,
+  role: String
+}
+
 enum BuildJobState {
   QUEUED
   STARTING

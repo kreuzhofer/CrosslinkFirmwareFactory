@@ -334,3 +334,51 @@ export const deleteFirmwareVersion = /* GraphQL */ `
     }
   }
 `;
+export const createMembershipException = /* GraphQL */ `
+  mutation CreateMembershipException(
+    $input: CreateMembershipExceptionInput!
+    $condition: ModelMembershipExceptionConditionInput
+  ) {
+    createMembershipException(input: $input, condition: $condition) {
+      id
+      owner
+      email
+      patronLevel
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateMembershipException = /* GraphQL */ `
+  mutation UpdateMembershipException(
+    $input: UpdateMembershipExceptionInput!
+    $condition: ModelMembershipExceptionConditionInput
+  ) {
+    updateMembershipException(input: $input, condition: $condition) {
+      id
+      owner
+      email
+      patronLevel
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteMembershipException = /* GraphQL */ `
+  mutation DeleteMembershipException(
+    $input: DeleteMembershipExceptionInput!
+    $condition: ModelMembershipExceptionConditionInput
+  ) {
+    deleteMembershipException(input: $input, condition: $condition) {
+      id
+      owner
+      email
+      patronLevel
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;

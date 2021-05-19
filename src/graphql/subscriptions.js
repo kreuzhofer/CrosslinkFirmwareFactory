@@ -298,3 +298,42 @@ export const onDeleteFirmwareVersion = /* GraphQL */ `
     }
   }
 `;
+export const onCreateMembershipException = /* GraphQL */ `
+  subscription OnCreateMembershipException {
+    onCreateMembershipException {
+      id
+      owner
+      email
+      patronLevel
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMembershipException = /* GraphQL */ `
+  subscription OnUpdateMembershipException {
+    onUpdateMembershipException {
+      id
+      owner
+      email
+      patronLevel
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMembershipException = /* GraphQL */ `
+  subscription OnDeleteMembershipException {
+    onDeleteMembershipException {
+      id
+      owner
+      email
+      patronLevel
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;

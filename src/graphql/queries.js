@@ -218,3 +218,40 @@ export const listFirmwareVersions = /* GraphQL */ `
     }
   }
 `;
+export const getMembershipException = /* GraphQL */ `
+  query GetMembershipException($id: ID!) {
+    getMembershipException(id: $id) {
+      id
+      owner
+      email
+      patronLevel
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listMembershipExceptions = /* GraphQL */ `
+  query ListMembershipExceptions(
+    $filter: ModelMembershipExceptionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMembershipExceptions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        email
+        patronLevel
+        role
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
