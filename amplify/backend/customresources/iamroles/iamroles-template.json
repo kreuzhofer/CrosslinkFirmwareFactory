@@ -2,15 +2,15 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
         "env": {
-            "Type": "String"
+          "Type": "String"
         },
+        "authuserPoolGroupsEveryoneGroupRole": {
+					"Type": "String"
+				},				
         "authuserPoolGroupsAdminGroupRole" : {
-            "Type" : "String"
-            },
-						"authuserPoolGroupsEveryoneGroupRole" : {
-						"Type" : "String"
-						}
-		},
+					"Type" : "String"
+				}
+	},
 	"Conditions": {
 		"ShouldNotCreateEnvResources": {
 			"Fn::Equals": [

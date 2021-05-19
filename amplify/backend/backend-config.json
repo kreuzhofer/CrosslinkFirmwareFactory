@@ -190,6 +190,13 @@
           "category": "auth",
           "resourceName": "userPoolGroups",
           "attributes": [
+            "EveryoneGroupRole"
+          ]
+        },				
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
             "AdminGroupRole"
           ]
         }
