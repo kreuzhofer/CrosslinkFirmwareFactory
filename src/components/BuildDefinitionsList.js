@@ -30,8 +30,8 @@ const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
 
 const BuildDefinitionsList = (props) => {
-    let isAdmin = props.isAdmin;
-    console.log("IsAdmin in BuildDefinitionsList: "+isAdmin);
+    //let isAdmin = props.isAdmin;
+    //console.log("IsAdmin in BuildDefinitionsList: "+isAdmin);
     const [buildDefinitions, setBuildDefinitions] = useState([])
     const [definitionDeleteConfirmState, setDefinitionDeleteConfirmState] = useState({ open: false })
 

@@ -13,15 +13,15 @@ import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
 import { AddBuildDefinition } from './components/AddBuildDefinition'
 import { TopMenu } from './components/TopMenu.jsx'
 
-const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
+//const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 //console.log(buildAgentJobQueueUrl)
-const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
+//const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
 //console.log(buildJobTableName)
-const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
+//const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
 //console.log(buildDefinitionTableName)
-const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
+//const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
 //console.log(graphQLApiUrl);
-const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
+//const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
 //console.log(buildArtifactsBucket);
 
 /*
@@ -53,9 +53,9 @@ const App = () => {
 		//console.log(data);
 		if(data.idToken.payload.patron_level)
 			setPatronLevel(data.idToken.payload.patron_level);
-		console.log("Patron level: "+patronLevel);
+		//console.log("Patron level: "+patronLevel);
 		//console.log(data.accessToken);
-		function parseJwt (token) {
+/* 		function parseJwt (token) {
 			var base64Url = token.split('.')[1];
 			var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
 			var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -63,13 +63,13 @@ const App = () => {
 			}).join(''));
 	
 			return JSON.parse(jsonPayload);
-		};
+		}; */
 		//console.log(parseJwt(data.accessToken.jwtToken));
 	});
 
   Auth.currentAuthenticatedUser().then((user)=>{
     const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
-    console.info(groups)
+    //console.info(groups)
     if(groups && groups.filter(f=>f === "Admin").length>0)
       setisAdmin(true)
     setAuthState(true)
