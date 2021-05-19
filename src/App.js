@@ -1,7 +1,6 @@
 /* src/App.js */
 import React, {useState} from 'react'
 import {BrowserRouter as Router, Route, NavLink} from 'react-router-dom'
-import TopMenu from './components/TopMenu'
 import {EditBuildDefinition} from './components/EditBuildDefinition'
 import {BuildDefinitionsList} from './components/BuildDefinitionsList'
 import {
@@ -12,6 +11,7 @@ import { FirmwareVersionsList } from './components/FirmwareVersionsList'
 import { AddFirmwareVersion } from './components/AddFirmwareVersion'
 import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
 import { AddBuildDefinition } from './components/AddBuildDefinition'
+import { TopMenu } from './components/TopMenu.jsx'
 
 const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 //console.log(buildAgentJobQueueUrl)
@@ -46,6 +46,26 @@ const IndexDashboard = () => {
 const App = () => {
   const [authState, setAuthState] = useState(false)
   const [isAdmin, setisAdmin] = useState(false)
+	const [patronLevel, setPatronLevel] = useState(0);
+
+	Auth.currentSession().then(data => {
+		//console.log("data: ");
+		//console.log(data);
+		if(data.idToken.payload.patron_level)
+			setPatronLevel(data.idToken.payload.patron_level);
+		console.log("Patron level: "+patronLevel);
+		//console.log(data.accessToken);
+		function parseJwt (token) {
+			var base64Url = token.split('.')[1];
+			var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+			var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+					return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+			}).join(''));
+	
+			return JSON.parse(jsonPayload);
+		};
+		//console.log(parseJwt(data.accessToken.jwtToken));
+	});
 
   Auth.currentAuthenticatedUser().then((user)=>{
     const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
@@ -60,7 +80,7 @@ const App = () => {
   }
   return (
     <Router>
-      <TopMenu/>
+      <TopMenu isAdmin={isAdmin} patronLevel={patronLevel}/>
       <Grid padded>
         <Grid.Row>
           <Grid.Column>
@@ -70,11 +90,11 @@ const App = () => {
         <Grid.Row>
           <Grid.Column>
             <Route path="/" exact component={IndexDashboard}/>
-            <Route path="/Marlin" exact component={MarlinFirmwareDownloads}/>
-            <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} />
-            <Route path="/BuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} isAdmin={isAdmin} />)}/>
-            <Route path="/AddBuildDefinition" exact component={AddBuildDefinition}/>
-            <Route path="/AddBuildDefinition/:id" component={AddBuildDefinition}/>
+            <Route path="/Marlin" exact render={(props)=>(<MarlinFirmwareDownloads {...props} patronLevel={patronLevel} />)} />
+            { patronLevel >= 2 || isAdmin ? <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} /> : null }
+            { patronLevel >= 2 || isAdmin ? <Route path="/BuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} isAdmin={isAdmin} />)}/> : null }
+            { patronLevel >= 2 || isAdmin ? <Route path="/AddBuildDefinition" exact component={AddBuildDefinition}/> : null }
+            { patronLevel >= 2 || isAdmin ? <Route path="/AddBuildDefinition/:id" component={AddBuildDefinition}/> : null }
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
             { isAdmin ? <Route path="/AddFirmwareVersion" exact component={AddFirmwareVersion}/> : null }
           </Grid.Column>
