@@ -236,7 +236,7 @@ const BuildDefinitionsList = (props) => {
               <Button.Content hidden>Build</Button.Content>
               <Button.Content visible><Icon name='cubes'/></Button.Content>
           </Button>
-          <Button disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleDelete(e, def.id)} color='red'>
+          <Button disabled={def.buildRunning || def.buildJobs.items.length>0} animated='vertical' onClick={(e)=>handleDelete(e, def.id)} color='red'>
             <Button.Content hidden>Delete</Button.Content>
             <Button.Content visible><Icon name='delete'/></Button.Content>
           </Button>
