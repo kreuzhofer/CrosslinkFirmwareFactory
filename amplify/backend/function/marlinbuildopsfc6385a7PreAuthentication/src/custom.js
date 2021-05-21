@@ -44,7 +44,7 @@ const getMembershipException = async (email) =>
 exports.handler = async (event, context, callback) => {
   // insert code to be executed by your lambda trigger
   console.log(event)
-  const email = event.request.userAttributes.email
+  const email = event.request.userAttributes.email.toLowerCase();
   console.log(email)
 
   // Scan for overrides first

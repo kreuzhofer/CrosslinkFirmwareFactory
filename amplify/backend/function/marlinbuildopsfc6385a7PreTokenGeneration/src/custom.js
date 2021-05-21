@@ -43,7 +43,7 @@ const getMembershipException = async (email) =>
 
 exports.handler = async (event, context, callback) => {
   console.log(event);
-  const email = event.request.userAttributes.email;
+  const email = event.request.userAttributes.email.toLowerCase();
   console.log(email);
 
   const params = {

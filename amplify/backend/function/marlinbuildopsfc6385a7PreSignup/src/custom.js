@@ -48,7 +48,7 @@ exports.handler = (event, context, callback) => {
 
   // check if email is already in use
   if (event.request.userAttributes.hasOwnProperty('email')) {
-    const email = event.request.userAttributes.email;
+    const email = event.request.userAttributes.email.toLowerCase();
     console.log(email)
 
     const params = {
