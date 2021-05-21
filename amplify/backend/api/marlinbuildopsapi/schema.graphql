@@ -84,7 +84,7 @@ type MembershipException @model
   owner: String
   email: String!
   patronLevel: Int!,
-  role: String
+  roleOverride: String
 }
 
 enum BuildJobState {

@@ -106,7 +106,16 @@
     "marlinbuildopsfc6385a7PreSignup": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ] 
     },
     "AddBuildDefinitionFromWebHook": {
       "build": true,
@@ -139,7 +148,16 @@
     "marlinbuildopsfc6385a7PreAuthentication": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ] 
     },
     "marlinbuildopsfc6385a7PostConfirmation": {
       "build": true,
@@ -149,7 +167,16 @@
     "marlinbuildopsfc6385a7PreTokenGeneration": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]      
     }
   },
   "storage": {

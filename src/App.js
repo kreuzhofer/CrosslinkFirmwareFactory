@@ -12,6 +12,8 @@ import { AddFirmwareVersion } from './components/AddFirmwareVersion'
 import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
 import { AddBuildDefinition } from './components/AddBuildDefinition'
 import { TopMenu } from './components/TopMenu.jsx'
+import { MembershipExceptionList } from './components/MembershipExceptionList'
+import { AddMembershipException } from './components/AddMembershipException'
 
 //const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 //console.log(buildAgentJobQueueUrl)
@@ -97,6 +99,8 @@ const App = () => {
             { patronLevel >= 2 || isAdmin ? <Route path="/AddBuildDefinition/:id" component={AddBuildDefinition}/> : null }
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
             { isAdmin ? <Route path="/AddFirmwareVersion" exact component={AddFirmwareVersion}/> : null }
+            { isAdmin ? <Route path="/MembershipExceptions" exact component={MembershipExceptionList}/> : null }
+            { isAdmin ? <Route path="/AddMembershipException" exact component={AddMembershipException}/> : null }
           </Grid.Column>
          </Grid.Row>
        </Grid>

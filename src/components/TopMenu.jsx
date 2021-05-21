@@ -32,6 +32,7 @@ export class TopMenu extends React.Component {
 					<Dropdown.Menu>
 						<Dropdown.Header>Configurations</Dropdown.Header>
 						<Dropdown.Item href='/FirmwareVersions'>Firmware versions</Dropdown.Item>
+						<Dropdown.Item href='/MembershipExceptions'>Membership exceptions</Dropdown.Item>
 					</Dropdown.Menu>
 				</Dropdown> : null}
 			</Container>

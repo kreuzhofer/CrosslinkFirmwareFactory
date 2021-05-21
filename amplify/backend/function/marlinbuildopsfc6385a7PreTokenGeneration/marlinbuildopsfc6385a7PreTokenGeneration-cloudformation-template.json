@@ -39,6 +39,10 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "apimarlinbuildopsapiGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apimarlinbuildopsapiGraphQLAPIIdOutput"
     }
   },
   "Conditions": {
@@ -88,6 +92,22 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "TABLENAME": {
+              "Fn::Join": [
+                "",
+                [
+                  "MembershipException",
+                  "-",
+                  {
+                    "Ref": "apimarlinbuildopsapiGraphQLAPIIdOutput"
+                  },
+                  "-",
+                  {
+                    "Ref": "env"
+                  }
+                ]
+              ]
             }
           }
         },

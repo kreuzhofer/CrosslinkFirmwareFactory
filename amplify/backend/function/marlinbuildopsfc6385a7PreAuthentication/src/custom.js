@@ -1,11 +1,60 @@
 const AWS = require("aws-sdk");
+const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-exports.handler = (event, context, callback) => {
+const TABLENAME = process.env.TABLENAME;
+console.log(TABLENAME);
+const getMembershipException = async (email) => 
+{
+  const params = {
+    // Specify which items in the results are returned.
+    FilterExpression: "email = :e",
+    // Define the expression attribute value, which are substitutes for the values you want to compare.
+    ExpressionAttributeValues: {
+      ':e': {S: email},
+    },
+    // Set the projection expression, which the the attributes that you want.
+    ProjectionExpression: "email, patronLevel, roleOverride",
+    TableName: TABLENAME,
+  };
+
+  result = await new Promise((resolve, reject) => {
+
+    ddb.scan(params, function (err, data) {
+      if (err) {
+        console.log("Error", err);
+        reject(err);
+      } else {
+        console.log("Success", data);
+        console.log("Length: "+ data.Items.length)
+        if(data.Items.length == 0)
+        {
+          resolve(null);
+        }
+        else
+        {
+          console.log(data.Items[0]);
+          resolve(data.Items[0]);
+        }
+      }
+    })
+  });
+  return result;
+}
+
+exports.handler = async (event, context, callback) => {
   // insert code to be executed by your lambda trigger
   console.log(event)
   const email = event.request.userAttributes.email
   console.log(email)
-  var ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  // Scan for overrides first
+  let override = await getMembershipException(email);
+  if(override)
+  {
+    console.log("Patron Level override:"+override.patronLevel.N);
+    context.done(null, event);
+    return;
+  }
 
   // var params = {
   //   TableName: 'Patron-nnf2gyqbpzc7fiethifhs24yqq-prod',

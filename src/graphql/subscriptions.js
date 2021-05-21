@@ -305,7 +305,7 @@ export const onCreateMembershipException = /* GraphQL */ `
       owner
       email
       patronLevel
-      role
+      roleOverride
       createdAt
       updatedAt
     }
@@ -318,7 +318,7 @@ export const onUpdateMembershipException = /* GraphQL */ `
       owner
       email
       patronLevel
-      role
+      roleOverride
       createdAt
       updatedAt
     }
@@ -331,7 +331,7 @@ export const onDeleteMembershipException = /* GraphQL */ `
       owner
       email
       patronLevel
-      role
+      roleOverride
       createdAt
       updatedAt
     }

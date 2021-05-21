@@ -225,7 +225,7 @@ export const getMembershipException = /* GraphQL */ `
       owner
       email
       patronLevel
-      role
+      roleOverride
       createdAt
       updatedAt
     }
@@ -247,7 +247,7 @@ export const listMembershipExceptions = /* GraphQL */ `
         owner
         email
         patronLevel
-        role
+        roleOverride
         createdAt
         updatedAt
       }
