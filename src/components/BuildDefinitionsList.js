@@ -150,7 +150,8 @@ const BuildDefinitionsList = (props) => {
         let result = await API.graphql(graphqlOperation(mutations.createBuildJob, {
           input: {
             buildDefinitionID,
-            jobState: 'QUEUED'
+            jobState: 'QUEUED',
+            firmwareVersionId: def.firmwareVersionId
         }}));
         console.log(result);
         console.log(result.data.createBuildJob.id)
