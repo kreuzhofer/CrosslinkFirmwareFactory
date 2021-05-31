@@ -28,6 +28,7 @@ export const getBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
           owner
           createdAt
           updatedAt
@@ -100,6 +101,7 @@ export const getBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
       owner
       createdAt
       updatedAt
@@ -114,6 +116,15 @@ export const getBuildJob = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -133,11 +144,21 @@ export const listBuildJobs = /* GraphQL */ `
         endTime
         message
         log
+        firmwareVersionId
         owner
         createdAt
         updatedAt
         buildJobArtifacts {
           nextToken
+        }
+        firmwareVersion {
+          id
+          owner
+          name
+          sourceTree
+          configTree
+          createdAt
+          updatedAt
         }
       }
       nextToken

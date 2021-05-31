@@ -31,6 +31,7 @@ export const createBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
           owner
           createdAt
           updatedAt
@@ -79,6 +80,7 @@ export const updateBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
           owner
           createdAt
           updatedAt
@@ -127,6 +129,7 @@ export const deleteBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
           owner
           createdAt
           updatedAt
@@ -158,6 +161,7 @@ export const createBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
       owner
       createdAt
       updatedAt
@@ -172,6 +176,15 @@ export const createBuildJob = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -189,6 +202,7 @@ export const updateBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
       owner
       createdAt
       updatedAt
@@ -203,6 +217,15 @@ export const updateBuildJob = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -220,6 +243,7 @@ export const deleteBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
       owner
       createdAt
       updatedAt
@@ -234,6 +258,15 @@ export const deleteBuildJob = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }

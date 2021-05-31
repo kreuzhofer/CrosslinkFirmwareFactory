@@ -39,6 +39,8 @@ type BuildJob @model
   endTime: String
   message: String
   log: String
+  firmwareVersionId: ID
+  firmwareVersion: FirmwareVersion @connection(fields: ["firmwareVersionId"])
   buildJobArtifacts: [BuildJobArtifact!] @connection(keyName: "byBuildJob", fields: ["id"])
   owner: String
 }
