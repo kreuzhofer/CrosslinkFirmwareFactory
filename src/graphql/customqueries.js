@@ -46,6 +46,16 @@ export const listBuildDefinitionsWithJobs = /* GraphQL */ `
                   }
                   nextToken
                 }
+                firmwareVersionId
+                firmwareVersion {
+                  id
+                  owner
+                  name
+                  sourceTree
+                  configTree
+                  createdAt
+                  updatedAt
+                }
             }
            
           nextToken
