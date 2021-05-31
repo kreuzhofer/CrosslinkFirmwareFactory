@@ -98,7 +98,7 @@ export class BuildJobsList extends React.Component {
 					<Table.Body>
 						{	this.props.buildDefinition.buildJobs.items.sort(comparator.makeComparator('createdAt', 'desc')).slice(0,3).map(job=>
 						<Table.Row key={job.id}>
-								<Table.Cell>{job.firmwareVersion.name}</Table.Cell>
+								<Table.Cell>{job.firmwareVersion ? job.firmwareVersion.name : "custom"}</Table.Cell>
 								<Table.Cell>{job.createdAt}</Table.Cell>
 								<Table.Cell>{job.jobState}</Table.Cell>
 								<Table.Cell>Logfile.txt
