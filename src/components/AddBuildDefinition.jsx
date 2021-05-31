@@ -32,7 +32,23 @@ export class AddBuildDefinition extends React.Component {
             printerMainboard: '',
             platformioEnv: '',
             description: '',
-            configurationJSON: '{}',
+            configurationJSON: `{
+    "HeaderFiles" : [
+        {
+            "FileName" : "Marlin/Configuration.h",
+            "Settings" : [
+            ]
+        },
+        {
+            "FileName" : "Marlin/Configuration_adv.h",
+            "Settings" : [
+            ]
+        }
+    ],
+    "IniFiles" : [
+    ]
+}
+            `,
             id: id,
             firmwareOptions: []
         }
