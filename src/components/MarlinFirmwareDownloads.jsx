@@ -80,7 +80,7 @@ export class MarlinFirmwareDownloads extends React.Component {
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>
-                                {first.firmwareVersion.name}
+                                {first.firmwareVersion ? first.firmwareVersion.name : "custom"}
                             </Table.Cell>
                             <Table.Cell>
                                 <Table celled>
