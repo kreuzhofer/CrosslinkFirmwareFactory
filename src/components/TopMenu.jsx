@@ -5,7 +5,6 @@ import {
   Image,
   Menu,
 } from 'semantic-ui-react'
-import {NavLink} from 'react-router-dom'
 import {AmplifySignOut} from "@aws-amplify/ui-react";
 
 export class TopMenu extends React.Component {
@@ -18,7 +17,7 @@ export class TopMenu extends React.Component {
 					<Image size='mini' src='/logo192.png' style={{ marginRight: '1.5em' }} />
 					Crosslink Firmware Factory
 				</Menu.Item>
-				<Menu.Item><NavLink to={`/`}>Home</NavLink></Menu.Item>
+				<Menu.Item><a href="/">Home</a></Menu.Item>
 				<Dropdown item simple text='Firmware'>
 					<Dropdown.Menu>
 						<Dropdown.Header>Marlin</Dropdown.Header>
@@ -37,8 +36,10 @@ export class TopMenu extends React.Component {
 				</Dropdown> : null}
 			</Container>
 			<Container>
+			{ this.props.authState ? 
 				<Menu.Item><AmplifySignOut /></Menu.Item>
-			</Container>
+				: null }
+				</Container>
 		</Menu> 
 	)};
 }
