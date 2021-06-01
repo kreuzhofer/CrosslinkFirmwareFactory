@@ -74,8 +74,10 @@ export class MarlinFirmwareDownloads extends React.Component {
             return (
                 <Table celled>
                     <Table.Header>
+                        <Table.Row>
                         <Table.HeaderCell>Firmware</Table.HeaderCell>
                         <Table.HeaderCell>Artifacts</Table.HeaderCell>
+                        </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         <Table.Row>
@@ -86,8 +88,8 @@ export class MarlinFirmwareDownloads extends React.Component {
                                 <Table celled>
                                     <Table.Header>
                                         <Table.Row>
-                                        <Table.HeaderCell>Name</Table.HeaderCell>
-                                        <Table.HeaderCell>File</Table.HeaderCell>
+                                            <Table.HeaderCell>Name</Table.HeaderCell>
+                                            <Table.HeaderCell>File</Table.HeaderCell>
                                         </Table.Row>
                                     </Table.Header>
 
