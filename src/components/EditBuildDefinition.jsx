@@ -121,10 +121,14 @@ export class EditBuildDefinition extends React.Component {
       <Dropdown
         placeholder='select firmware version'
         selection
+        clearable
         options={this.state.firmwareOptions}
         value={this.state.firmwareVersionId}
         onChange={(e, {value}) => this.setState({firmwareVersionId: value})}/>
       <br/>
+
+      
+      { this.state.firmwareVersionId ? null : <>
       <Input
           label='Source tree URL'
           type='text'
@@ -132,6 +136,7 @@ export class EditBuildDefinition extends React.Component {
           name='sourceTree'
           value={this.state.sourceTree}
           onChange={(e) => this.setState({sourceTree: e.target.value})}
+          disabled={this.state.firmwareVersionId}
       /><br/>
       <Input
           type='text'
@@ -140,7 +145,8 @@ export class EditBuildDefinition extends React.Component {
           name='configTree'
           value={this.state.configTree}
           onChange={(e) => this.setState({configTree: e.target.value})}
-      /><br/>
+          disabled={this.state.firmwareVersionId}
+      /><br/> </> }
 
       <Input
           type='text'
