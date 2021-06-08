@@ -99,7 +99,7 @@ export class AddBuildDefinition extends React.Component {
         console.log('State: '+this.state)
         if(this.state.name === '')
         {
-            alert("Name hast to be filled")
+            alert("Name has to be filled")
             return false
         }
         let result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
