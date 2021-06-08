@@ -79,9 +79,9 @@ export class EditBuildDefinition extends React.Component {
   
   handleSubmit = async(event) => {
       event.preventDefault();
-      if(this.state.name === '' || this.state.sourceTree === '' || this.state.configTree === '')
+      if(this.state.name === '')
       {
-        alert("All fields have to be filled")
+        alert("Name has to be filled")
         return false
       }
       let groupsCanAccess = this.state.sharedWithEveryone ? ["Everyone"] : [];
@@ -126,7 +126,6 @@ export class EditBuildDefinition extends React.Component {
         value={this.state.firmwareVersionId}
         onChange={(e, {value}) => this.setState({firmwareVersionId: value})}/>
       <br/>
-
       
       { this.state.firmwareVersionId ? null : <>
       <Input

@@ -97,9 +97,9 @@ export class AddBuildDefinition extends React.Component {
     async handleSubmit(event) {
         event.preventDefault();
         console.log('State: '+this.state)
-        if(this.state.name === '' || this.state.sourceTree === '' || this.state.configTree === '')
+        if(this.state.name === '')
         {
-            alert("All fields have to be filled")
+            alert("Name hast to be filled")
             return false
         }
         let result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
