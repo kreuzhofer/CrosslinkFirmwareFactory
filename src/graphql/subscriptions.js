@@ -370,3 +370,33 @@ export const onDeleteMembershipException = /* GraphQL */ `
     }
   }
 `;
+export const onCreateUserProfile = /* GraphQL */ `
+  subscription OnCreateUserProfile($owner: String) {
+    onCreateUserProfile(owner: $owner) {
+      id
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUserProfile = /* GraphQL */ `
+  subscription OnUpdateUserProfile($owner: String) {
+    onUpdateUserProfile(owner: $owner) {
+      id
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUserProfile = /* GraphQL */ `
+  subscription OnDeleteUserProfile($owner: String) {
+    onDeleteUserProfile(owner: $owner) {
+      id
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;

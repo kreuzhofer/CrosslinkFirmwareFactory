@@ -276,3 +276,30 @@ export const listMembershipExceptions = /* GraphQL */ `
     }
   }
 `;
+export const getUserProfile = /* GraphQL */ `
+  query GetUserProfile($id: ID!) {
+    getUserProfile(id: $id) {
+      id
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserProfiles = /* GraphQL */ `
+  query ListUserProfiles(
+    $filter: ModelUserProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

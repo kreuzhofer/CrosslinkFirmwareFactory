@@ -89,6 +89,15 @@ type MembershipException @model
   roleOverride: String
 }
 
+type UserProfile @model
+  @auth(rules: [
+    {allow: owner}
+  ])
+{
+  id: ID!
+  owner: String
+}
+
 enum BuildJobState {
   QUEUED
   STARTING
