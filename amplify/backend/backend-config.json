@@ -18,20 +18,6 @@
           }
         }
       }
-    },
-    "patreonapi": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "patreonwebhookapifunction",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
     }
   },
   "auth": {
@@ -115,7 +101,7 @@
             "GraphQLAPIIdOutput"
           ]
         }
-      ] 
+      ]
     },
     "AddBuildDefinitionFromWebHook": {
       "build": true,
@@ -157,7 +143,7 @@
             "GraphQLAPIIdOutput"
           ]
         }
-      ] 
+      ]
     },
     "marlinbuildopsfc6385a7PostConfirmation": {
       "build": true,
@@ -176,7 +162,7 @@
             "GraphQLAPIIdOutput"
           ]
         }
-      ]      
+      ]
     }
   },
   "storage": {
@@ -191,6 +177,28 @@
             "UserPoolId"
           ]
         },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "EveryoneGroupRole"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "AdminGroupRole"
+          ]
+        }
+      ]
+    }
+  },
+  "customresources": {
+    "iamroles": {
+      "service": "IamRoles",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
         {
           "category": "auth",
           "resourceName": "userPoolGroups",
