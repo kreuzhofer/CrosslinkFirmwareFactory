@@ -11,12 +11,6 @@
     "userpoolArn": {
       "Type": "String"
     },
-    "functionmarlinbuildopsfc6385a7PreAuthenticationName": {
-      "Type": "String"
-    },
-    "functionmarlinbuildopsfc6385a7PreAuthenticationArn": {
-      "Type": "String"
-    },
     "functionmarlinbuildopsfc6385a7PreSignupName": {
       "Type": "String"
     },
@@ -35,19 +29,6 @@
     }
   },
   "Resources": {
-    "UserPoolPreAuthenticationLambdaInvokePermission": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Ref": "functionmarlinbuildopsfc6385a7PreAuthenticationName"
-        },
-        "Principal": "cognito-idp.amazonaws.com",
-        "SourceArn": {
-          "Ref": "userpoolArn"
-        }
-      }
-    },
     "UserPoolPreSignUpLambdaInvokePermission": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
@@ -149,13 +130,6 @@
           "Ref": "userpoolId"
         },
         "lambdaConfig": [
-          {
-            "triggerType": "PreAuthentication",
-            "lambdaFunctionName": "marlinbuildopsfc6385a7PreAuthentication",
-            "lambdaFunctionArn": {
-              "Ref": "functionmarlinbuildopsfc6385a7PreAuthenticationArn"
-            }
-          },
           {
             "triggerType": "PreSignUp",
             "lambdaFunctionName": "marlinbuildopsfc6385a7PreSignup",
