@@ -6,7 +6,6 @@ import * as serviceWorker from './serviceWorker';
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 import MyApp from './components/amplify-authentication';
-import {PublicApp} from './components/PublicApp';
 import {Helmet} from "react-helmet";
 
 Amplify.configure(awsExports);

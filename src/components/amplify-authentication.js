@@ -1,8 +1,5 @@
 import React from 'react'
 import Amplify from 'aws-amplify'
-import {
-  AmplifySignOut,
-} from '@aws-amplify/ui-react'
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
 import config from '../aws-exports'
 import { RegistrationAndLogin } from './RegistrationAndLogin'
