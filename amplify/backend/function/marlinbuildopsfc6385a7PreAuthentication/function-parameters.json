@@ -7,7 +7,7 @@
   "functionName": "marlinbuildopsfc6385a7PreAuthentication",
   "resourceName": "marlinbuildopsfc6385a7PreAuthentication",
   "parentStack": "auth",
-  "triggerEnvs": [],
+  "triggerEnvs": "[]",
   "triggerDir": "C:\\Users\\dkreu\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PreAuthentication",
   "triggerTemplate": "PreAuthentication.json.ejs",
   "triggerEventPath": "PreAuthentication.event.json",
