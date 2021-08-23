@@ -6,6 +6,7 @@ export const onCreateBuildDefinition = /* GraphQL */ `
     onCreateBuildDefinition(owner: $owner) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -15,6 +16,7 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -26,11 +28,21 @@ export const onCreateBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -40,6 +52,7 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
     onUpdateBuildDefinition(owner: $owner) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -49,6 +62,7 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -60,11 +74,21 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -74,6 +98,7 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
     onDeleteBuildDefinition(owner: $owner) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -83,6 +108,7 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -94,18 +120,28 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
 `;
 export const onCreateBuildJob = /* GraphQL */ `
-  subscription OnCreateBuildJob($owner: String) {
-    onCreateBuildJob(owner: $owner) {
+  subscription OnCreateBuildJob {
+    onCreateBuildJob {
       id
       buildDefinitionID
       jobState
@@ -113,27 +149,37 @@ export const onCreateBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
 `;
 export const onUpdateBuildJob = /* GraphQL */ `
-  subscription OnUpdateBuildJob($owner: String) {
-    onUpdateBuildJob(owner: $owner) {
+  subscription OnUpdateBuildJob {
+    onUpdateBuildJob {
       id
       buildDefinitionID
       jobState
@@ -141,27 +187,37 @@ export const onUpdateBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
 `;
 export const onDeleteBuildJob = /* GraphQL */ `
-  subscription OnDeleteBuildJob($owner: String) {
-    onDeleteBuildJob(owner: $owner) {
+  subscription OnDeleteBuildJob {
+    onDeleteBuildJob {
       id
       buildDefinitionID
       jobState
@@ -169,168 +225,178 @@ export const onDeleteBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
 `;
 export const onCreateBuildJobArtifact = /* GraphQL */ `
-  subscription OnCreateBuildJobArtifact($owner: String) {
-    onCreateBuildJobArtifact(owner: $owner) {
+  subscription OnCreateBuildJobArtifact {
+    onCreateBuildJobArtifact {
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onUpdateBuildJobArtifact = /* GraphQL */ `
-  subscription OnUpdateBuildJobArtifact($owner: String) {
-    onUpdateBuildJobArtifact(owner: $owner) {
+  subscription OnUpdateBuildJobArtifact {
+    onUpdateBuildJobArtifact {
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onDeleteBuildJobArtifact = /* GraphQL */ `
-  subscription OnDeleteBuildJobArtifact($owner: String) {
-    onDeleteBuildJobArtifact(owner: $owner) {
+  subscription OnDeleteBuildJobArtifact {
+    onDeleteBuildJobArtifact {
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const onCreatePatron = /* GraphQL */ `
-  subscription OnCreatePatron($owner: String) {
-    onCreatePatron(owner: $owner) {
+export const onCreateFirmwareVersion = /* GraphQL */ `
+  subscription OnCreateFirmwareVersion {
+    onCreateFirmwareVersion {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFirmwareVersion = /* GraphQL */ `
+  subscription OnUpdateFirmwareVersion {
+    onUpdateFirmwareVersion {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFirmwareVersion = /* GraphQL */ `
+  subscription OnDeleteFirmwareVersion {
+    onDeleteFirmwareVersion {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateMembershipException = /* GraphQL */ `
+  subscription OnCreateMembershipException {
+    onCreateMembershipException {
       id
       owner
       email
-      full_name
-      patron_status
-      last_event
-      access_expires_at
-      campaign_currency
-      campaign_lifetime_support_cents
-      currently_entitled_amount_cents
-      last_charge_date
-      last_charge_status
-      lifetime_support_cents
-      will_pay_amount_cents
-      pledge_relationship_start
+      patronLevel
+      roleOverride
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdatePatron = /* GraphQL */ `
-  subscription OnUpdatePatron($owner: String) {
-    onUpdatePatron(owner: $owner) {
+export const onUpdateMembershipException = /* GraphQL */ `
+  subscription OnUpdateMembershipException {
+    onUpdateMembershipException {
       id
       owner
       email
-      full_name
-      patron_status
-      last_event
-      access_expires_at
-      campaign_currency
-      campaign_lifetime_support_cents
-      currently_entitled_amount_cents
-      last_charge_date
-      last_charge_status
-      lifetime_support_cents
-      will_pay_amount_cents
-      pledge_relationship_start
+      patronLevel
+      roleOverride
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeletePatron = /* GraphQL */ `
-  subscription OnDeletePatron($owner: String) {
-    onDeletePatron(owner: $owner) {
+export const onDeleteMembershipException = /* GraphQL */ `
+  subscription OnDeleteMembershipException {
+    onDeleteMembershipException {
       id
       owner
       email
-      full_name
-      patron_status
-      last_event
-      access_expires_at
-      campaign_currency
-      campaign_lifetime_support_cents
-      currently_entitled_amount_cents
-      last_charge_date
-      last_charge_status
-      lifetime_support_cents
-      will_pay_amount_cents
-      pledge_relationship_start
+      patronLevel
+      roleOverride
       createdAt
       updatedAt
     }
   }
 `;
-export const onCreatePatronActivityLog = /* GraphQL */ `
-  subscription OnCreatePatronActivityLog($owner: String) {
-    onCreatePatronActivityLog(owner: $owner) {
+export const onCreateUserProfile = /* GraphQL */ `
+  subscription OnCreateUserProfile($owner: String) {
+    onCreateUserProfile(owner: $owner) {
       id
-      patron_event
-      event_timestamp
-      body
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const onUpdatePatronActivityLog = /* GraphQL */ `
-  subscription OnUpdatePatronActivityLog($owner: String) {
-    onUpdatePatronActivityLog(owner: $owner) {
+export const onUpdateUserProfile = /* GraphQL */ `
+  subscription OnUpdateUserProfile($owner: String) {
+    onUpdateUserProfile(owner: $owner) {
       id
-      patron_event
-      event_timestamp
-      body
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const onDeletePatronActivityLog = /* GraphQL */ `
-  subscription OnDeletePatronActivityLog($owner: String) {
-    onDeletePatronActivityLog(owner: $owner) {
+export const onDeleteUserProfile = /* GraphQL */ `
+  subscription OnDeleteUserProfile($owner: String) {
+    onDeleteUserProfile(owner: $owner) {
       id
-      patron_event
-      event_timestamp
-      body
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;

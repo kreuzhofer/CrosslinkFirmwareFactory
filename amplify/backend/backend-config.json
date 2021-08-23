@@ -18,20 +18,6 @@
           }
         }
       }
-    },
-    "patreonapi": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "patreonwebhookapifunction",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
     }
   },
   "auth": {
@@ -51,6 +37,24 @@
         {
           "category": "function",
           "resourceName": "marlinbuildopsfc6385a7PreAuthentication",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PostConfirmation",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",
@@ -88,7 +92,16 @@
     "marlinbuildopsfc6385a7PreSignup": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
     },
     "AddBuildDefinitionFromWebHook": {
       "build": true,
@@ -112,22 +125,67 @@
         }
       ]
     },
-    "patreonwebhookapifunction": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    },
     "marlinbuildopsfc6385a7PreAuthentication": {
       "build": true,
       "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "marlinbuildopsfc6385a7PostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "marlinbuildopsfc6385a7PreTokenGeneration": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
     }
   },
   "storage": {
-    "buildartifacts": {
+    "userdata": {
       "service": "S3",
-      "providerPlugin": "awscloudformation"
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "marlinbuildopsfc6385a7",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "EveryoneGroupRole"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "AdminGroupRole"
+          ]
+        }
+      ]
     }
   },
   "customresources": {
@@ -135,6 +193,13 @@
       "service": "IamRoles",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "EveryoneGroupRole"
+          ]
+        },
         {
           "category": "auth",
           "resourceName": "userPoolGroups",

@@ -5,11 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
+import MyApp from './components/amplify-authentication';
+import {PublicApp} from './components/PublicApp';
 Amplify.configure(awsExports);
 
 ReactDOM.render(
 //  <React.StrictMode>
-    <App />
+      <MyApp Component={App}/>
+//      <PublicApp />
 //  </React.StrictMode>
   ,
   document.getElementById('root')

@@ -6,6 +6,7 @@ export const getBuildDefinition = /* GraphQL */ `
     getBuildDefinition(id: $id) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -15,6 +16,7 @@ export const getBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -26,11 +28,21 @@ export const getBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -49,6 +61,7 @@ export const listBuildDefinitions = /* GraphQL */ `
       items {
         id
         name
+        firmwareVersionId
         sourceTree
         configTree
         printerManufacturer
@@ -58,10 +71,20 @@ export const listBuildDefinitions = /* GraphQL */ `
         description
         configurationJSON
         owner
+        groupsCanAccess
         createdAt
         updatedAt
         buildJobs {
           nextToken
+        }
+        firmwareVersion {
+          id
+          owner
+          name
+          sourceTree
+          configTree
+          createdAt
+          updatedAt
         }
       }
       nextToken
@@ -78,20 +101,30 @@ export const getBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -111,11 +144,21 @@ export const listBuildJobs = /* GraphQL */ `
         endTime
         message
         log
+        firmwareVersionId
+        owner
         createdAt
         updatedAt
-        owner
         buildJobArtifacts {
           nextToken
+        }
+        firmwareVersion {
+          id
+          owner
+          name
+          sourceTree
+          configTree
+          createdAt
+          updatedAt
         }
       }
       nextToken
@@ -128,10 +171,10 @@ export const getBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -150,79 +193,72 @@ export const listBuildJobArtifacts = /* GraphQL */ `
         id
         buildJobID
         artifactName
-        artifactUrl
+        artifactFileName
+        owner
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
   }
 `;
-export const getPatron = /* GraphQL */ `
-  query GetPatron($id: ID!) {
-    getPatron(id: $id) {
+export const getFirmwareVersion = /* GraphQL */ `
+  query GetFirmwareVersion($id: ID!) {
+    getFirmwareVersion(id: $id) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFirmwareVersions = /* GraphQL */ `
+  query ListFirmwareVersions(
+    $filter: ModelFirmwareVersionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFirmwareVersions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getMembershipException = /* GraphQL */ `
+  query GetMembershipException($id: ID!) {
+    getMembershipException(id: $id) {
       id
       owner
       email
-      full_name
-      patron_status
-      last_event
-      access_expires_at
-      campaign_currency
-      campaign_lifetime_support_cents
-      currently_entitled_amount_cents
-      last_charge_date
-      last_charge_status
-      lifetime_support_cents
-      will_pay_amount_cents
-      pledge_relationship_start
+      patronLevel
+      roleOverride
       createdAt
       updatedAt
     }
   }
 `;
-export const listPatrons = /* GraphQL */ `
-  query ListPatrons(
-    $filter: ModelPatronFilterInput
+export const listMembershipExceptions = /* GraphQL */ `
+  query ListMembershipExceptions(
+    $filter: ModelMembershipExceptionFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPatrons(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        email
-        full_name
-        patron_status
-        last_event
-        access_expires_at
-        campaign_currency
-        campaign_lifetime_support_cents
-        currently_entitled_amount_cents
-        last_charge_date
-        last_charge_status
-        lifetime_support_cents
-        will_pay_amount_cents
-        pledge_relationship_start
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const patronsByEmail = /* GraphQL */ `
-  query PatronsByEmail(
-    $email: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelPatronFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    patronsByEmail(
-      email: $email
-      sortDirection: $sortDirection
+    listMembershipExceptions(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -231,18 +267,8 @@ export const patronsByEmail = /* GraphQL */ `
         id
         owner
         email
-        full_name
-        patron_status
-        last_event
-        access_expires_at
-        campaign_currency
-        campaign_lifetime_support_cents
-        currently_entitled_amount_cents
-        last_charge_date
-        last_charge_status
-        lifetime_support_cents
-        will_pay_amount_cents
-        pledge_relationship_start
+        patronLevel
+        roleOverride
         createdAt
         updatedAt
       }
@@ -250,38 +276,28 @@ export const patronsByEmail = /* GraphQL */ `
     }
   }
 `;
-export const getPatronActivityLog = /* GraphQL */ `
-  query GetPatronActivityLog($id: ID!) {
-    getPatronActivityLog(id: $id) {
+export const getUserProfile = /* GraphQL */ `
+  query GetUserProfile($id: ID!) {
+    getUserProfile(id: $id) {
       id
-      patron_event
-      event_timestamp
-      body
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const listPatronActivityLogs = /* GraphQL */ `
-  query ListPatronActivityLogs(
-    $filter: ModelPatronActivityLogFilterInput
+export const listUserProfiles = /* GraphQL */ `
+  query ListUserProfiles(
+    $filter: ModelUserProfileFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPatronActivityLogs(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        patron_event
-        event_timestamp
-        body
+        owner
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }

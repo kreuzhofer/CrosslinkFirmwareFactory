@@ -14,6 +14,7 @@ export const listBuildDefinitionsWithJobs = /* GraphQL */ `
       items {
         id
         name
+        firmwareVersionId
         sourceTree
         configTree
         printerManufacturer
@@ -33,12 +34,45 @@ export const listBuildDefinitionsWithJobs = /* GraphQL */ `
                 createdAt
                 updatedAt
                 owner
-            }            
+                buildJobArtifacts {
+                  items {
+                    id
+                    buildJobID
+                    artifactName
+                    artifactFileName
+                    owner
+                    createdAt
+                    updatedAt
+                  }
+                  nextToken
+                }
+                firmwareVersionId
+                firmwareVersion {
+                  id
+                  owner
+                  name
+                  sourceTree
+                  configTree
+                  createdAt
+                  updatedAt
+                }
+            }
+           
           nextToken
         }
+        firmwareVersion {
+            id
+            owner
+            name
+            sourceTree
+            configTree
+            createdAt
+            updatedAt
+          }         
         createdAt
         updatedAt
         owner
+        groupsCanAccess
       }
       nextToken
     }

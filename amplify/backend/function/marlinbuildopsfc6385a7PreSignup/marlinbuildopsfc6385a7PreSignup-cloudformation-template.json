@@ -47,6 +47,10 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "apimarlinbuildopsapiGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apimarlinbuildopsapiGraphQLAPIIdOutput"
     }
   },
   "Conditions": {
@@ -102,6 +106,22 @@
             },
             "DOMAINBLACKLIST": {
               "Ref": "DOMAINBLACKLIST"
+            },
+            "TABLENAME": {
+              "Fn::Join": [
+                "",
+                [
+                  "MembershipException",
+                  "-",
+                  {
+                    "Ref": "apimarlinbuildopsapiGraphQLAPIIdOutput"
+                  },
+                  "-",
+                  {
+                    "Ref": "env"
+                  }
+                ]
+              ]
             }
           }
         },

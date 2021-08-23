@@ -9,6 +9,7 @@ export const createBuildDefinition = /* GraphQL */ `
     createBuildDefinition(input: $input, condition: $condition) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -18,6 +19,7 @@ export const createBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -29,11 +31,21 @@ export const createBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -46,6 +58,7 @@ export const updateBuildDefinition = /* GraphQL */ `
     updateBuildDefinition(input: $input, condition: $condition) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -55,6 +68,7 @@ export const updateBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -66,11 +80,21 @@ export const updateBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -83,6 +107,7 @@ export const deleteBuildDefinition = /* GraphQL */ `
     deleteBuildDefinition(input: $input, condition: $condition) {
       id
       name
+      firmwareVersionId
       sourceTree
       configTree
       printerManufacturer
@@ -92,6 +117,7 @@ export const deleteBuildDefinition = /* GraphQL */ `
       description
       configurationJSON
       owner
+      groupsCanAccess
       createdAt
       updatedAt
       buildJobs {
@@ -103,11 +129,21 @@ export const deleteBuildDefinition = /* GraphQL */ `
           endTime
           message
           log
+          firmwareVersionId
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -125,20 +161,30 @@ export const createBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -156,20 +202,30 @@ export const updateBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -187,20 +243,30 @@ export const deleteBuildJob = /* GraphQL */ `
       endTime
       message
       log
+      firmwareVersionId
+      owner
       createdAt
       updatedAt
-      owner
       buildJobArtifacts {
         items {
           id
           buildJobID
           artifactName
-          artifactUrl
+          artifactFileName
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
+      }
+      firmwareVersion {
+        id
+        owner
+        name
+        sourceTree
+        configTree
+        createdAt
+        updatedAt
       }
     }
   }
@@ -214,10 +280,10 @@ export const createBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -230,10 +296,10 @@ export const updateBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -246,136 +312,145 @@ export const deleteBuildJobArtifact = /* GraphQL */ `
       id
       buildJobID
       artifactName
-      artifactUrl
+      artifactFileName
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const createPatron = /* GraphQL */ `
-  mutation CreatePatron(
-    $input: CreatePatronInput!
-    $condition: ModelPatronConditionInput
+export const createFirmwareVersion = /* GraphQL */ `
+  mutation CreateFirmwareVersion(
+    $input: CreateFirmwareVersionInput!
+    $condition: ModelFirmwareVersionConditionInput
   ) {
-    createPatron(input: $input, condition: $condition) {
+    createFirmwareVersion(input: $input, condition: $condition) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFirmwareVersion = /* GraphQL */ `
+  mutation UpdateFirmwareVersion(
+    $input: UpdateFirmwareVersionInput!
+    $condition: ModelFirmwareVersionConditionInput
+  ) {
+    updateFirmwareVersion(input: $input, condition: $condition) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFirmwareVersion = /* GraphQL */ `
+  mutation DeleteFirmwareVersion(
+    $input: DeleteFirmwareVersionInput!
+    $condition: ModelFirmwareVersionConditionInput
+  ) {
+    deleteFirmwareVersion(input: $input, condition: $condition) {
+      id
+      owner
+      name
+      sourceTree
+      configTree
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createMembershipException = /* GraphQL */ `
+  mutation CreateMembershipException(
+    $input: CreateMembershipExceptionInput!
+    $condition: ModelMembershipExceptionConditionInput
+  ) {
+    createMembershipException(input: $input, condition: $condition) {
       id
       owner
       email
-      full_name
-      patron_status
-      last_event
-      access_expires_at
-      campaign_currency
-      campaign_lifetime_support_cents
-      currently_entitled_amount_cents
-      last_charge_date
-      last_charge_status
-      lifetime_support_cents
-      will_pay_amount_cents
-      pledge_relationship_start
+      patronLevel
+      roleOverride
       createdAt
       updatedAt
     }
   }
 `;
-export const updatePatron = /* GraphQL */ `
-  mutation UpdatePatron(
-    $input: UpdatePatronInput!
-    $condition: ModelPatronConditionInput
+export const updateMembershipException = /* GraphQL */ `
+  mutation UpdateMembershipException(
+    $input: UpdateMembershipExceptionInput!
+    $condition: ModelMembershipExceptionConditionInput
   ) {
-    updatePatron(input: $input, condition: $condition) {
+    updateMembershipException(input: $input, condition: $condition) {
       id
       owner
       email
-      full_name
-      patron_status
-      last_event
-      access_expires_at
-      campaign_currency
-      campaign_lifetime_support_cents
-      currently_entitled_amount_cents
-      last_charge_date
-      last_charge_status
-      lifetime_support_cents
-      will_pay_amount_cents
-      pledge_relationship_start
+      patronLevel
+      roleOverride
       createdAt
       updatedAt
     }
   }
 `;
-export const deletePatron = /* GraphQL */ `
-  mutation DeletePatron(
-    $input: DeletePatronInput!
-    $condition: ModelPatronConditionInput
+export const deleteMembershipException = /* GraphQL */ `
+  mutation DeleteMembershipException(
+    $input: DeleteMembershipExceptionInput!
+    $condition: ModelMembershipExceptionConditionInput
   ) {
-    deletePatron(input: $input, condition: $condition) {
+    deleteMembershipException(input: $input, condition: $condition) {
       id
       owner
       email
-      full_name
-      patron_status
-      last_event
-      access_expires_at
-      campaign_currency
-      campaign_lifetime_support_cents
-      currently_entitled_amount_cents
-      last_charge_date
-      last_charge_status
-      lifetime_support_cents
-      will_pay_amount_cents
-      pledge_relationship_start
+      patronLevel
+      roleOverride
       createdAt
       updatedAt
     }
   }
 `;
-export const createPatronActivityLog = /* GraphQL */ `
-  mutation CreatePatronActivityLog(
-    $input: CreatePatronActivityLogInput!
-    $condition: ModelPatronActivityLogConditionInput
+export const createUserProfile = /* GraphQL */ `
+  mutation CreateUserProfile(
+    $input: CreateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    createPatronActivityLog(input: $input, condition: $condition) {
+    createUserProfile(input: $input, condition: $condition) {
       id
-      patron_event
-      event_timestamp
-      body
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const updatePatronActivityLog = /* GraphQL */ `
-  mutation UpdatePatronActivityLog(
-    $input: UpdatePatronActivityLogInput!
-    $condition: ModelPatronActivityLogConditionInput
+export const updateUserProfile = /* GraphQL */ `
+  mutation UpdateUserProfile(
+    $input: UpdateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    updatePatronActivityLog(input: $input, condition: $condition) {
+    updateUserProfile(input: $input, condition: $condition) {
       id
-      patron_event
-      event_timestamp
-      body
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const deletePatronActivityLog = /* GraphQL */ `
-  mutation DeletePatronActivityLog(
-    $input: DeletePatronActivityLogInput!
-    $condition: ModelPatronActivityLogConditionInput
+export const deleteUserProfile = /* GraphQL */ `
+  mutation DeleteUserProfile(
+    $input: DeleteUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    deletePatronActivityLog(input: $input, condition: $condition) {
+    deleteUserProfile(input: $input, condition: $condition) {
       id
-      patron_event
-      event_timestamp
-      body
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;

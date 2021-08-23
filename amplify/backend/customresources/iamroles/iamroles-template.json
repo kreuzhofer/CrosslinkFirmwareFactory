@@ -2,12 +2,15 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
         "env": {
-            "Type": "String"
+          "Type": "String"
         },
+        "authuserPoolGroupsEveryoneGroupRole": {
+					"Type": "String"
+				},				
         "authuserPoolGroupsAdminGroupRole" : {
-            "Type" : "String"
-            }
-    },
+					"Type" : "String"
+				}
+	},
 	"Conditions": {
 		"ShouldNotCreateEnvResources": {
 			"Fn::Equals": [
@@ -80,7 +83,7 @@
                     ]                
                 },
 				"Roles": [
-                    { "Fn::Select" : [ "1", { "Fn::Split" : [ "/", { "Ref" : "authuserPoolGroupsAdminGroupRole" } ] } ] }
+          { "Fn::Select" : [ "1", { "Fn::Split" : [ "/", { "Ref" : "authuserPoolGroupsAdminGroupRole" } ] } ] }
 				],
 				"PolicyDocument": {
 					"Version": "2012-10-17",
@@ -106,6 +109,45 @@
                     ]
 				}
 			}
+		},
+		"EveryoneGroupInvokeSQSPolicy": {
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+                "PolicyName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "EveryoneGroupInvokeSQSPolicy",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "EveryoneGroupInvokeSQSPolicy",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]                
+                },
+				"Roles": [
+          { "Fn::Select" : [ "1", { "Fn::Split" : [ "/", { "Ref" : "authuserPoolGroupsEveryoneGroupRole" } ] } ] }
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "sqs:SendMessageBatch",
+                                "sqs:SendMessage"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+				}
+			}
 		}        
-    }
+  }
 }

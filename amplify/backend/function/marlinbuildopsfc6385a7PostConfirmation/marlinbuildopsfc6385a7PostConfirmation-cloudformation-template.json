@@ -1,11 +1,39 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "Lambda resource stack creation using Amplify CLI",
   "Parameters": {
-    "CloudWatchRule": {
+    "GROUP": {
       "Type": "String",
-      "Default": "NONE",
-      "Description": " Schedule Expression"
+      "Default": ""
+    },
+    "modules": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Comma-delimmited list of modules to be executed by a lambda trigger. Sent to resource as an env variable."
+    },
+    "resourceName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "trigger": {
+      "Type": "String",
+      "Default": "true"
+    },
+    "functionName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "roleName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "parentResource": {
+      "Type": "String",
+      "Default": ""
+    },
+    "parentStack": {
+      "Type": "String",
+      "Default": ""
     },
     "env": {
       "Type": "String"
@@ -39,12 +67,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "patreonwebhookapifunction",
+            "marlinbuildopsfc6385a7PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "patreonwebhookapifunction",
+                  "marlinbuildopsfc6385a7PostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -59,8 +87,14 @@
             "ENV": {
               "Ref": "env"
             },
+            "MODULES": {
+              "Ref": "modules"
+            },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "GROUP": {
+              "Ref": "GROUP"
             }
           }
         },
@@ -70,8 +104,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
-        "Layers": [],
+        "Runtime": "nodejs14.x",
         "Timeout": "25",
         "Code": {
           "S3Bucket": {
@@ -89,12 +122,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "marlinbuildopsLambdaRoleda59a931",
+            "marlinbuildopsfc6385a7PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "marlinbuildopsLambdaRoleda59a931",
+                  "marlinbuildopsfc6385a7PostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -160,22 +193,6 @@
                   }
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:PutItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:GetItem",
-                "dynamodb:Query",
-                "dynamodb:UpdateItem"
-              ],
-              "Resource": "arn:aws:dynamodb:*:*:table/*"
-            },
-            {
-              "Effect": "Allow",
-              "Action": "dynamodb:Query",
-              "Resource": "arn:aws:dynamodb:*:*:table/*/index/*"
             }
           ]
         }
@@ -196,14 +213,14 @@
         ]
       }
     },
-    "Region": {
-      "Value": {
-        "Ref": "AWS::Region"
-      }
-    },
     "LambdaExecutionRole": {
       "Value": {
         "Ref": "LambdaExecutionRole"
+      }
+    },
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
       }
     }
   }
