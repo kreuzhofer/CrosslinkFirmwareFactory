@@ -1,0 +1,21 @@
+{
+  "features": {
+    "graphQLTransformer": {
+      "addMissingOwnerFields": true,
+      "validateTypeNameReservedWords": true,
+      "useExperimentalPipelinedTransformer": false,
+      "enableIterativeGSIUpdates": false
+    },
+    "frontend-ios": {
+      "enableXcodeIntegration": true
+    },
+    "auth": {
+      "enableCaseInsensitivity": true,
+      "useInclusiveTerminology": true,
+      "breakCircularDependency": true
+    },
+    "codegen": {
+      "useAppSyncModelgenPlugin": true
+    }
+  }
+}
