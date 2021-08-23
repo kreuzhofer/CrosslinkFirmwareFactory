@@ -14,7 +14,7 @@ ReactDOM.render(
 //  <React.StrictMode>
       <>
       <Helmet>
-      <script id="mcjs">{`!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/cab6ca52cf3bc634f70afb049/4a7f11bf418554eac02b1c35f.js");`}</script>
+      <script id="mcjs">{`!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/cab6ca52cf3bc634f70afb049/4a7f11bf418554eac02b1c35f.js");`}</script>      
       </Helmet>
       <MyApp Component={App}/>
       </>
