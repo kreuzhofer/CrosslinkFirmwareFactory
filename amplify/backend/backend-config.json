@@ -42,15 +42,6 @@
             "Arn",
             "Name"
           ]
-        },
-        {
-          "category": "function",
-          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
         }
       ],
       "customAuth": false
@@ -117,20 +108,6 @@
       ]
     },
     "marlinbuildopsfc6385a7PreAuthentication": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "marlinbuildopsapi",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ]
-    },
-    "marlinbuildopsfc6385a7PreTokenGeneration": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",

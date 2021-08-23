@@ -32,16 +32,6 @@ Parameters:
   
   
   
-  functionmarlinbuildopsfc6385a7PreTokenGenerationArn:
-    Type: String
-    Default: functionmarlinbuildopsfc6385a7PreTokenGenerationArn
-  
-  functionmarlinbuildopsfc6385a7PreTokenGenerationName:
-    Type: String
-    Default: functionmarlinbuildopsfc6385a7PreTokenGenerationName
-  
-  
-  
 
     
   identityPoolName:
@@ -202,10 +192,10 @@ Parameters:
   breakCircularDependency:
     Type: String
             
-            
   authTriggerConnections:
     Type: String
   
+            
             
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
