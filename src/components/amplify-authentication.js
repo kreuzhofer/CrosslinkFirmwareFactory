@@ -36,7 +36,6 @@ function MyApp({ Component, pageProps }) {
 
   return state.authStage === AuthState.SignedIn && state.user ? (
     <>
-      <AmplifySignOut />
       <Component {...pageProps} />
     </>
   ) : (
