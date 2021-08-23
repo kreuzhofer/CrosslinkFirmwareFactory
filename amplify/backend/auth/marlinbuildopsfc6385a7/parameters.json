@@ -21,6 +21,7 @@
         "email",
         "phone_number"
     ],
+    "aliasAttributes": [],
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": "1",
     "userpoolClientWriteAttributes": [
@@ -75,15 +76,6 @@
         },
         {
             "category": "function",
-            "resourceName": "marlinbuildopsfc6385a7PostConfirmation",
-            "triggerProvider": "Cognito",
-            "attributes": [
-                "Arn",
-                "Name"
-            ]
-        },
-        {
-            "category": "function",
             "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
             "triggerProvider": "Cognito",
             "attributes": [
@@ -95,15 +87,14 @@
     "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
-    "triggers": "{\n  \"PostConfirmation\": [\n    \"add-to-group\"\n  ],\n  \"PreAuthentication\": [\n    \"custom\"\n  ],\n  \"PreSignup\": [\n    \"custom\"\n  ],\n  \"PreTokenGeneration\": [\n    \"custom\"\n  ]\n}",
+    "triggers": "{\n  \"PreAuthentication\": [\n    \"custom\"\n  ],\n  \"PreSignup\": [\n    \"custom\"\n  ],\n  \"PreTokenGeneration\": [\n    \"custom\"\n  ]\n}",
     "hostedUI": false,
     "parentStack": {
         "Ref": "AWS::StackId"
     },
-    "permissions": [
-        "{\n  \"policyName\": \"AddToGroupCognito\",\n  \"trigger\": \"PostConfirmation\",\n  \"effect\": \"Allow\",\n  \"actions\": [\n    \"cognito-idp:AdminAddUserToGroup\",\n    \"cognito-idp:GetGroup\",\n    \"cognito-idp:CreateGroup\"\n  ],\n  \"resource\": {\n    \"paramType\": \"!GetAtt\",\n    \"keys\": [\n      \"UserPool\",\n      \"Arn\"\n    ]\n  }\n}"
-    ],
+    "permissions": [],
     "serviceName": "Cognito",
     "authProviders": [],
-    "breakCircularDependency": false
+    "breakCircularDependency": true,
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PreAuthentication\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PreAuthentication\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PreSignup\"\n  },\n  {\n    \"triggerType\": \"PreTokenGeneration\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PreTokenGeneration\"\n  }\n]"
 }

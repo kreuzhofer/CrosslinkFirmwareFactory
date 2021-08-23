@@ -1,3 +1,4 @@
+
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
@@ -28,16 +29,6 @@ Parameters:
   functionmarlinbuildopsfc6385a7PreAuthenticationName:
     Type: String
     Default: functionmarlinbuildopsfc6385a7PreAuthenticationName
-  
-  
-  
-  functionmarlinbuildopsfc6385a7PostConfirmationArn:
-    Type: String
-    Default: functionmarlinbuildopsfc6385a7PostConfirmationArn
-  
-  functionmarlinbuildopsfc6385a7PostConfirmationName:
-    Type: String
-    Default: functionmarlinbuildopsfc6385a7PostConfirmationName
   
   
   
@@ -111,6 +102,10 @@ Parameters:
       
         
   requiredAttributes:
+    Type: CommaDelimitedList
+      
+        
+  aliasAttributes:
     Type: CommaDelimitedList
       
   
@@ -203,10 +198,14 @@ Parameters:
   authProviders:
     Type: CommaDelimitedList
       
-            
   
   breakCircularDependency:
     Type: String
+            
+            
+  authTriggerConnections:
+    Type: String
+  
             
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
@@ -270,27 +269,11 @@ Resources:
         
       
       
-      LambdaConfig:
-        
-        
-        
-        
-        
-          PostConfirmation: !Ref functionmarlinbuildopsfc6385a7PostConfirmationArn
-        
-        
-          PreAuthentication: !Ref functionmarlinbuildopsfc6385a7PreAuthenticationArn
-        
-        
-          PreSignUp: !Ref functionmarlinbuildopsfc6385a7PreSignupArn
-        
-        
-          PreTokenGeneration: !Ref functionmarlinbuildopsfc6385a7PreTokenGenerationArn
-        
-        
       
+      AutoVerifiedAttributes:
       
-      AutoVerifiedAttributes: !Ref autoVerifiedAttributes
+        - email
+      
       
       
       EmailVerificationMessage: !Ref emailVerificationMessage
@@ -306,6 +289,7 @@ Resources:
       
       UsernameAttributes: !Ref usernameAttributes
       
+      
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsAuthenticationMessage: !Ref smsAuthenticationMessage
@@ -313,86 +297,6 @@ Resources:
         SnsCallerArn: !GetAtt SNSRole.Arn
         ExternalId: marlinfc6385a7_role_external_id
     
-  
-  
-  
-  
-  
-  
-  UserPoolPostConfirmationLambdaInvokePermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn: UserPool
-    Properties:
-      Action: "lambda:invokeFunction"
-      Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionmarlinbuildopsfc6385a7PostConfirmationName
-      SourceArn: !GetAtt UserPool.Arn
-  
-  
-  UserPoolPreAuthenticationLambdaInvokePermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn: UserPool
-    Properties:
-      Action: "lambda:invokeFunction"
-      Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionmarlinbuildopsfc6385a7PreAuthenticationName
-      SourceArn: !GetAtt UserPool.Arn
-  
-  
-  UserPoolPreSignupLambdaInvokePermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn: UserPool
-    Properties:
-      Action: "lambda:invokeFunction"
-      Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionmarlinbuildopsfc6385a7PreSignupName
-      SourceArn: !GetAtt UserPool.Arn
-  
-  
-  UserPoolPreTokenGenerationLambdaInvokePermission:
-    Type: "AWS::Lambda::Permission"
-    DependsOn: UserPool
-    Properties:
-      Action: "lambda:invokeFunction"
-      Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionmarlinbuildopsfc6385a7PreTokenGenerationName
-      SourceArn: !GetAtt UserPool.Arn
-  
-  
-  # Updating lambda role with permissions to Cognito
-  
-  
-  marlinbuildopsfc6385a7PostConfirmationAddToGroupCognito:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: marlinbuildopsfc6385a7PostConfirmationAddToGroupCognito
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Action:
-            
-              - cognito-idp:AdminAddUserToGroup
-            
-              - cognito-idp:GetGroup
-            
-              - cognito-idp:CreateGroup
-            
-            
-            
-            Resource: !GetAtt
-            
-              - UserPool
-            
-              - Arn
-            
-            
-            
-
-      Roles:
-        - !Join ['',["marlinbuildopsfc6385a7PostConfirmation", '-', !Ref env]]
-  
-  
   
   UserPoolClientWeb:
   # Created provide application access to user pool
@@ -463,7 +367,7 @@ Resources:
             - '};'
       Handler: index.handler
       Runtime: nodejs12.x
-      Timeout: '300'
+      Timeout: 300
       Role: !GetAtt
         - UserPoolClientRole
         - Arn

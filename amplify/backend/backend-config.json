@@ -45,15 +45,6 @@
         },
         {
           "category": "function",
-          "resourceName": "marlinbuildopsfc6385a7PostConfirmation",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
           "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
           "triggerProvider": "Cognito",
           "attributes": [
@@ -138,11 +129,6 @@
           ]
         }
       ]
-    },
-    "marlinbuildopsfc6385a7PostConfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
     },
     "marlinbuildopsfc6385a7PreTokenGeneration": {
       "build": true,
