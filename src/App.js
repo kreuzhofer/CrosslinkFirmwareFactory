@@ -15,7 +15,6 @@ import { TopMenu } from './components/TopMenu.jsx'
 import { MembershipExceptionList } from './components/MembershipExceptionList'
 import { AddMembershipException } from './components/AddMembershipException'
 import { Home } from './components/Home'
-import {Helmet} from "react-helmet";
 
 //const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 //console.log(buildAgentJobQueueUrl)
@@ -70,9 +69,6 @@ const App = () => {
   }
   return (
     <>
-     <Helmet>
-      <script id="mcjs">{`!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/cab6ca52cf3bc634f70afb049/4a7f11bf418554eac02b1c35f.js");`}</script>
-    </Helmet>
     <Router>
       <TopMenu isAdmin={isAdmin} patronLevel={patronLevel} authState={authState}/>
       <Grid padded>
