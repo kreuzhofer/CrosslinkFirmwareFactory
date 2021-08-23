@@ -141,6 +141,24 @@
               "PolicyDocument": {
                   "Version": "2012-10-17",
                   "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": [
+                          "dynamodb:BatchGetItem",
+                          "dynamodb:Describe*",
+                          "dynamodb:List*",
+                          "dynamodb:GetItem",
+                          "dynamodb:Query",
+                          "dynamodb:Scan",
+                          "dynamodb:PartiQLSelect"
+                        ],
+                        "Resource": "arn:aws:dynamodb:*:*:table/*"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": "dynamodb:Query",
+                        "Resource": "arn:aws:dynamodb:*:*:table/*/index/*"
+                      },
                       {
                           "Effect": "Allow",
                           "Action":["logs:CreateLogGroup",
