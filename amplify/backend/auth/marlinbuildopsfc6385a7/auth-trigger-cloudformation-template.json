@@ -17,6 +17,12 @@
     "functionmarlinbuildopsfc6385a7PostConfirmationArn": {
       "Type": "String"
     },
+    "functionmarlinbuildopsfc6385a7PreAuthenticationName": {
+      "Type": "String"
+    },
+    "functionmarlinbuildopsfc6385a7PreAuthenticationArn": {
+      "Type": "String"
+    },
     "functionmarlinbuildopsfc6385a7PreTokenGenerationName": {
       "Type": "String"
     },
@@ -41,6 +47,19 @@
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Ref": "functionmarlinbuildopsfc6385a7PostConfirmationName"
+        },
+        "Principal": "cognito-idp.amazonaws.com",
+        "SourceArn": {
+          "Ref": "userpoolArn"
+        }
+      }
+    },
+    "UserPoolPreAuthenticationLambdaInvokePermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "functionmarlinbuildopsfc6385a7PreAuthenticationName"
         },
         "Principal": "cognito-idp.amazonaws.com",
         "SourceArn": {
@@ -154,6 +173,13 @@
             "lambdaFunctionName": "marlinbuildopsfc6385a7PostConfirmation",
             "lambdaFunctionArn": {
               "Ref": "functionmarlinbuildopsfc6385a7PostConfirmationArn"
+            }
+          },
+          {
+            "triggerType": "PreAuthentication",
+            "lambdaFunctionName": "marlinbuildopsfc6385a7PreAuthentication",
+            "lambdaFunctionArn": {
+              "Ref": "functionmarlinbuildopsfc6385a7PreAuthenticationArn"
             }
           },
           {

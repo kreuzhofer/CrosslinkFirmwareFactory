@@ -32,6 +32,16 @@ Parameters:
   
   
   
+  functionmarlinbuildopsfc6385a7PreAuthenticationArn:
+    Type: String
+    Default: functionmarlinbuildopsfc6385a7PreAuthenticationArn
+  
+  functionmarlinbuildopsfc6385a7PreAuthenticationName:
+    Type: String
+    Default: functionmarlinbuildopsfc6385a7PreAuthenticationName
+  
+  
+  
 
     
   identityPoolName:
