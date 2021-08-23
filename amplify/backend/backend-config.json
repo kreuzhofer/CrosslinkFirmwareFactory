@@ -125,12 +125,6 @@
         }
       ]
     },
-    "patreonwebhookapifunction": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    },
     "marlinbuildopsfc6385a7PreAuthentication": {
       "build": true,
       "providerPlugin": "awscloudformation",
