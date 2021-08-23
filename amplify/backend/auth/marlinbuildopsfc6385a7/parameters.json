@@ -55,21 +55,11 @@
         "Everyone",
         "Admin"
     ],
-    "dependsOn": [
-        {
-            "category": "function",
-            "resourceName": "marlinbuildopsfc6385a7PreSignup",
-            "triggerProvider": "Cognito",
-            "attributes": [
-                "Arn",
-                "Name"
-            ]
-        }
-    ],
+    "dependsOn": [],
     "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
-    "triggers": "{\n  \"PreSignup\": [\n    \"custom\"\n  ]\n}",
+    "triggers": "{}",
     "hostedUI": false,
     "parentStack": {
         "Ref": "AWS::StackId"
@@ -77,6 +67,5 @@
     "permissions": [],
     "serviceName": "Cognito",
     "authProviders": [],
-    "breakCircularDependency": true,
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PreSignup\"\n  }\n]"
+    "breakCircularDependency": true
 }

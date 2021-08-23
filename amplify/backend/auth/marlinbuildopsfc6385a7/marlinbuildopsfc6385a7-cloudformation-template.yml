@@ -10,18 +10,6 @@ Parameters:
     Type: String
 
   
-  
-  
-  functionmarlinbuildopsfc6385a7PreSignupArn:
-    Type: String
-    Default: functionmarlinbuildopsfc6385a7PreSignupArn
-  
-  functionmarlinbuildopsfc6385a7PreSignupName:
-    Type: String
-    Default: functionmarlinbuildopsfc6385a7PreSignupName
-  
-  
-  
 
     
   identityPoolName:
@@ -181,10 +169,6 @@ Parameters:
   
   breakCircularDependency:
     Type: String
-            
-  authTriggerConnections:
-    Type: String
-  
             
             
 Conditions:

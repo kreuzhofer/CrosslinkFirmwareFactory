@@ -24,17 +24,7 @@
     "marlinbuildopsfc6385a7": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "marlinbuildopsfc6385a7PreSignup",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        }
-      ],
+      "dependsOn": [],
       "customAuth": false
     },
     "userPoolGroups": {
@@ -62,20 +52,6 @@
     }
   },
   "function": {
-    "marlinbuildopsfc6385a7PreSignup": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "marlinbuildopsapi",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ]
-    },
     "AddBuildDefinitionFromWebHook": {
       "build": true,
       "providerPlugin": "awscloudformation",
