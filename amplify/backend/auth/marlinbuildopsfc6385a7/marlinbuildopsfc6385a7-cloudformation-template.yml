@@ -10,6 +10,18 @@ Parameters:
     Type: String
 
   
+  
+  
+  functionmarlinbuildopsfc6385a7PostConfirmationArn:
+    Type: String
+    Default: functionmarlinbuildopsfc6385a7PostConfirmationArn
+  
+  functionmarlinbuildopsfc6385a7PostConfirmationName:
+    Type: String
+    Default: functionmarlinbuildopsfc6385a7PostConfirmationName
+  
+  
+  
 
     
   identityPoolName:
@@ -170,6 +182,10 @@ Parameters:
   breakCircularDependency:
     Type: String
             
+            
+  authTriggerConnections:
+    Type: String
+  
             
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
