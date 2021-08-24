@@ -96,17 +96,18 @@ exports.handler = (event, context, callback) => {
           } else {
             console.log("Success", data);
             console.log("Length: "+ data.Items.length)
-            if(data.Items.length == 0 || data.Items[0].patron_status.S != "active_patron")
-            {
-              var error = new Error("You're currently not an active Patron! Please become a Patron at the 2$ level or above to use this service.");
-              context.done(error);
-            }
-            else if(data.Items[0].currently_entitled_amount_cents.N < 200)
-            {
-              var error = new Error("You need to be a Patron at the 2$ level or above to use this service.");
-              context.done(error);
-            }
-            else
+            // if(data.Items.length == 0 || data.Items[0].patron_status.S != "active_patron")
+            // {
+            //   var error = new Error("You're currently not an active Patron! Please become a Patron at the 2$ level or above to use this service.");
+            //   context.done(error);
+            // }
+            // else if(data.Items[0].currently_entitled_amount_cents.N < 200)
+            // {
+            //   var error = new Error("You need to be a Patron at the 2$ level or above to use this service.");
+            //   context.done(error);
+            // }
+            // else
+            if(data.Items.length > 0)
             {
               data.Items.forEach(function (element, index, array) {
                 console.log(element);

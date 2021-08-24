@@ -3,6 +3,8 @@ const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 const TABLENAME = process.env.TABLENAME;
 console.log(TABLENAME);
+
+// helper to get membershipexception entry for user
 const getMembershipException = async (email) => 
 {
   const params = {
@@ -81,15 +83,16 @@ exports.handler = async (event, context, callback) => {
       } else {
         console.log("Success", data);
         console.log("Length: "+ data.Items.length)
-        if(data.Items.length == 0 || data.Items[0].patron_status.S != "active_patron")
-        {
-          console.error("You're currently not an active Patron! Please become a Patron at the 2$ level or above to use this service.");
-        }
-        else if(data.Items[0].currently_entitled_amount_cents.N < 200)
-        {
-          console.error("You need to be a Patron at the 2$ level or above to use this service.");
-        }
-        else
+        // if(data.Items.length == 0 || data.Items[0].patron_status.S != "active_patron")
+        // {
+        //   console.error("You're currently not an active Patron! Please become a Patron at the 2$ level or above to use this service.");
+        // }
+        // else if(data.Items[0].currently_entitled_amount_cents.N < 200)
+        // {
+        //   console.error("You need to be a Patron at the 2$ level or above to use this service.");
+        // }
+        // else
+        if(data.Items.length > 0)
         {
           if(data.Items[0].currently_entitled_amount_cents.N >= 200)
             patron_level = 1;
