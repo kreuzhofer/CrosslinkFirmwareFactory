@@ -13,8 +13,8 @@ export class RegistrationAndLogin extends React.Component{
               <td>
                 <h1>Welcome to the Crosslink firmware factory</h1>
                 <h2>the place to download and build your custom 3D printer firmware</h2>
-                <h3>Support this project by becoming a Patron of Daniel Crosslink. <a href="https://www.patreon.com/crosslink" target='_blank' rel="noopener noreferrer">Click here, to become a Patron now!</a></h3>
-                <h3>Direct support in our discord channel <a href='https://discord.com/channels/554332400998547486/738041652282916895' target='_blank' rel="noopener noreferrer">#firmware-factory-alpha</a> for Patrons.</h3>
+                <h3>Support this project by <a href="https://www.patreon.com/crosslink" target='_blank' rel="noopener noreferrer">becoming a Patron of Daniel Crosslink!</a></h3>
+                <h3>User support in our discord channel <a href='https://discord.com/channels/554332400998547486/738041652282916895' target='_blank' rel="noopener noreferrer">#firmware-factory-alpha</a></h3>
               </td>
           </tr>
           <tr>
