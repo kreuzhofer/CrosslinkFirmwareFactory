@@ -22,7 +22,7 @@ export class TopMenu extends React.Component {
 					<Dropdown.Menu>
 						<Dropdown.Header>Marlin</Dropdown.Header>
 						<Dropdown.Item href='/Marlin'>Marlin Firmware downloads</Dropdown.Item>
-						{ this.props.patronLevel >= 2 ? <Dropdown.Item href='/BuildDefinition'>My build definitions</Dropdown.Item> : null }
+						{ this.props.patronLevel >= 2 || this.props.isAdmin ? <Dropdown.Item href='/BuildDefinition'>My build definitions</Dropdown.Item> : null }
 					</Dropdown.Menu>
 				</Dropdown>
 
