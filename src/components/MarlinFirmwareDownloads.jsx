@@ -10,6 +10,8 @@ import {
 import * as comparator from '../util/comparator';
 import * as customqueries from '../graphql/customqueries'
 //import * as queries from '../graphql/queries'
+import mixpanel from 'mixpanel-browser';
+mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
 export class MarlinFirmwareDownloads extends React.Component {
 
@@ -55,6 +57,7 @@ export class MarlinFirmwareDownloads extends React.Component {
 
         const handleDownload = async(e, jobId, file) => {
             e.preventDefault();
+            mixpanel.track("Download_Artifact");
             const result = await Storage.get(jobId+'/'+file, { download: true });
             //const result = await Storage.get(job.id+'/'+file);
 //            console.log(result);

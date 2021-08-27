@@ -11,6 +11,7 @@
     "aws-amplify-react": "^4.2.30",
     "aws-sdk": "^2.887.0",
     "axios": "^0.21.1",
+    "mixpanel-browser": "^2.41.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",

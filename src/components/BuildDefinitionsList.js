@@ -16,6 +16,8 @@ import * as subscriptions from '../graphql/subscriptions'
 import * as comparator from '../util/comparator';
 import { BuildJobsList } from './BuildJobsList'
 //import Lambda from 'aws-sdk/clients/lambda';
+import mixpanel from 'mixpanel-browser';
+mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
@@ -28,6 +30,7 @@ const buildJobTableName = process.env["REACT_APP_BUILDJOBTABLENAME"]
 const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME"]
 const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
+
 
 const BuildDefinitionsList = (props) => {
     //let isAdmin = props.isAdmin;
@@ -144,6 +147,7 @@ const BuildDefinitionsList = (props) => {
       const handleBuild = async(event, def) => {
         event.preventDefault();
         console.info("clicked build "+def.id);
+        mixpanel.track("Click_build");
         let buildDefinitionID = def.id;
 
         // store build job in database (used to be in the lambda, now here)

@@ -5,6 +5,8 @@ import {
 	Table,
 	Icon,
 } from 'semantic-ui-react'
+import mixpanel from 'mixpanel-browser';
+mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
 export class FirmwareArtifactsList extends React.Component {
     downloadBlob(blob, filename) {
@@ -26,6 +28,7 @@ export class FirmwareArtifactsList extends React.Component {
 
     handleDownload = async(e, jobId, file) => {
 			e.preventDefault();
+			mixpanel.track("Download_Artifact");
 			const result = await Storage.get(jobId+'/'+file, { download: true });
 			//const result = await Storage.get(job.id+'/'+file);
 			//console.log(result);

@@ -14,6 +14,8 @@ const moduleNames = process.env.MODULES.split(',');
  * The array of imported modules.
  */
 const modules = moduleNames.map(name => require(`./${name}`));
+import mixpanel from 'mixpanel-browser';
+mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
 /**
  * This async handler iterates over the given modules and awaits them.
@@ -35,5 +37,7 @@ exports.handler = async event => {
    * order of names in the `MODULES` var.
    */
   await Promise.all(modules.map(module => module.handler(event)));
+  mixpanel.track('Sign_Up_Complete');
+
   return event;
 };
