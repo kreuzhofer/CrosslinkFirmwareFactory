@@ -43,7 +43,7 @@ const getMembershipException = async (email) =>
 }
 
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event) => {
   console.log(event)
 
   // check if email is already in use
@@ -57,14 +57,14 @@ exports.handler = (event, context, callback) => {
     };
     console.log(params);
     
-    cognitoIdp.listUsers(params).promise()
-    .then (async (results) => {
-      console.log(JSON.stringify(results));
+    try {
+      var results = await cognitoIdp.listUsers(params);
+      console.log(results);
       // if the usernames are the same, dont raise and error here so that
       // cognito will raise the duplicate username error
-      if (results.Users.length > 0 && results.Users[0].Username !== event.userName) {
+      if (results.Users && results.Users.length > 0 && results.Users[0].Username !== event.userName) {
         console.log('Duplicate email address in signup. ' + email);
-        context.done(Error('A user with the same email address exists'));
+        return Error('A user with the same email address exists');
       }
       else
       {
@@ -73,8 +73,7 @@ exports.handler = (event, context, callback) => {
         if(override)
         {
           console.log("Patron Level override:"+override.patronLevel.N);
-          context.done(null, event);
-          return;
+          return event;
         }
 
         const params = {
@@ -92,8 +91,7 @@ exports.handler = (event, context, callback) => {
         ddb.scan(params, function (err, data) {
           if (err) {
             console.log("Error", err);
-            var error = new Error(err);
-            context.done(error);
+            return Error(err);
           } else {
             console.log("Success", data);
             console.log("Length: "+ data.Items.length)
@@ -113,16 +111,15 @@ exports.handler = (event, context, callback) => {
               data.Items.forEach(function (element, index, array) {
                 console.log(element);
               });
-              context.done(null, event);
+              return event;
             }
           }
         });
       }
-    })
-    .catch (error => {
+    } catch (error) {
       console.error(error);
-      context.done(error);      
-    });
+      return error;    
+    }
   }
 
 
