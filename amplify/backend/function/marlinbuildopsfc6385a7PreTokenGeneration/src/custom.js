@@ -43,7 +43,7 @@ const getMembershipException = async (email) =>
   return result;
 }
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event) => {
   console.log(event);
   const email = event.request.userAttributes.email.toLowerCase();
   console.log(email);
@@ -73,7 +73,7 @@ exports.handler = async (event, context, callback) => {
           }
       }
     };
-    callback(null, event);
+    return event;
   }  
   else
   {
@@ -110,7 +110,7 @@ exports.handler = async (event, context, callback) => {
       console.log(event.response);
         // Return to Amazon Cognito
       console.log(event);
-      callback(null, event);
+      return event;
     });
   }
 };
