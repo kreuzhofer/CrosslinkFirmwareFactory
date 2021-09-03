@@ -165,13 +165,23 @@ export class MarlinFirmwareDownloads extends React.Component {
         this.setState({ isLoading: true, searchValue: value })
     
         if (this.state.searchValue.length < 1) return this.resetComponent()
-                    
-        const re = new RegExp(_.escapeRegExp(this.state.searchValue), 'i')
+                
+        var terms = this.state.searchValue.split(' ');
+        var escapedTerms = [];
+        terms.forEach(element => {
+            if(element !== '')
+                escapedTerms.push('(?=.*'+_.escapeRegExp(element)+')');
+        });
+        console.log(escapedTerms);
+        //var regExpString = _.escapeRegExp(this.state.searchValue);
+        var regExpString = escapedTerms.join('');
+        console.log(regExpString);
+        const re = new RegExp(regExpString, 'i');
         const filteredResults = _.filter(this.state.buildDefinitions, result => 
-            re.test(result.printerManufacturer) || 
-            re.test(result.printerModel) || 
-            re.test(result.printerMainboard) ||
-            re.test(result.name)
+            re.test(result.printerManufacturer+' '+
+            result.printerModel+ ' '+
+            result.printerMainboard + ' '+
+            result.name)
             )
             this.setState({
                 isLoading: false,
