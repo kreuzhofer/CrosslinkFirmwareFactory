@@ -1,6 +1,3 @@
-import mixpanel from 'mixpanel-browser';
-mixpanel.init('b797e33ed9db411af6893878c06f6522');
-
 /**
  * @fileoverview
  *
@@ -38,7 +35,6 @@ exports.handler = async event => {
    * order of names in the `MODULES` var.
    */
   await Promise.all(modules.map(module => module.handler(event)));
-  mixpanel.track('Sign_Up_Complete');
-
+  
   return event;
 };
