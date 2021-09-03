@@ -11,6 +11,7 @@
     "aws-amplify-react": "^4.2.30",
     "aws-sdk": "^2.887.0",
     "axios": "^0.21.1",
+    "lodash": "^4.17.21",
     "mixpanel-browser": "^2.41.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -41,5 +42,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/mixpanel-browser": "^2.35.7",
+    "@types/underscore": "^1.11.3"
   }
 }

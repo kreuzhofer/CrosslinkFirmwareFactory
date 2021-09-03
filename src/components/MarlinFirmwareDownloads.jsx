@@ -5,11 +5,14 @@ import {
     Segment, 
     Table,
     Button,
-    Icon
+    Icon,
+    Search
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import * as customqueries from '../graphql/customqueries'
 //import * as queries from '../graphql/queries'
+import _ from 'lodash';
+
 import mixpanel from 'mixpanel-browser';
 mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
@@ -18,15 +21,28 @@ export class MarlinFirmwareDownloads extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            buildDefinitions: []
+            isLoading: false,
+            buildDefinitions: [],
+            results: [],
+            oldResults: [],    
+            searchValue: ''
         }
+    }
+
+    resetComponent = () => {
+        this.setState ({
+            isLoading: false,
+            results: [],
+            oldResults: this.state.buildDefinitions,    
+            searchValue: ''
+        });
     }
 
     async reloadData() {
         try {
             const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit:999}));
             var items = result.data.listBuildDefinitions.items
-            this.setState({buildDefinitions: items});
+            this.setState({buildDefinitions: items, oldResults: items});
         } catch (error) {
             console.error(error);
         }
@@ -119,8 +135,11 @@ export class MarlinFirmwareDownloads extends React.Component {
         }
     }
 
-    buildDefinitions() {
-        return this.state.buildDefinitions
+    renderBuildDefinitions() {
+        const { searchValue, results, oldResults, isLoading } = this.state
+        const dataToShow = (_.isEmpty(results) && !searchValue) || isLoading ? oldResults : results
+    
+        return dataToShow
         .sort((a,b)=>{
             return comparator.makeComparator('printerManufacturer')(a,b)+comparator.makeComparator('printerModel')(a,b)+comparator.makeComparator('printerMainboard')(a,b)
           })
@@ -141,11 +160,40 @@ export class MarlinFirmwareDownloads extends React.Component {
         </Table.Row>)
     }
 
+    handleSearchChange(e, { value }) {
+        setTimeout(() => {
+        this.setState({ isLoading: true, searchValue: value })
+    
+        if (this.state.searchValue.length < 1) return this.resetComponent()
+                    
+        const re = new RegExp(_.escapeRegExp(this.state.searchValue), 'i')
+        const filteredResults = _.filter(this.state.buildDefinitions, result => 
+            re.test(result.printerManufacturer) || 
+            re.test(result.printerModel) || 
+            re.test(result.printerMainboard) ||
+            re.test(result.name)
+            )
+            this.setState({
+                isLoading: false,
+                results: filteredResults,
+                oldResults: filteredResults
+            })
+        }, 30);
+    };
+
     render() {
+        const boundHandleSearchChange = this.handleSearchChange.bind(this);
+        const { searchValue, isLoading } = this.state
         return (
             <Segment>
                 <Header as='h3'>Firmware builds</Header>
                 <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
+                <Search 
+                    open={false}
+                    loading={isLoading}
+                    onSearchChange={_.debounce(boundHandleSearchChange, 500, { leading: true})}
+                    value={searchValue}
+                    />
                 <Table celled>
                 <Table.Header>
                     <Table.Row>
@@ -160,7 +208,7 @@ export class MarlinFirmwareDownloads extends React.Component {
                 </Table.Header>
 
                 <Table.Body>
-                    {this.buildDefinitions()}
+                    {this.renderBuildDefinitions()}
                 </Table.Body>
                 </Table>
                 <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
