@@ -1,4 +1,4 @@
-/* eslint-disable-line */ const aws = require('aws-sdk');
+const aws = require('aws-sdk');
 
 const cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
