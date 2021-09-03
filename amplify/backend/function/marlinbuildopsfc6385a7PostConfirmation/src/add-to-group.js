@@ -17,11 +17,13 @@ exports.handler = async event => {
   /**
    * Check if the group exists; if it doesn't, create it.
    */
+  /**
   try {
     await cognitoidentityserviceprovider.getGroup(groupParams).promise();
   } catch (e) {
     await cognitoidentityserviceprovider.createGroup(groupParams).promise();
   }
+  */
   /**
    * Then, add the user to the group.
    */
