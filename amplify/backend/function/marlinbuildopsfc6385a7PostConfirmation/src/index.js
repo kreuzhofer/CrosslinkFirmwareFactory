@@ -1,4 +1,4 @@
-import mixpanel from 'mixpanel-browser';
+const mixpanel = require('mixpanel-browser');
 /**
  * @fileoverview
  *
