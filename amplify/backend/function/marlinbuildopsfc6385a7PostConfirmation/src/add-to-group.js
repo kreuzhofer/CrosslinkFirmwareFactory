@@ -1,3 +1,6 @@
+import mixpanel from 'mixpanel-browser';
+mixpanel.init('b797e33ed9db411af6893878c06f6522');
+
 const aws = require('aws-sdk');
 
 const cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider({
@@ -26,6 +29,7 @@ exports.handler = async event => {
    * Then, add the user to the group.
    */
   await cognitoidentityserviceprovider.adminAddUserToGroup(addUserParams).promise();
+  mixpanel.track('Sign_Up_Complete');
 
   return event;
 };
