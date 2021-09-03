@@ -129,7 +129,16 @@
     "marlinbuildopsfc6385a7PreSignup": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "marlinbuildopsfc6385a7",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]      
     }
   },
   "storage": {

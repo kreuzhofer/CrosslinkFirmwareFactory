@@ -55,6 +55,7 @@ exports.handler = (event, context, callback) => {
       UserPoolId: event.userPoolId,
       Filter: 'email = "' + email + '"',
     };
+    console.log(params);
     
     cognitoIdp.listUsers(params).promise()
     .then (async (results) => {
