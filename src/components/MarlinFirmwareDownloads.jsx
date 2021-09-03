@@ -172,10 +172,7 @@ export class MarlinFirmwareDownloads extends React.Component {
             if(element !== '')
                 escapedTerms.push('(?=.*'+_.escapeRegExp(element)+')');
         });
-        console.log(escapedTerms);
-        //var regExpString = _.escapeRegExp(this.state.searchValue);
         var regExpString = escapedTerms.join('');
-        console.log(regExpString);
         const re = new RegExp(regExpString, 'i');
         const filteredResults = _.filter(this.state.buildDefinitions, result => 
             re.test(result.printerManufacturer+' '+
