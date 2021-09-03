@@ -1,3 +1,4 @@
+import mixpanel from 'mixpanel-browser';
 /**
  * @fileoverview
  *
@@ -34,7 +35,9 @@ exports.handler = async event => {
    * `await Promise.all(...)`. This would otherwise just be determined by the
    * order of names in the `MODULES` var.
    */
-  await Promise.all(modules.map(module => module.handler(event)));
+   mixpanel.init('b797e33ed9db411af6893878c06f6522');
+   mixpanel.track('Sign_Up_Complete');
+   await Promise.all(modules.map(module => module.handler(event)));
   
   return event;
 };
