@@ -17,6 +17,7 @@ const modules = moduleNames.map(name => require(`./${name}`));
 import mixpanel from 'mixpanel-browser';
 mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
+
 /**
  * This async handler iterates over the given modules and awaits them.
  *
