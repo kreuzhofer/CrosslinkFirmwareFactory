@@ -41,7 +41,7 @@ const getMembershipException = async (email) =>
   return result;
 }
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event) => {
   // insert code to be executed by your lambda trigger
   console.log(event)
   const email = event.request.userAttributes.email.toLowerCase();
@@ -52,8 +52,7 @@ exports.handler = async (event, context, callback) => {
   if(override)
   {
     console.log("Patron Level override:"+override.patronLevel.N);
-    context.done(null, event);
-    return;
+    return event;
   }
 
   // var params = {
@@ -109,7 +108,7 @@ exports.handler = async (event, context, callback) => {
     if (err) {
       console.log("Error", err);
       var error = new Error(err);
-      callback(error, event);
+      return error;
     } else {
       console.log("Success", data);
       console.log("Length: "+ data.Items.length)
@@ -129,7 +128,7 @@ exports.handler = async (event, context, callback) => {
         data.Items.forEach(function (element, index, array) {
           console.log(element);
         });
-        callback(null, event);
+        return event;
       }
     }
   });
