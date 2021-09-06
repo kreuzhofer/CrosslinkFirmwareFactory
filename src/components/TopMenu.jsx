@@ -26,14 +26,14 @@ export class TopMenu extends React.Component {
 					</Dropdown.Menu>
 				</Dropdown>
 
-				{/* { this.props.isAdmin ? */}
+				{ this.props.isAdmin ? 
 				<Dropdown item simple text='Admin'>
 					<Dropdown.Menu>
 						<Dropdown.Header>Configurations</Dropdown.Header>
 						<Dropdown.Item href='/FirmwareVersions'>Firmware versions</Dropdown.Item>
 						<Dropdown.Item href='/MembershipExceptions'>Membership exceptions</Dropdown.Item>
 					</Dropdown.Menu>
-				</Dropdown>{/*  : null} */}
+				</Dropdown> : null}
 			</Container>
 			<Container>
 			{ this.props.authState ? 
