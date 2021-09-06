@@ -152,7 +152,7 @@ export class MarlinFirmwareDownloads extends React.Component {
           <Table.Cell><h4>{def.name}</h4><br/>{def.description}</Table.Cell>
           <Table.Cell>{this.firmwareArtifacts(def.buildJobs.items)}</Table.Cell>
             <Table.Cell>
-                    { this.props.patronLevel>=2 ? <Button animated='vertical' onClick={()=>this.props.history.push('/AddBuildDefinition/'+def.id)}>
+                    { this.props.patronLevel>=2 || this.props.isAdmin ? <Button animated='vertical' onClick={()=>this.props.history.push('/AddBuildDefinition/'+def.id)}>
                         <Button.Content hidden>Clone</Button.Content>
                         <Button.Content visible><Icon name='clone'/></Button.Content>
                     </Button> : null }
