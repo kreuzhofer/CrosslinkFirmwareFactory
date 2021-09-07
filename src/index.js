@@ -17,6 +17,16 @@ ReactDOM.render(
       <Helmet>
         <script id="mcjs">{`!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/cab6ca52cf3bc634f70afb049/4a7f11bf418554eac02b1c35f.js");`}</script>      
       </Helmet>
+      <Helmet>
+        <script>{`
+          window.fwSettings={
+          'widget_id':80000006868
+          };
+          !function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}() 
+          `}
+        </script>
+        <script type='text/javascript' src='https://euc-widget.freshworks.com/widgets/80000006868.js' async defer></script>        
+      </Helmet>
       <MyApp Component={App}/>
       </>
 //  </React.StrictMode>
