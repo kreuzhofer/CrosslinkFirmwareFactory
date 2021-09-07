@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.custom-auth-container {
+  display: var(--container-display);
+  justify-content: var(--container-justify);
+  align-items: var(--container-align);
+  --container-height: 0;
+}
