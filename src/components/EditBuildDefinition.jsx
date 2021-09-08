@@ -14,6 +14,10 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import * as queries from '../graphql/queries'
 import * as mutations from '../graphql/mutations'
+
+import AceEditor from "react-ace";
+import 'ace-builds/webpack-resolver'
+import("ace-builds/src-min-noconflict/ext-language_tools");
   
 export class EditBuildDefinition extends React.Component {
 
@@ -188,14 +192,24 @@ export class EditBuildDefinition extends React.Component {
           onChange={(e) => this.setState({description: e.target.value})}
       /><br/>
       <Label>Config JSON</Label>
-      <TextareaAutosize
-          label='Config JSON'
-          placeholder='Config JSON'
-          name='configurationJSON'
-          value={this.state.configurationJSON}
-          onChange={(e) => this.setState({configurationJSON: e.target.value})}
-      /><br/>
-      
+      <AceEditor
+        mode="json"
+        theme="github"
+        value={this.state.configurationJSON}
+        onChange={(e) => this.setState({configurationJSON: e})}
+        name="UNIQUE_ID_OF_DIV"
+        fontSize={14}
+        showPrintMargin={true}
+        showGutter={true}
+        highlightActiveLine={true}
+        editorProps={{
+          enableBasicAutocompletion: true,
+          enableLiveAutocompletion: true,
+          enableSnippets: false,
+          showLineNumbers: true,
+          tabSize: 2,
+          }}
+      /><br/>      
 			{ this.state.isAdmin ? <>
 			<Input 
           type='Checkbox'
