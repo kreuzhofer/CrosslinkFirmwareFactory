@@ -25,6 +25,12 @@ export class TopMenu extends React.Component {
 						{ this.props.patronLevel >= 2 || this.props.isAdmin ? <Dropdown.Item href='/BuildDefinition'>My build definitions</Dropdown.Item> : null }
 					</Dropdown.Menu>
 				</Dropdown>
+				<Dropdown item simple text='About'>
+					<Dropdown.Menu>
+						<Dropdown.Item href='https://crosslink.io/impressum-anbieterkennzeichnung/'>Imprint / Impressum</Dropdown.Item>
+						<Dropdown.Item href='https://crosslink.io/datenschutzerklaerung/'>Privacy / Datenschutzerklärung</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown>
 
 				{ this.props.isAdmin ? 
 				<Dropdown item simple text='Admin'>
