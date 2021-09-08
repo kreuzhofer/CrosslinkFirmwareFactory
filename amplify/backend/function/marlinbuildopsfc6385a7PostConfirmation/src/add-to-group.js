@@ -30,8 +30,12 @@ exports.handler = async event => {
    */
   await cognitoidentityserviceprovider.adminAddUserToGroup(addUserParams).promise();
   console.info("Added user "+addUserParams.Username+" to group "+addUserParams.GroupName);
-  var mixpanel = Mixpanel.init('b797e33ed9db411af6893878c06f6522');
-  mixpanel.track("Sign_Up_Complete");
+  var mixpanel = Mixpanel.init('b797e33ed9db411af6893878c06f6522',
+  {
+    protocol: 'https'
+  });
+  var res = mixpanel.track("Sign_Up_Complete");
+  console.info(res);
 
   return event;
 };
