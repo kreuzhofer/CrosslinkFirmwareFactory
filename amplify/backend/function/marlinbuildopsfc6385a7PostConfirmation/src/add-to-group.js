@@ -1,4 +1,5 @@
 const aws = require('aws-sdk');
+const Mixpanel = require('mixpanel');
 
 const cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -29,6 +30,8 @@ exports.handler = async event => {
    */
   await cognitoidentityserviceprovider.adminAddUserToGroup(addUserParams).promise();
   console.info("Added user "+addUserParams.Username+" to group "+addUserParams.GroupName);
+  var mixpanel = Mixpanel.init('b797e33ed9db411af6893878c06f6522');
+  mixpanel.track("Sign_Up_Complete");
 
   return event;
 };
