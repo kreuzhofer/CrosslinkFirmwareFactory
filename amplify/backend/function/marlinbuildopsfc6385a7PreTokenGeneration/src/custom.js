@@ -77,6 +77,7 @@ exports.handler = async (event) => {
   }  
   else
   {
+    console.log("Looking for patron level...")
     ddb.scan(params, function (err, data) {
       if (err) {
         console.log("Error", err);
