@@ -1,5 +1,4 @@
 const AWS = require("aws-sdk");
-const { result } = require("underscore");
 const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 const TABLENAME = process.env.TABLENAME;
