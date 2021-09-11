@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const { result } = require("underscore");
 const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 const TABLENAME = process.env.TABLENAME;
@@ -78,40 +79,44 @@ exports.handler = async (event) => {
   else
   {
     console.log("Looking for patron level...")
-    ddb.scan(params, function (err, data) {
-      if (err) {
-        console.log("Error", err);
-      } else {
-        console.log("Success", data);
-        console.log("Length: "+ data.Items.length)
-        // if(data.Items.length == 0 || data.Items[0].patron_status.S != "active_patron")
-        // {
-        //   console.error("You're currently not an active Patron! Please become a Patron at the 2$ level or above to use this service.");
-        // }
-        // else if(data.Items[0].currently_entitled_amount_cents.N < 200)
-        // {
-        //   console.error("You need to be a Patron at the 2$ level or above to use this service.");
-        // }
-        // else
-        if(data.Items.length > 0)
-        {
-          if(data.Items[0].currently_entitled_amount_cents.N >= 200)
-            patron_level = 1;
-          if(data.Items[0].currently_entitled_amount_cents.N >= 500)
-            patron_level = 2;
+    result = await new Promise((resolve, reject) => {
+      ddb.scan(params, function (err, data) {
+        if (err) {
+          console.log("Error", err);
+          reject(err);
+        } else {
+          console.log("Success", data);
+          console.log("Length: "+ data.Items.length)
+          // if(data.Items.length == 0 || data.Items[0].patron_status.S != "active_patron")
+          // {
+          //   console.error("You're currently not an active Patron! Please become a Patron at the 2$ level or above to use this service.");
+          // }
+          // else if(data.Items[0].currently_entitled_amount_cents.N < 200)
+          // {
+          //   console.error("You need to be a Patron at the 2$ level or above to use this service.");
+          // }
+          // else
+          if(data.Items.length > 0)
+          {
+            if(data.Items[0].currently_entitled_amount_cents.N >= 200)
+              patron_level = 1;
+            if(data.Items[0].currently_entitled_amount_cents.N >= 500)
+              patron_level = 2;
+          }
         }
-      }
-      event.response = {
-        "claimsOverrideDetails": {
-            "claimsToAddOrOverride": {
-                "patron_level": patron_level
-            }
-        }
-      };
-      console.log(event.response);
-        // Return to Amazon Cognito
-      console.log(event);
-      return event;
+        event.response = {
+          "claimsOverrideDetails": {
+              "claimsToAddOrOverride": {
+                  "patron_level": patron_level
+              }
+          }
+        };
+        console.log(event.response);
+          // Return to Amazon Cognito
+        console.log(event);
+        resolve (event);
+      });
     });
+    return result;
   }
 };
