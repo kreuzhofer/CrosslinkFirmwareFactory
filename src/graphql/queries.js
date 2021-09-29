@@ -41,6 +41,8 @@ export const getBuildDefinition = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -83,6 +85,8 @@ export const listBuildDefinitions = /* GraphQL */ `
           name
           sourceTree
           configTree
+          parseJobState
+          defaultConfigJson
           createdAt
           updatedAt
         }
@@ -123,6 +127,8 @@ export const getBuildJob = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -157,6 +163,8 @@ export const listBuildJobs = /* GraphQL */ `
           name
           sourceTree
           configTree
+          parseJobState
+          defaultConfigJson
           createdAt
           updatedAt
         }
@@ -210,6 +218,8 @@ export const getFirmwareVersion = /* GraphQL */ `
       name
       sourceTree
       configTree
+      parseJobState
+      defaultConfigJson
       createdAt
       updatedAt
     }
@@ -232,6 +242,8 @@ export const listFirmwareVersions = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }

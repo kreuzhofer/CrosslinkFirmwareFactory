@@ -73,6 +73,17 @@ type FirmwareVersion @model
   name: String!
   sourceTree: String!
   configTree: String!
+  parseJobState: ParseJobState
+  defaultConfigJson: String
+}
+
+enum ParseJobState
+{
+  QUEUED
+  STARTING
+  RUNNING
+  DONE
+  FAILED  
 }
 
 type MembershipException @model

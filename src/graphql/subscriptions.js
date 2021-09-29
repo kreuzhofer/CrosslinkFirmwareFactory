@@ -41,6 +41,8 @@ export const onCreateBuildDefinition = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -87,6 +89,8 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -133,6 +137,8 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -171,6 +177,8 @@ export const onCreateBuildJob = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -209,6 +217,8 @@ export const onUpdateBuildJob = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -247,6 +257,8 @@ export const onDeleteBuildJob = /* GraphQL */ `
         name
         sourceTree
         configTree
+        parseJobState
+        defaultConfigJson
         createdAt
         updatedAt
       }
@@ -300,6 +312,8 @@ export const onCreateFirmwareVersion = /* GraphQL */ `
       name
       sourceTree
       configTree
+      parseJobState
+      defaultConfigJson
       createdAt
       updatedAt
     }
@@ -313,6 +327,8 @@ export const onUpdateFirmwareVersion = /* GraphQL */ `
       name
       sourceTree
       configTree
+      parseJobState
+      defaultConfigJson
       createdAt
       updatedAt
     }
@@ -326,6 +342,8 @@ export const onDeleteFirmwareVersion = /* GraphQL */ `
       name
       sourceTree
       configTree
+      parseJobState
+      defaultConfigJson
       createdAt
       updatedAt
     }
