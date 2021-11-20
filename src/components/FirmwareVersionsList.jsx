@@ -1,5 +1,5 @@
 import React from 'react';
-import { API, graphqlOperation } from 'aws-amplify'
+import { API, graphqlOperation, Auth } from 'aws-amplify'
 import { listFirmwareVersions } from '../graphql/queries';
 import {
     Header, 
@@ -9,6 +9,8 @@ import {
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import { Route } from "react-router-dom";
+import Lambda from 'aws-sdk/clients/lambda';
+
 
 export class FirmwareVersionsList extends React.Component {
 
@@ -34,6 +36,24 @@ export class FirmwareVersionsList extends React.Component {
         await this.reloadData();
     }
 
+    async handleParse(event, firmwareVersion)
+    {
+        var credentials = await Auth.currentCredentials()
+        console.info(credentials)
+        // Call lambda function
+        const lambda = new Lambda({
+          credentials: Auth.essentialCredentials(credentials)
+        });
+        var lambdaResult = lambda.invoke({
+          FunctionName: 'parsemarlinversionfunction-dev',
+          Payload: JSON.stringify({ "firmwareVersionId": firmwareVersion.id })
+        }, (err, data) => {
+          console.info(err)
+          console.info(data)
+        });
+        console.info(lambdaResult);
+    }
+
     firmwareVersions() {
         return this.state.firmwareVersions
         .sort(comparator.makeComparator('name'))
@@ -42,6 +62,11 @@ export class FirmwareVersionsList extends React.Component {
           <Table.Cell>{ver.name}</Table.Cell>
           <Table.Cell>{ver.sourceTree}</Table.Cell>
           <Table.Cell>{ver.configTree}</Table.Cell>
+          <Table.Cell>{ver.parseJobState}</Table.Cell>
+          <Table.Cell>
+            <Button onClick={(e)=>this.handleParse(e, ver)}>Parse
+            </Button>              
+          </Table.Cell>
         </Table.Row>)
     }
 
@@ -60,6 +85,8 @@ export class FirmwareVersionsList extends React.Component {
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Source tree</Table.HeaderCell>
                     <Table.HeaderCell>Config tree</Table.HeaderCell>
+                    <Table.HeaderCell>Status</Table.HeaderCell>
+                    <Table.HeaderCell>Action</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 

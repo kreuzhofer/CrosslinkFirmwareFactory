@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "api": {
+      "marlinbuildopsapi": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

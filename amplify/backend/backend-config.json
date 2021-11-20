@@ -129,7 +129,22 @@
     "marlinbuildopsfc6385a7PreSignup": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"     
+      "service": "Lambda"
+    },
+    "parsemarlinversionfunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
     }
   },
   "storage": {
