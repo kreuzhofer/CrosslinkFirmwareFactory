@@ -307,6 +307,8 @@ export class EditBuildDefinition extends React.Component {
         clearable
         onChange={(e, { searchQuery, value}) => {
           this.setState({printerModelSearch: "", printerModel: value});
+          console.log(value);
+          this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(value)});
           // filter subsequent list accordingly
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerModelSearch: searchQuery})}
@@ -320,14 +322,23 @@ export class EditBuildDefinition extends React.Component {
       />
 
       <br/>
-      <Input
-          type='text'
-          label='Printer mainboard type'
-          placeholder='Printer mainboard type'
-          name='printerMainboard'
-          value={this.state.printerMainboard}
-          onChange={(e) => this.setState({printerMainboard: e.target.value})}
-      /><br/>
+      <Label>Printer Variant / Mainboard</Label>
+      <Dropdown
+        clearable
+        onChange={(e, { searchQuery, value}) => {
+          this.setState({printerVariantSearch: "", printerMainboard: value});
+          // filter subsequent list accordingly
+        }}
+        onSearchChange={(e, {searchQuery}) => this.setState({printerVariantSearch: searchQuery})}
+        options={this.state.printerVariantOptions}
+        placeholder='Select printer model'
+        name='printerModel'
+        search
+        searchQuery={this.state.printerVariantSearch}
+        selection
+        value={this.state.printerMainboard}
+      />
+      <br/>
       <Input
           type='text'
           label='Platformio Environment'
