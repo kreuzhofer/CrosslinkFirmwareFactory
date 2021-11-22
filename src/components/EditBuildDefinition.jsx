@@ -112,12 +112,30 @@ export class EditBuildDefinition extends React.Component {
           return {
              key: v.name,
              text: v.name,
-             value: v.name
+             value: v.name,
+             environments: v.environments
           }
        });
        return printerVariants;
     }
+  }
 
+  platformioEnvOptionsByMainboard(value)
+  {
+    if(!value) return [];
+    var printerVariantsList = this.state.printerVariantOptions.filter(f=>f.key === value);
+    if(printerVariantsList.length>0)
+    {
+      console.log(printerVariantsList);
+      var environments = printerVariantsList[0]['environments'].map(v=>{
+        return {
+          key: v,
+          text: v,
+          value: v
+        }
+      });
+      return environments;
+    }
   }
 
   async fetchData() {
@@ -157,6 +175,12 @@ export class EditBuildDefinition extends React.Component {
       if(buildDefinition.printerModel && this.state.printerModelOptions)
       {
         this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(buildDefinition.printerModel)});
+      }
+
+      console.log(buildDefinition.printerMainboard);
+      if(buildDefinition.printerMainboard && this.state.printerVariantOptions)
+      {
+        this.setState({platformioEnvOptions: this.platformioEnvOptionsByMainboard(buildDefinition.printerMainboard)})
       }
 
       this.setState({
@@ -285,7 +309,6 @@ export class EditBuildDefinition extends React.Component {
         clearable
         onChange={(e, { searchQuery, value}) => {
           this.setState({printerManufacturerSearch: "", printerManufacturer: value});
-          // filter subsequent list accordingly
           console.log(value);
           this.setState({printerModelOptions: this.printerModelsByManufacturer(value)});
         }}
@@ -309,7 +332,6 @@ export class EditBuildDefinition extends React.Component {
           this.setState({printerModelSearch: "", printerModel: value});
           console.log(value);
           this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(value)});
-          // filter subsequent list accordingly
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerModelSearch: searchQuery})}
         options={this.state.printerModelOptions}
@@ -328,24 +350,34 @@ export class EditBuildDefinition extends React.Component {
         onChange={(e, { searchQuery, value}) => {
           this.setState({printerVariantSearch: "", printerMainboard: value});
           // filter subsequent list accordingly
+          console.log(value);
+          this.setState({platformioEnvOptions: this.platformioEnvOptionsByMainboard(value)})
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerVariantSearch: searchQuery})}
         options={this.state.printerVariantOptions}
-        placeholder='Select printer model'
-        name='printerModel'
+        placeholder='Select Printer Variant / Mainboard'
+        name='printermainboard'
         search
         searchQuery={this.state.printerVariantSearch}
         selection
         value={this.state.printerMainboard}
       />
       <br/>
-      <Input
-          type='text'
-          label='Platformio Environment'
-          placeholder='Platformio Environment'
-          name='platformioEnv'
-          value={this.state.platformioEnv}
-          onChange={(e) => this.setState({platformioEnv: e.target.value})}
+      <Label>PlatformIO environment</Label>
+      <Dropdown
+        clearable
+        onChange={(e, { searchQuery, value}) => {
+          this.setState({platformioEnvSearch: "", platformioEnv: value});
+          // filter subsequent list accordingly
+        }}
+        onSearchChange={(e, {searchQuery}) => this.setState({platformioEnvSearch: searchQuery})}
+        options={this.state.platformioEnvOptions}
+        placeholder='Select PlatformIO environment'
+        name='platformioenv'
+        search
+        searchQuery={this.state.platformioEnvSearch}
+        selection
+        value={this.state.platformioEnv}
       /><br/>        
       <Label>Description</Label>
       <TextareaAutosize
