@@ -10,14 +10,15 @@ import {
 import * as comparator from '../util/comparator';
 import { Route } from "react-router-dom";
 import Lambda from 'aws-sdk/clients/lambda';
-
+import * as subscriptions from '../graphql/subscriptions'
 
 export class FirmwareVersionsList extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            firmwareVersions: []
+            firmwareVersions: [],
+            subs: []
         }
     }
 
@@ -34,6 +35,26 @@ export class FirmwareVersionsList extends React.Component {
 
     async componentDidMount() {
         await this.reloadData();
+
+        const user =  await Auth.currentAuthenticatedUser();
+        const username = user.username;
+ 
+        try {
+            const updateFirmwareVersionSub = await API.graphql(graphqlOperation(subscriptions.onUpdateFirmwareVersion, {owner: username})).subscribe({
+                next: async (eventData) => {
+                    await this.reloadData();
+                }
+            })
+            this.state.subs.push(updateFirmwareVersionSub);
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    async componentWillUnmount() {
+        this.state.subs.forEach(function(item, index, array){
+            item.unsubscribe();
+          })
     }
 
     async handleParse(event, firmwareVersion)
