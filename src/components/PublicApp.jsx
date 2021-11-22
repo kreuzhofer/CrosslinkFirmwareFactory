@@ -8,6 +8,9 @@ import { Auth } from 'aws-amplify'
 import { Home } from './Home.jsx';
 import { MarlinFirmwareDownloads } from './MarlinFirmwareDownloads.jsx'
 
+// See https://dev.to/awshanks/aws-amplify-mixed-public-private-application-routing-1d9b
+// for public/private app example
+
 export class PublicApp extends React.Component {
 
 	constructor(props){
