@@ -24,6 +24,9 @@ export class EditBuildDefinition extends React.Component {
   constructor(props){
     super(props);
     let id = props.match.params.id ? props.match.params.id : "";
+    console.log("Id "+id);
+    let clone = props.clone ? true : false;
+    console.log("Clone "+clone);
 		let isAdmin = props.isAdmin ? props.isAdmin : false;
 		console.log("IsAdmin "+isAdmin)
     this.state = {
@@ -48,7 +51,8 @@ export class EditBuildDefinition extends React.Component {
       printerVariantSearch: '',
       printerVariantOptions: [],
       platformioEnvSearch: '',
-      platformioEnvOptions: []
+      platformioEnvOptions: [],
+      clone: clone
     }
   }
 
@@ -56,6 +60,11 @@ export class EditBuildDefinition extends React.Component {
     try {
       const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
       const buildDefinition = result.data.getBuildDefinition
+
+      if(this.state.clone)
+      {
+        buildDefinition.name = "(Copy of) "+ buildDefinition.name;
+      }
 
       const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
       const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.map(v=>{return {
@@ -183,20 +192,43 @@ export class EditBuildDefinition extends React.Component {
         return false
       }
       let groupsCanAccess = this.state.sharedWithEveryone ? ["Everyone"] : [];
-      let result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
-        id:this.state.id, 
-        name: this.state.name, 
-        firmwareVersionId: this.state.firmwareVersionId,
-        sourceTree: this.state.sourceTree,
-        configTree: this.state.configTree,
-        printerManufacturer: this.state.printerManufacturer ? this.state.printerManufacturer : this.state.printerManufacturerSearch,
-        printerModel: this.state.printerModel, 
-        printerMainboard: this.state.printerMainboard, 
-        platformioEnv:this.state.platformioEnv, 
-        description: this.state.description, 
-        configurationJSON: this.state.configurationJSON, 
-        groupsCanAccess: groupsCanAccess
-      }}));
+      let result;
+
+      if(this.state.clone)
+      {
+        result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
+          name: this.state.name,
+          firmwareVersionId: this.state.firmwareVersionId,
+          sourceTree: this.state.sourceTree,
+          configTree: this.state.configTree,
+          printerManufacturer: this.state.printerManufacturer,
+          printerModel: this.state.printerModel,
+          printerMainboard: this.state.printerMainboard,
+          platformioEnv: this.state.platformioEnv,
+          description: this.state.description,
+          configurationJSON: this.state.configurationJSON,
+          groupsCanAccess: groupsCanAccess          
+        }}));
+        console.log(result);
+        console.log("ID : "+result.data.createBuildDefinition.id)
+      }
+      else 
+      {
+        result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
+          id:this.state.id, 
+          name: this.state.name, 
+          firmwareVersionId: this.state.firmwareVersionId,
+          sourceTree: this.state.sourceTree,
+          configTree: this.state.configTree,
+          printerManufacturer: this.state.printerManufacturer ? this.state.printerManufacturer : this.state.printerManufacturerSearch,
+          printerModel: this.state.printerModel, 
+          printerMainboard: this.state.printerMainboard, 
+          platformioEnv:this.state.platformioEnv, 
+          description: this.state.description, 
+          configurationJSON: this.state.configurationJSON, 
+          groupsCanAccess: groupsCanAccess
+        }}));
+      }
       if(result)
         this.props.history.push('/BuildDefinition');
       else

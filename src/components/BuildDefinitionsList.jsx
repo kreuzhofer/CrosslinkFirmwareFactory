@@ -103,6 +103,7 @@ export class BuildDefinitionsList extends React.Component {
       const deleteSubscription = await API.graphql(graphqlOperation(subscriptions.onDeleteBuildDefinition, {owner: username})).subscribe({
         next: (eventData) => {
           this.setState({buildDefinitions: this.state.buildDefinitions.filter(item => item.id !== eventData.value.data.onDeleteBuildDefinition.id)})
+          this.resetComponent();
         }
       })
       this.state.subs.push(deleteSubscription);
@@ -142,8 +143,8 @@ export class BuildDefinitionsList extends React.Component {
 
   async handleDefinitionDeleteConfirm() {
       try {
-        /*const result =*/ await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: this.state.definitionDeleteConfirmState.id}}));
-//        console.info(result)
+        const result = await API.graphql(graphqlOperation(mutations.deleteBuildDefinition, {input: {id: this.state.definitionDeleteConfirmState.id}}));
+        console.info(result)
       } catch (error) {
         console.error(error);
       }
@@ -319,7 +320,9 @@ export class BuildDefinitionsList extends React.Component {
     } */
 
     const boundHandleSearchChange = this.handleSearchChange.bind(this);
-    const { searchValue, isLoading, definitionDeleteConfirmState, handleDefinitionDeleteCancel, handleDefinitionDeleteConfirm } = this.state    
+    const boundHandleDefinitionDeleteCancel = this.handleDefinitionDeleteCancel.bind(this);
+    const boundHandleDefinitionDeleteConfirm = this.handleDefinitionDeleteConfirm.bind(this);
+    const { searchValue, isLoading, definitionDeleteConfirmState } = this.state    
   
     return (
       <Segment>
@@ -359,8 +362,8 @@ export class BuildDefinitionsList extends React.Component {
             open={definitionDeleteConfirmState.open}
             cancelButton='Never mind'
             confirmButton="Yes"
-            onCancel={handleDefinitionDeleteCancel}
-            onConfirm={handleDefinitionDeleteConfirm}
+            onCancel={boundHandleDefinitionDeleteCancel}
+            onConfirm={boundHandleDefinitionDeleteConfirm}
           />
 
 {/*       <input
