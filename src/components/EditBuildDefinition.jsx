@@ -43,7 +43,7 @@ export class EditBuildDefinition extends React.Component {
       configurationJSON: '{}',
       sharedWithEveryone: false,
       firmwareOptions: [],
-		isAdmin: isAdmin,
+		  isAdmin: isAdmin,
       printerManufacturerSearch: '',
       printerManufacturerOptions: [],
       printerModelSearch: '',
@@ -56,117 +56,34 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  async fetchData() {
-    try {
-      const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
-      const buildDefinition = result.data.getBuildDefinition
-
-      if(this.state.clone)
-      {
-        buildDefinition.name = "(Copy of) "+ buildDefinition.name;
-      }
-
-      const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
-      const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.map(v=>{return {
-        key: v.id,
-        text: v.name,
-        value: v.id,
-        defaultconfigjson: v.defaultConfigJson
-      }})
-   
-      if(buildDefinition.firmwareVersionId)
-      {
-         // fetch options
-         var jsonList = firmwareOptions.filter(f=>f.key === buildDefinition.firmwareVersionId)
-         if(jsonList.length>0) // has config json
-         { 
-            var json = jsonList[0]['defaultconfigjson'];
-            console.log(json);
-            if(json)
-            {
-               var jsonObj = JSON.parse(json);
-               var printerManufacturerOptions = jsonObj['manufacturers'].map(v=>{
-                  return {
-                     key: v.name, 
-                     text: v.name, 
-                     value: v.name,
-                     printermodels: v.printerModels
-                  };
-               });
-               this.setState({printerManufacturerOptions: printerManufacturerOptions});
-            }
-         }
-      }
-      console.log(buildDefinition.printerManufacturer);
-      if(buildDefinition.printerManufacturer && this.state.printerManufacturerOptions)
-      {
-         var printerModelsList = this.state.printerManufacturerOptions.filter(f=>f.key === buildDefinition.printerManufacturer);
-         if(printerModelsList.length>0)
-         {
-            var printerModels = printerModelsList[0]['printermodels'].map(v=>{
-               return {
-                  key: v.name,
-                  text: v.name,
-                  value: v.name,
-                  variants: v.variants
-               }
-            });
-            this.setState({printerModelOptions: printerModels});
-         }
-      }
-
-      console.log(buildDefinition.printerModel);
-      if(buildDefinition.printerModel && this.state.printerModelOptions)
-      {
-         var printerVariantsList = this.state.printerModelOptions.filter(f=>f.key === buildDefinition.printerModel);
-         if(printerVariantsList.length>0)
-         {
-            var printerVariants = printerVariantsList[0]['variants'].map(v=>{
-               return {
-                  key: v.name,
-                  text: v.name,
-                  value: v.name
-               }
-            });
-            this.setState({printerVariantOptions: printerVariants});
-         }
-      }
-
-      this.setState({
-        id: buildDefinition.id,
-        name: buildDefinition.name,
-        firmwareVersionId: buildDefinition.firmwareVersionId,
-        sourceTree: buildDefinition.sourceTree,
-        configTree: buildDefinition.configTree,
-        printerManufacturer: buildDefinition.printerManufacturer,
-        printerManufacturerSearch: buildDefinition.printerManufacturer,
-        printerModel: buildDefinition.printerModel,
-        printerModelSearch: buildDefinition.printerModel,
-        printerMainboard: buildDefinition.printerMainboard,
-        platformioEnv: buildDefinition.platformioEnv,
-        description: buildDefinition.description,
-        configurationJSON: buildDefinition.configurationJSON,
-        sharedWithEveryone: buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
-        firmwareOptions: firmwareOptions
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async componentDidMount()
+  printerManufacturersByFirmwareVersion(id)
   {
-      if(this.state.id)
-          await this.fetchData();
+    if(!id) return [];
+    var jsonList = this.state.firmwareOptions.filter(f=>f.key === id)
+    if(jsonList.length>0) // has config json
+    { 
+       var json = jsonList[0]['defaultconfigjson'];
+       console.log(json);
+       if(json)
+       {
+          var jsonObj = JSON.parse(json);
+          var printerManufacturerOptions = jsonObj['manufacturers'].map(v=>{
+             return {
+                key: v.name, 
+                text: v.name, 
+                value: v.name,
+                printermodels: v.printerModels
+             };
+          });
+          return printerManufacturerOptions;
+       }
+    }
   }
 
   printerModelsByManufacturer(value)
   {
-      if(!value)
-      {
-         return [];
-      }
-      var printerManuOptions = this.printerManufacturerOptions.filter(f=>f.value === value);
+      if(!value) return [];
+      var printerManuOptions = this.state.printerManufacturerOptions.filter(f=>f.value === value);
       if(printerManuOptions.length===0)
       {
          return [];
@@ -178,10 +95,93 @@ export class EditBuildDefinition extends React.Component {
          key: v.name, 
          text: v.name, 
          value: v.name,
-         printervariants: v.variants
+         variants: v.variants
          };            
       })
       return printerModelsFiltered;
+  }
+
+  printerVariantsByPrinterModel(value)
+  {
+    if(!value) return [];
+    var printerVariantsList = this.state.printerModelOptions.filter(f=>f.key === value);
+    if(printerVariantsList.length>0)
+    {
+      console.log(printerVariantsList);
+       var printerVariants = printerVariantsList[0]['variants'].map(v=>{
+          return {
+             key: v.name,
+             text: v.name,
+             value: v.name
+          }
+       });
+       return printerVariants;
+    }
+
+  }
+
+  async fetchData() {
+    try {
+      const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
+      const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.map(v=>{return {
+        key: v.id,
+        text: v.name,
+        value: v.id,
+        defaultconfigjson: v.defaultConfigJson
+      }})
+      this.setState({firmwareOptions: firmwareOptions});
+      if(!this.state.id || this.state.id === "")
+        return;
+
+      const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
+      const buildDefinition = result.data.getBuildDefinition
+
+      if(this.state.clone)
+      {
+        buildDefinition.name = "(Copy of) "+ buildDefinition.name;
+      }
+
+   
+      if(buildDefinition.firmwareVersionId)
+      {
+        this.setState({printerManufacturerOptions: this.printerManufacturersByFirmwareVersion(buildDefinition.firmwareVersionId)});
+      }
+
+      console.log(buildDefinition.printerManufacturer);
+      if(buildDefinition.printerManufacturer && this.state.printerManufacturerOptions)
+      {
+        this.setState({printerModelOptions: this.printerModelsByManufacturer(buildDefinition.printerManufacturer)});
+      }
+
+      console.log(buildDefinition.printerModel);
+      if(buildDefinition.printerModel && this.state.printerModelOptions)
+      {
+        this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(buildDefinition.printerModel)});
+      }
+
+      this.setState({
+        id: buildDefinition.id,
+        name: buildDefinition.name,
+        firmwareVersionId: buildDefinition.firmwareVersionId,
+        sourceTree: buildDefinition.sourceTree,
+        configTree: buildDefinition.configTree,
+        printerManufacturer: buildDefinition.printerManufacturer,
+        printerModel: buildDefinition.printerModel,
+        printerMainboard: buildDefinition.printerMainboard,
+        platformioEnv: buildDefinition.platformioEnv,
+        description: buildDefinition.description,
+        configurationJSON: buildDefinition.configurationJSON,
+        sharedWithEveryone: buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async componentDidMount()
+  {
+    console.info("componentDidMount");
+    await this.fetchData();
   }
   
   handleSubmit = async(event) => {
@@ -194,7 +194,7 @@ export class EditBuildDefinition extends React.Component {
       let groupsCanAccess = this.state.sharedWithEveryone ? ["Everyone"] : [];
       let result;
 
-      if(this.state.clone)
+      if(this.state.clone || !this.state.id || this.state.id === "")
       {
         result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
           name: this.state.name,
@@ -254,7 +254,10 @@ export class EditBuildDefinition extends React.Component {
         clearable
         options={this.state.firmwareOptions}
         value={this.state.firmwareVersionId}
-        onChange={(e, {value}) => this.setState({firmwareVersionId: value})}/>
+        onChange={(e, {value}) => {
+          this.setState({firmwareVersionId: value})
+          this.setState({printerManufacturerOptions: this.printerManufacturersByFirmwareVersion(value)});
+          }}/>
       <br/>
       
       { this.state.firmwareVersionId ? null : <>
@@ -281,7 +284,7 @@ export class EditBuildDefinition extends React.Component {
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({printerManufacturerSearch: searchQuery, printerManufacturer: value});
+          this.setState({printerManufacturerSearch: "", printerManufacturer: value});
           // filter subsequent list accordingly
           console.log(value);
           this.setState({printerModelOptions: this.printerModelsByManufacturer(value)});
@@ -303,7 +306,7 @@ export class EditBuildDefinition extends React.Component {
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({printerModelSearch: searchQuery, printerModel: value});
+          this.setState({printerModelSearch: "", printerModel: value});
           // filter subsequent list accordingly
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerModelSearch: searchQuery})}
