@@ -11,6 +11,7 @@ import * as comparator from '../util/comparator';
 import { Route } from "react-router-dom";
 import Lambda from 'aws-sdk/clients/lambda';
 import * as subscriptions from '../graphql/subscriptions'
+const env = process.env["ENV"]
 
 export class FirmwareVersionsList extends React.Component {
 
@@ -66,7 +67,7 @@ export class FirmwareVersionsList extends React.Component {
           credentials: Auth.essentialCredentials(credentials)
         });
         var lambdaResult = lambda.invoke({
-          FunctionName: 'parsemarlinversionfunction-dev',
+          FunctionName: 'parsemarlinversionfunction-'+env,
           Payload: JSON.stringify({ "firmwareVersionId": firmwareVersion.id })
         }, (err, data) => {
           console.info(err)
