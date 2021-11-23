@@ -224,6 +224,11 @@ export class EditBuildDefinition extends React.Component {
         sharedWithEveryone: buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
 
+      if(buildDefinition.printerMainboard && this.state.printerVariantOptions.length===0)
+      {
+        this.setState({printerVariantSearch: buildDefinition.printerMainboard});
+      }
+
       if(buildDefinition.platformioEnv && this.state.platformioEnvOptions.length===0)
       {
         this.setState({platformioEnvSearch: buildDefinition.platformioEnv});
