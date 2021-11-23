@@ -207,6 +207,8 @@ export class EditBuildDefinition extends React.Component {
         this.setState({platformioEnvOptions: this.platformioEnvOptionsByMainboard(buildDefinition.printerMainboard)})
       }
 
+      console.log(buildDefinition.platformioEnv);
+
       this.setState({
         id: buildDefinition.id,
         name: buildDefinition.name,
