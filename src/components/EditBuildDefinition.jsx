@@ -67,7 +67,7 @@ export class EditBuildDefinition extends React.Component {
        if(json)
        {
           var jsonObj = JSON.parse(json);
-          var printerManufacturerOptions = jsonObj['manufacturers'].map(v=>{
+          var printerManufacturerOptions = jsonObj['manufacturers'].sort((a,b)=>a.name > b.name ? 1 : -1).map(v=>{
              return {
                 key: v.name, 
                 text: v.name, 
@@ -90,12 +90,13 @@ export class EditBuildDefinition extends React.Component {
       }
       var firstPrinterManuOption = printerManuOptions[0];
       console.log(firstPrinterManuOption);
-      var printerModelsFiltered = firstPrinterManuOption.printermodels.map(v=>{
+      var printerModelsFiltered = firstPrinterManuOption.printermodels.sort((a,b)=>a.name > b.name ? 1 : -1).map(v=>{
       return {
          key: v.name, 
          text: v.name, 
          value: v.name,
-         variants: v.variants
+         variants: v.variants,
+         environments: v.environments
          };            
       })
       return printerModelsFiltered;
@@ -138,6 +139,28 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
+  platformioEnvOptionsByModel(value)
+  {
+    if(!value) return [];
+    var filteredList = this.state.printerModelOptions.filter(f=>f.key === value);
+    if(filteredList.length>0)
+    {
+      console.log(filteredList);
+      if('environments' in filteredList[0])
+      {
+        var environments = filteredList[0]['environments'].map(v=>{
+          return {
+            key: v,
+            text: v,
+            value: v
+          }
+        });
+        return environments;
+      }
+      return [];
+    }
+  }
+
   async fetchData() {
     try {
       const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
@@ -175,6 +198,7 @@ export class EditBuildDefinition extends React.Component {
       if(buildDefinition.printerModel && this.state.printerModelOptions)
       {
         this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(buildDefinition.printerModel)});
+        this.setState({platformioEnvOptions: this.platformioEnvOptionsByModel(buildDefinition.printerModel)});
       }
 
       console.log(buildDefinition.printerMainboard);
@@ -197,6 +221,12 @@ export class EditBuildDefinition extends React.Component {
         configurationJSON: buildDefinition.configurationJSON,
         sharedWithEveryone: buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
+
+      if(buildDefinition.platformioEnv && this.state.platformioEnvOptions.length===0)
+      {
+        this.setState({platformioEnvSearch: buildDefinition.platformioEnv});
+      }
+
     } catch (error) {
       console.error(error);
     }
@@ -332,6 +362,7 @@ export class EditBuildDefinition extends React.Component {
           this.setState({printerModelSearch: "", printerModel: value});
           console.log(value);
           this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(value)});
+          this.setState({platformioEnvOptions: this.platformioEnvOptionsByModel(value)});
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerModelSearch: searchQuery})}
         options={this.state.printerModelOptions}

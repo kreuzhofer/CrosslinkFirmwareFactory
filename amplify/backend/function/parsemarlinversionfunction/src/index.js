@@ -97,7 +97,7 @@ exports.handler = async (event) => {
                 {
                     'Name': 'tag:Name',
                     'Values': [
-                        'parsemarlinjob',
+                        'parsemarlinjob_'+firmwareVersionId,
                     ]
                 },
                 {
@@ -156,7 +156,7 @@ exports.handler = async (event) => {
                     'Tags': [
                         {
                             'Key': 'Name',
-                            'Value': 'parsemarlinjob',
+                            'Value': 'parsemarlinjob_'+firmwareVersionId,
                         },
                         {
                             'Key' : 'FIRMWAREVERSIONID',
