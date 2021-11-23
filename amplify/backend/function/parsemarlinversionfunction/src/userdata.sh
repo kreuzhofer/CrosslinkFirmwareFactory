@@ -29,7 +29,7 @@ cd /tmp
 python3 -c "$(curl -fsSL https://marlinbuildagentscripts.s3.eu-central-1.amazonaws.com/marlin_default_config_enumerator.py)"
 if [ $? -ne 0 ]; then
     echo "Python borked it with exit code $?"
-    aws --region "eu-west-1" dynamodb update-item --table-name "$BUILDJOBTABLENAME" --key '{"id":{"S":"'$BUILDJOBID'"}}' --update-expression 'SET jobState=:s' --expression-attribute-values '{":s":{"S":"FAILED"}}'
+    aws --region "$REGION" dynamodb update-item --table-name "$FIRMWAREVERSIONTABLENAME" --key '{"id":{"S":"'$FIRMWAREVERSIONID'"}}' --update-expression 'SET parseJobState=:s' --expression-attribute-values '{":s":{"S":"FAILED"}}'
 fi
-aws s3 cp /tmp/part-001.log s3://$BUILDARTIFACTSBUCKET/public/$BUILDJOBID/logfile.txt
+aws s3 cp /tmp/part-001.log s3://$BUILDARTIFACTSBUCKET/public/$FIRMWAREVERSIONID/logfile.txt
 shutdown now

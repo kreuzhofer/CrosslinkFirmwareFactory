@@ -91,6 +91,8 @@ async function updateFirmwareVersion(id, newstate)
 exports.handler = async (event) => {
     console.log(event);
     firmwareVersionId = event['firmwareVersionId'];
+    buildArtifactsBucket = event['buildArtifactsBucket'];
+    firmwareVersionTableName = event['firmwareVersionTableName'];
     var result = await new Promise((resolve, reject) => {
         var params = {
             Filters: [
@@ -165,6 +167,14 @@ exports.handler = async (event) => {
                         {
                             'Key': 'GRAPHQLAPIURL',
                             'Value': graphQLApiUrl
+                        },
+                        {
+                            'Key': 'BUILDARTIFACTSBUCKET',
+                            'Value': buildArtifactsBucket
+                        },
+                        {
+                            'Key': 'FIRMWAREVERSIONTABLENAME',
+                            'Value': firmwareVersionTableName
                         }
                     ]
                 },

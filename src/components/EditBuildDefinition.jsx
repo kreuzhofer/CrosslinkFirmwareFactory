@@ -164,7 +164,7 @@ export class EditBuildDefinition extends React.Component {
   async fetchData() {
     try {
       const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
-      const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.map(v=>{return {
+      const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.sort((a,b)=>a.name > b.name ? 1 : -1).map(v=>{return {
         key: v.id,
         text: v.name,
         value: v.id,

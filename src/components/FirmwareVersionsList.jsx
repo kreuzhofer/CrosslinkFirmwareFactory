@@ -1,17 +1,20 @@
 import React from 'react';
-import { API, graphqlOperation, Auth } from 'aws-amplify'
+import { API, graphqlOperation, Auth, Storage } from 'aws-amplify'
 import { listFirmwareVersions } from '../graphql/queries';
 import {
     Header, 
     Segment, 
     Button,
-    Table
+    Table,
+    Icon
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import { Route } from "react-router-dom";
 import Lambda from 'aws-sdk/clients/lambda';
 import * as subscriptions from '../graphql/subscriptions'
 const env = process.env["REACT_APP_ENV"];
+const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"];
+const firmwareVersionTableName = process.env["REACT_APP_FIRMWAREVERSIONTABLENAME"];
 console.log(process.env);
 
 export class FirmwareVersionsList extends React.Component {
@@ -69,13 +72,42 @@ export class FirmwareVersionsList extends React.Component {
         });
         var lambdaResult = lambda.invoke({
           FunctionName: 'parsemarlinversionfunction-'+env,
-          Payload: JSON.stringify({ "firmwareVersionId": firmwareVersion.id })
+          Payload: JSON.stringify({
+              "firmwareVersionId": firmwareVersion.id,
+              "buildArtifactsBucket": buildArtifactsBucket,
+              "firmwareVersionTableName": firmwareVersionTableName
+             })
         }, (err, data) => {
           console.info(err)
           console.info(data)
         });
         console.info(lambdaResult);
     }
+
+    downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        //console.log("Download URL for "+filename+": "+url);
+        a.download = filename || 'download';
+        const clickHandler = () => {
+          setTimeout(() => {
+            URL.revokeObjectURL(url);
+            a.removeEventListener('click', clickHandler);
+          }, 150);
+        };
+        a.addEventListener('click', clickHandler, false);
+        a.click();
+        return a;
+      }
+  
+    handleDownload = async(e, job, file) => {
+        e.preventDefault();
+        const result = await Storage.get(job.id+'/'+file, { download: true });
+        //const result = await Storage.get(job.id+'/'+file);
+        //console.log(result);
+        this.downloadBlob(result.Body, file);
+      }
 
     firmwareVersions() {
         return this.state.firmwareVersions
@@ -86,6 +118,12 @@ export class FirmwareVersionsList extends React.Component {
           <Table.Cell>{ver.sourceTree}</Table.Cell>
           <Table.Cell>{ver.configTree}</Table.Cell>
           <Table.Cell>{ver.parseJobState}</Table.Cell>
+          <Table.Cell>Logfile.txt
+            <Button animated='vertical' onClick={(e)=>this.handleDownload(e, ver, "logfile.txt")}>
+                <Button.Content hidden>Download</Button.Content>
+                <Button.Content visible><Icon name="download"/></Button.Content>
+            </Button>
+        </Table.Cell>          
           <Table.Cell>
             <Button onClick={(e)=>this.handleParse(e, ver)}>Parse
             </Button>              
@@ -109,6 +147,7 @@ export class FirmwareVersionsList extends React.Component {
                     <Table.HeaderCell>Source tree</Table.HeaderCell>
                     <Table.HeaderCell>Config tree</Table.HeaderCell>
                     <Table.HeaderCell>Status</Table.HeaderCell>
+                    <Table.HeaderCell>Logfile</Table.HeaderCell>
                     <Table.HeaderCell>Action</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
