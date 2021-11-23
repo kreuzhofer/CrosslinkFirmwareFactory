@@ -11,7 +11,7 @@ import * as comparator from '../util/comparator';
 import { Route } from "react-router-dom";
 import Lambda from 'aws-sdk/clients/lambda';
 import * as subscriptions from '../graphql/subscriptions'
-const env = process.env["ENV"]
+const env = process.env["REACT_APP_ENV"]
 console.log(process.env);
 
 export class FirmwareVersionsList extends React.Component {
