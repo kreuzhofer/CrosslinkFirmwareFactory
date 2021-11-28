@@ -393,6 +393,8 @@ export const onCreateUserProfile = /* GraphQL */ `
     onCreateUserProfile(owner: $owner) {
       id
       owner
+      buildCredits
+      profileImageUrl
       createdAt
       updatedAt
     }
@@ -403,6 +405,8 @@ export const onUpdateUserProfile = /* GraphQL */ `
     onUpdateUserProfile(owner: $owner) {
       id
       owner
+      buildCredits
+      profileImageUrl
       createdAt
       updatedAt
     }
@@ -413,6 +417,8 @@ export const onDeleteUserProfile = /* GraphQL */ `
     onDeleteUserProfile(owner: $owner) {
       id
       owner
+      buildCredits
+      profileImageUrl
       createdAt
       updatedAt
     }

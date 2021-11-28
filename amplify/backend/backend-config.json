@@ -36,15 +36,6 @@
         },
         {
           "category": "function",
-          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
           "resourceName": "marlinbuildopsfc6385a7PreAuthentication",
           "triggerProvider": "Cognito",
           "attributes": [
@@ -55,6 +46,15 @@
         {
           "category": "function",
           "resourceName": "marlinbuildopsfc6385a7PreSignup",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",

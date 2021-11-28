@@ -441,6 +441,8 @@ export const createUserProfile = /* GraphQL */ `
     createUserProfile(input: $input, condition: $condition) {
       id
       owner
+      buildCredits
+      profileImageUrl
       createdAt
       updatedAt
     }
@@ -454,6 +456,8 @@ export const updateUserProfile = /* GraphQL */ `
     updateUserProfile(input: $input, condition: $condition) {
       id
       owner
+      buildCredits
+      profileImageUrl
       createdAt
       updatedAt
     }
@@ -467,6 +471,8 @@ export const deleteUserProfile = /* GraphQL */ `
     deleteUserProfile(input: $input, condition: $condition) {
       id
       owner
+      buildCredits
+      profileImageUrl
       createdAt
       updatedAt
     }

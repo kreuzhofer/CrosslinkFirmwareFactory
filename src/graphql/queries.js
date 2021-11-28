@@ -293,6 +293,8 @@ export const getUserProfile = /* GraphQL */ `
     getUserProfile(id: $id) {
       id
       owner
+      buildCredits
+      profileImageUrl
       createdAt
       updatedAt
     }
@@ -308,6 +310,8 @@ export const listUserProfiles = /* GraphQL */ `
       items {
         id
         owner
+        buildCredits
+        profileImageUrl
         createdAt
         updatedAt
       }

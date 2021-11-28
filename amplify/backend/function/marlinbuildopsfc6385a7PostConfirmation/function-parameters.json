@@ -8,7 +8,7 @@
   "resourceName": "marlinbuildopsfc6385a7PostConfirmation",
   "parentStack": "auth",
   "triggerEnvs": "[]",
-  "triggerDir": "C:\\Users\\dkreu\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PostConfirmation",
+  "triggerDir": "C:\\Users\\dkreu\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PostConfirmation",
   "triggerTemplate": "PostConfirmation.json.ejs",
   "triggerEventPath": "PostConfirmation.event.json",
   "roleName": "marlinbuildopsfc6385a7PostConfirmation",

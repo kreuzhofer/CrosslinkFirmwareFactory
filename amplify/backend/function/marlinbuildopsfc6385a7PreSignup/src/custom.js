@@ -46,6 +46,13 @@ const getMembershipException = async (email) =>
 exports.handler = async (event) => {
   console.log(event)
 
+  if(!event.request.userAttributes.hasOwnProperty('phone_number'))
+  {
+    console.log("phone number is empty")
+    event.request.userAttributes.phone_number = "+11234567890";
+    console.log(event);
+  }
+
   // check if email is already in use
   if (event.request.userAttributes.hasOwnProperty('email')) {
     const email = event.request.userAttributes.email.toLowerCase();
@@ -113,6 +120,10 @@ exports.handler = async (event) => {
               });
               return event;
             }
+            else
+            {
+              return event;
+            }
           }
         });
       }
@@ -122,5 +133,6 @@ exports.handler = async (event) => {
     }
   }
 
+  return event;
 
 };
