@@ -37,10 +37,26 @@ export class EditBuildDefinition extends React.Component {
       configTree: '',
       printerManufacturer: '',
       printerModel: '',
-      printerMainboard: '',
+      printerVariant: '',
       platformioEnv: '',
       description: '',
-      configurationJSON: '{}',
+      configurationJSON: `{
+"HeaderFiles" : [
+  {
+      "FileName" : "Marlin/Configuration.h",
+      "Settings" : [
+      ]
+  },
+  {
+      "FileName" : "Marlin/Configuration_adv.h",
+      "Settings" : [
+      ]
+  }
+],
+"IniFiles" : [
+]
+}
+      `,      
       sharedWithEveryone: false,
       firmwareOptions: [],
 		  isAdmin: isAdmin,
@@ -52,7 +68,10 @@ export class EditBuildDefinition extends React.Component {
       printerVariantOptions: [],
       platformioEnvSearch: '',
       platformioEnvOptions: [],
-      clone: clone
+      clone: clone,
+      printerMainboardOptions: [],
+      selectedMainboard: undefined,
+      printerMainboardSearch: '',
     }
   }
 
@@ -96,6 +115,7 @@ export class EditBuildDefinition extends React.Component {
          text: v.name, 
          value: v.name,
          variants: v.variants,
+         mainboard: v.mainboard,
          environments: v.environments
          };            
       })
@@ -114,14 +134,15 @@ export class EditBuildDefinition extends React.Component {
              key: v.name,
              text: v.name,
              value: v.name,
-             environments: v.environments
+             environments: v.environments,
+             mainboard: v.mainboard
           }
        });
        return printerVariants;
     }
   }
 
-  platformioEnvOptionsByMainboard(value)
+  platformioEnvOptionsByVariant(value)
   {
     if(!value) return [];
     var printerVariantsList = this.state.printerVariantOptions.filter(f=>f.key === value);
@@ -136,6 +157,16 @@ export class EditBuildDefinition extends React.Component {
         }
       });
       return environments;
+    }
+  }
+
+  selectedMainboardByPrinterVariant(value)
+  {
+    if(!value) return [];
+    var printerVariantsList = this.state.printerVariantOptions.filter(f=>f.key === value);
+    if(printerVariantsList.length>0)
+    {
+      return printerVariantsList[0]['mainboard'];
     }
   }
 
@@ -161,6 +192,90 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
+  selectedMainboardByModel(value)
+  {
+    if(!value) return [];
+    var filteredList = this.state.printerModelOptions.filter(f=>f.key === value);
+    if(filteredList.length>0)
+    {
+      console.log(filteredList);
+      if('mainboard' in filteredList[0])
+      {
+        return filteredList[0]['mainboard'];
+      }
+      return undefined;
+    }
+  }
+
+  mainboardOptionsByFirmware(id)
+  {
+    if(!id) return [];
+    var jsonList = this.state.firmwareOptions.filter(f=>f.key === id)
+    if(jsonList.length>0) // has config json
+    { 
+      var json = jsonList[0]['defaultconfigjson'];
+      console.log(json);
+      if(json)
+      {
+        var jsonObj = JSON.parse(json);
+        var result = jsonObj['mainboards'].sort((a,b)=>a.boardName > b.boardName ? 1 : -1).map(v=>{
+            return {
+              key: v.boardName,
+              text: v.boardDescription,
+              value: v.boardName
+            }
+          });
+        return result;
+      }
+    }
+  }
+
+  setHeaderFileConfigValue(configurationJSON, file, key, value)
+  {
+    console.log(configurationJSON);
+    var json = JSON.parse(configurationJSON);
+    if(!json['HeaderFiles'])
+    {
+      json.HeaderFiles = [
+        {
+            "FileName" : "Marlin/Configuration.h",
+            "Settings" : [
+            ]
+        },
+        {
+            "FileName" : "Marlin/Configuration_adv.h",
+            "Settings" : [
+            ]
+        }
+      ];
+    }
+    var fileSectionQuery = json['HeaderFiles'].filter(s=>s.FileName === file);
+    if(fileSectionQuery.length>0)
+    {
+      var fileSection = fileSectionQuery[0];
+      var settings = fileSection['Settings'];
+      var found = false;
+      console.log(settings);
+      settings.forEach(setting=>{
+        console.log(setting);
+        if(setting[0]===key)
+        {
+          console.log("Found!");
+          setting[1] = "True";
+          setting[2] = value;
+          found = true;
+        }
+      });
+      if(!found)
+      {
+        console.log("Not found!");
+        settings.push([key, "True", value])
+      }
+    }
+    console.log(json);
+    return JSON.stringify(json, null, 3);
+  }
+
   async fetchData() {
     try {
       const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
@@ -168,7 +283,8 @@ export class EditBuildDefinition extends React.Component {
         key: v.id,
         text: v.name,
         value: v.id,
-        defaultconfigjson: v.defaultConfigJson
+        defaultconfigjson: v.defaultConfigJson,
+        mainboards: v.mainboards
       }})
       this.setState({firmwareOptions: firmwareOptions});
       if(!this.state.id || this.state.id === "")
@@ -186,6 +302,7 @@ export class EditBuildDefinition extends React.Component {
       if(buildDefinition.firmwareVersionId)
       {
         this.setState({printerManufacturerOptions: this.printerManufacturersByFirmwareVersion(buildDefinition.firmwareVersionId)});
+        this.setState({printerMainboardOptions: this.mainboardOptionsByFirmware(buildDefinition.firmwareVersionId)});
       }
 
       console.log(buildDefinition.printerManufacturer);
@@ -199,12 +316,16 @@ export class EditBuildDefinition extends React.Component {
       {
         this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(buildDefinition.printerModel)});
         this.setState({platformioEnvOptions: this.platformioEnvOptionsByModel(buildDefinition.printerModel)});
+        if(!buildDefinition.selectedMainboard)
+          this.setState({selectedMainboard: this.selectedMainboardByModel(buildDefinition.printerModel)});
       }
 
       console.log(buildDefinition.printerMainboard);
       if(buildDefinition.printerMainboard && this.state.printerVariantOptions)
       {
-        this.setState({platformioEnvOptions: this.platformioEnvOptionsByMainboard(buildDefinition.printerMainboard)})
+        this.setState({platformioEnvOptions: this.platformioEnvOptionsByVariant(buildDefinition.printerMainboard)})
+        if(!buildDefinition.selectedMainboard)
+          this.setState({selectedMainboard: this.selectedMainboardByPrinterVariant(buildDefinition.printerMainboard)});
       }
 
       console.log(buildDefinition.platformioEnv);
@@ -217,7 +338,7 @@ export class EditBuildDefinition extends React.Component {
         configTree: buildDefinition.configTree,
         printerManufacturer: buildDefinition.printerManufacturer,
         printerModel: buildDefinition.printerModel,
-        printerMainboard: buildDefinition.printerMainboard,
+        printerVariant: buildDefinition.printerMainboard,
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
         configurationJSON: buildDefinition.configurationJSON,
@@ -264,7 +385,7 @@ export class EditBuildDefinition extends React.Component {
           configTree: this.state.configTree,
           printerManufacturer: this.state.printerManufacturer,
           printerModel: this.state.printerModel,
-          printerMainboard: this.state.printerMainboard,
+          printerVariant: this.state.printerVariant,
           platformioEnv: this.state.platformioEnv,
           description: this.state.description,
           configurationJSON: this.state.configurationJSON,
@@ -283,7 +404,7 @@ export class EditBuildDefinition extends React.Component {
           configTree: this.state.configTree,
           printerManufacturer: this.state.printerManufacturer ? this.state.printerManufacturer : this.state.printerManufacturerSearch,
           printerModel: this.state.printerModel, 
-          printerMainboard: this.state.printerMainboard, 
+          printerVariant: this.state.printerVariant, 
           platformioEnv:this.state.platformioEnv, 
           description: this.state.description, 
           configurationJSON: this.state.configurationJSON, 
@@ -318,6 +439,7 @@ export class EditBuildDefinition extends React.Component {
         onChange={(e, {value}) => {
           this.setState({firmwareVersionId: value})
           this.setState({printerManufacturerOptions: this.printerManufacturersByFirmwareVersion(value)});
+          this.setState({printerMainboardOptions: this.mainboardOptionsByFirmware(value)})
           }}/>
       <br/>
       
@@ -370,6 +492,7 @@ export class EditBuildDefinition extends React.Component {
           console.log(value);
           this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(value)});
           this.setState({platformioEnvOptions: this.platformioEnvOptionsByModel(value)});
+          this.setState({selectedMainboard: this.selectedMainboardByModel(value)});
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerModelSearch: searchQuery})}
         options={this.state.printerModelOptions}
@@ -382,25 +505,44 @@ export class EditBuildDefinition extends React.Component {
       />
 
       <br/>
-      <Label>Printer Variant / Mainboard</Label>
+      <Label>Printer Variant / Preset</Label>
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({printerVariantSearch: "", printerMainboard: value});
+          this.setState({printerVariantSearch: "", printerVariant: value});
           // filter subsequent list accordingly
           console.log(value);
-          this.setState({platformioEnvOptions: this.platformioEnvOptionsByMainboard(value)})
+          this.setState({platformioEnvOptions: this.platformioEnvOptionsByVariant(value)})
+          this.setState({selectedMainboard: this.selectedMainboardByPrinterVariant(value)});
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerVariantSearch: searchQuery})}
         options={this.state.printerVariantOptions}
-        placeholder='Select Printer Variant / Mainboard'
-        name='printermainboard'
+        placeholder='Select Printer Variant / Preset'
+        name='printervariant'
         search
         searchQuery={this.state.printerVariantSearch}
         selection
-        value={this.state.printerMainboard}
+        value={this.state.printerVariant}
       />
       <br/>
+      <Label>Selected Mainboard</Label>
+      <Dropdown
+        clearable
+        onChange={(e, { searchQuery, value}) => {
+          this.setState({printerMainboardSearch: "", selectedMainboard: value});
+          var newConfig = this.setHeaderFileConfigValue(this.state.configurationJSON, "Marlin/Configuration.h", "MOTHERBOARD", value);
+          this.setState({configurationJSON: newConfig});
+        }}
+        onSearchChange={(e, {searchQuery}) => this.setState({printerMainboardSearch: searchQuery})}
+        options={this.state.printerMainboardOptions}
+        placeholder='Select mainboard option'
+        name='printermainboard'
+        search
+        selection
+        value={this.state.selectedMainboard}
+      />
+      <br/>
+
       <Label>PlatformIO environment</Label>
       <Dropdown
         clearable

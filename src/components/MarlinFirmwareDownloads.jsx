@@ -206,11 +206,11 @@ export class MarlinFirmwareDownloads extends React.Component {
                     <Table.Row>
                     <Table.HeaderCell>Manufacturer</Table.HeaderCell>
                     <Table.HeaderCell>Model</Table.HeaderCell>
-                    <Table.HeaderCell>Mainboard</Table.HeaderCell>                        
+                    <Table.HeaderCell>Variant / Preset</Table.HeaderCell>                        
                     <Table.HeaderCell>Firmware</Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Builds</Table.HeaderCell>
-					{ this.props.patronLevel>=2 ? <Table.HeaderCell>Actions</Table.HeaderCell> : null }
+					{ this.props.patronLevel>=1 ? <Table.HeaderCell>Actions</Table.HeaderCell> : null }
                     </Table.Row>
                 </Table.Header>
 

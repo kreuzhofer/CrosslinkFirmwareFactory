@@ -17,6 +17,8 @@ export class MarlinFirmwareDetails extends React.Component
 {
 	constructor(props){
 		super(props);
+		this.state = {
+		};
 	}
 
 	async reloadData() {
@@ -26,6 +28,11 @@ export class MarlinFirmwareDetails extends React.Component
 		} catch (error) {
 				console.error(error);
 		}
+	}
+
+	async componentDidMount()
+	{
+		await this.reloadData();
 	}
 
 	render (){
