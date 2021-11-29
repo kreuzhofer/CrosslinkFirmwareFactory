@@ -15,6 +15,7 @@ type BuildDefinition @model
   printerManufacturer: String
   printerModel: String
   printerMainboard: String
+  selectedMainboard: String
   platformioEnv: String
   description: String
   configurationJSON: String
