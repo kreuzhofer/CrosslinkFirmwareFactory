@@ -29,7 +29,6 @@ export class RegistrationAndLogin extends React.Component{
                 slot="sign-up"
                 formFields={[
                     { type: 'username', label: 'Email Address *', placeholder: 'Ender your email address', required: true },
-                    { type: 'phone_number', required: true},
                     { type: 'password' },
                 ]}
                 className='custom-auth-container'
