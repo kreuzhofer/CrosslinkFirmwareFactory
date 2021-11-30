@@ -39,9 +39,9 @@
     "useDefault": "manual",
     "sharedId": "fc6385a7",
     "userPoolGroupList": [
-      "Everyone",
+      "Admin",
       "Level1",
-      "Admin"
+      "Everyone"
     ],
     "userPoolGroups": true,
     "usernameAttributes": [
