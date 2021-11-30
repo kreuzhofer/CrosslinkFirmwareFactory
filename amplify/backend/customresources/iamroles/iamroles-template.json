@@ -6,7 +6,10 @@
         },
         "authuserPoolGroupsEveryoneGroupRole": {
 					"Type": "String"
-				},				
+				},
+        "authuserPoolGroupsLevel1GroupRole": {
+                "Type": "String"
+                },	
         "authuserPoolGroupsAdminGroupRole" : {
 					"Type" : "String"
 				}
@@ -133,6 +136,44 @@
                 },
 				"Roles": [
           { "Fn::Select" : [ "1", { "Fn::Split" : [ "/", { "Ref" : "authuserPoolGroupsEveryoneGroupRole" } ] } ] }
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Deny",
+                            "Action": [
+                                "sqs:*"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+				}
+			}
+		},
+		"Level1GroupInvokeSQSPolicy": {
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+                "PolicyName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "Level1GroupInvokeSQSPolicy",
+                        {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "Level1GroupInvokeSQSPolicy",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]                
+                },
+				"Roles": [
+          { "Fn::Select" : [ "1", { "Fn::Split" : [ "/", { "Ref" : "authuserPoolGroupsLevel1GroupRole" } ] } ] }
 				],
 				"PolicyDocument": {
 					"Version": "2012-10-17",

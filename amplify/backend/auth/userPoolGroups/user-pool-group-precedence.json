@@ -4,7 +4,11 @@
     "precedence": 1
   },
   {
-    "groupName": "Admin",
+    "groupName": "Level1",
     "precedence": 2
+  },
+  {
+    "groupName": "Admin",
+    "precedence": 3
   }
 ]

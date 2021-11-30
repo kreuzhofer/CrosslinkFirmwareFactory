@@ -187,6 +187,13 @@
           "attributes": [
             "EveryoneGroupRole"
           ]
+        },        
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "Level1GroupRole"
+          ]
         },
         {
           "category": "auth",

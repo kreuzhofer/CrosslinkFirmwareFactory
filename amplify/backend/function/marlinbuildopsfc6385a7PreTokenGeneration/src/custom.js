@@ -71,6 +71,9 @@ exports.handler = async (event) => {
           "claimsToAddOrOverride": {
               "patron_level": patron_level
           }
+      },
+      "groupOverrideDetails": {
+        "groupsToOverride": ["Everyone", "Level1"]
       }
     };
     return event;
@@ -103,11 +106,15 @@ exports.handler = async (event) => {
               patron_level = 2;
           }
         }
+        var groupsToOverride = (patron_level>0 ? ["Everyone", "Level1"] : ["Everyone"]);
         event.response = {
           "claimsOverrideDetails": {
               "claimsToAddOrOverride": {
                   "patron_level": patron_level
               }
+          },
+          "groupOverrideDetails": {
+            "groupsToOverride": groupsToOverride
           }
         };
         console.log(event.response);

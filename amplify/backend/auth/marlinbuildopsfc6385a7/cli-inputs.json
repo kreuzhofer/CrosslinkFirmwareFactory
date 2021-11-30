@@ -40,9 +40,10 @@
     "sharedId": "fc6385a7",
     "userPoolGroupList": [
       "Everyone",
+      "Level1",
       "Admin"
     ],
-    "userPoolGroups": false,
+    "userPoolGroups": true,
     "usernameAttributes": [
       "email"
     ],
