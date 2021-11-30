@@ -311,6 +311,11 @@ export class EditBuildDefinition extends React.Component {
         this.setState({printerModelOptions: this.printerModelsByManufacturer(buildDefinition.printerManufacturer)});
       }
 
+      if(buildDefinition.selectedMainboard)
+      {
+        this.setState({selectedMainboard: buildDefinition.selectedMainboard});
+      }
+
       console.log(buildDefinition.printerModel);
       if(buildDefinition.printerModel && this.state.printerModelOptions)
       {
@@ -339,7 +344,6 @@ export class EditBuildDefinition extends React.Component {
         printerManufacturer: buildDefinition.printerManufacturer,
         printerModel: buildDefinition.printerModel,
         printerVariant: buildDefinition.printerMainboard,
-        selectedMainboard: buildDefinition.selectedMainboard,
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
         configurationJSON: buildDefinition.configurationJSON,
@@ -355,6 +359,7 @@ export class EditBuildDefinition extends React.Component {
       {
         this.setState({platformioEnvSearch: buildDefinition.platformioEnv});
       }
+
 
     } catch (error) {
       console.error(error);

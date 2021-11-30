@@ -12,6 +12,7 @@ export const getBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      selectedMainboard
       platformioEnv
       description
       configurationJSON
@@ -69,6 +70,7 @@ export const listBuildDefinitions = /* GraphQL */ `
         printerManufacturer
         printerModel
         printerMainboard
+        selectedMainboard
         platformioEnv
         description
         configurationJSON

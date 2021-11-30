@@ -12,6 +12,7 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      selectedMainboard
       platformioEnv
       description
       configurationJSON
@@ -60,6 +61,7 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      selectedMainboard
       platformioEnv
       description
       configurationJSON
@@ -108,6 +110,7 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       printerManufacturer
       printerModel
       printerMainboard
+      selectedMainboard
       platformioEnv
       description
       configurationJSON
