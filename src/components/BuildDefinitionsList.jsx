@@ -83,7 +83,7 @@ export class BuildDefinitionsList extends React.Component {
   {
     await this.reloadData();
     const user =  await Auth.currentAuthenticatedUser();
-//        console.log(user);
+    console.log(user);
     const username = user.username;
 //        console.log(username);
 
