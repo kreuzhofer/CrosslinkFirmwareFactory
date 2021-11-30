@@ -17,9 +17,9 @@ export type AmplifyDependentResourcesAttributes = {
             "CreatedSNSRole": "string"
         },
         "userPoolGroups": {
-            "EveryoneGroupRole": "string",
+            "AdminGroupRole": "string",
             "Level1GroupRole": "string",
-            "AdminGroupRole": "string"
+            "EveryoneGroupRole": "string"
         }
     },
     "function": {
