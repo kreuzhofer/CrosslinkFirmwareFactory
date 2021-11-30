@@ -347,7 +347,7 @@ export class EditBuildDefinition extends React.Component {
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
         configurationJSON: buildDefinition.configurationJSON,
-        sharedWithEveryone: buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
+        sharedWithEveryone: this.state.clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
 
       if(buildDefinition.printerMainboard && this.state.printerVariantOptions.length===0)
