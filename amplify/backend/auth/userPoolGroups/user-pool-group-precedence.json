@@ -1,7 +1,7 @@
 [
   {
     "groupName": "Everyone",
-    "precedence": 1
+    "precedence": 3
   },
   {
     "groupName": "Level1",
@@ -9,6 +9,6 @@
   },
   {
     "groupName": "Admin",
-    "precedence": 3
+    "precedence": 1
   }
 ]
