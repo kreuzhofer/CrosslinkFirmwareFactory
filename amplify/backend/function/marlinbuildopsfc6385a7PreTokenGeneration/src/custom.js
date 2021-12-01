@@ -106,17 +106,26 @@ exports.handler = async (event) => {
               patron_level = 2;
           }
         }
-        var groupsToOverride = (patron_level>0 ? ["Level1", "Everyone"] : ["Everyone"]);
-        event.response = {
-          "claimsOverrideDetails": {
-              "claimsToAddOrOverride": {
-                  "patron_level": patron_level
-              },
-              "groupOverrideDetails": {
-                "groupsToOverride": groupsToOverride
-              }
+        var groupsToOverride = (patron_level>0 ? ["Level1", "Everyone"] : null);
+        if(groupsToOverride)
+          event.response = {
+            "claimsOverrideDetails": {
+                "claimsToAddOrOverride": {
+                    "patron_level": patron_level
+                },
+                "groupOverrideDetails": {
+                  "groupsToOverride": groupsToOverride
+                }
+            }
           }
-        };
+        else
+          event.response = {
+            "claimsOverrideDetails": {
+                "claimsToAddOrOverride": {
+                    "patron_level": patron_level
+                }
+            }
+          };
         console.log(event.response);
           // Return to Amazon Cognito
         console.log(event);
