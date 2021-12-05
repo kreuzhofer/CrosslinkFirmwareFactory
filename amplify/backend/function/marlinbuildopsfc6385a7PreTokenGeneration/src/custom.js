@@ -47,6 +47,9 @@ exports.handler = async (event) => {
   console.log(event);
   const email = event.request.userAttributes.email.toLowerCase();
   console.log(email);
+  console.log(event.request.groupConfiguration.preferredRole);
+  var level1Role = event.request.groupConfiguration.preferredRole.split('/')[0]+"/"+event.userPoolId+"-Level1GroupRole"
+  console.log(level1Role);
 
   const params = {
     // Specify which items in the results are returned.
@@ -72,7 +75,8 @@ exports.handler = async (event) => {
               "patron_level": patron_level
           },
           "groupOverrideDetails": {
-            "groupsToOverride": ["Everyone", "Level1"]
+            "groupsToOverride": ["Level1", "Everyone"],
+            "preferredRole": level1Role
           }
       }
     };
@@ -106,17 +110,27 @@ exports.handler = async (event) => {
               patron_level = 2;
           }
         }
-        var groupsToOverride = (patron_level>0 ? ["Everyone", "Level1"] : ["Everyone"]);
-        event.response = {
-          "claimsOverrideDetails": {
-              "claimsToAddOrOverride": {
-                  "patron_level": patron_level
-              },
-              "groupOverrideDetails": {
-                "groupsToOverride": groupsToOverride
-              }
+        var groupsToOverride = (patron_level>0 ? ["Level1", "Everyone"] : null);
+        if(groupsToOverride)
+          event.response = {
+            "claimsOverrideDetails": {
+                "claimsToAddOrOverride": {
+                    "patron_level": patron_level
+                },
+                "groupOverrideDetails": {
+                  "groupsToOverride": groupsToOverride,
+                  "preferredRole": level1Role
+                }
+            }
           }
-        };
+        else
+          event.response = {
+            "claimsOverrideDetails": {
+                "claimsToAddOrOverride": {
+                    "patron_level": patron_level
+                }
+            }
+          };
         console.log(event.response);
           // Return to Amazon Cognito
         console.log(event);

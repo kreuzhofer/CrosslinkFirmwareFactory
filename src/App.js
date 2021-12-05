@@ -83,10 +83,10 @@ const App = () => {
             <Route path="/Marlin" exact render={(props)=>(<MarlinFirmwareDownloads {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)} />
             <Route path="/Marlin/:id" render={(props)=>(<MarlinFirmwareDetails {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)} />
 
-            { patronLevel >= 1 || isAdmin ? <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} isAdmin={isAdmin} /> )} /> : null }
-            { patronLevel >= 1 || isAdmin ? <Route path="/BuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} isAdmin={isAdmin} />)}/> : null }
-            { patronLevel >= 1 || isAdmin ? <Route path="/AddBuildDefinition" exact render={(props)=>(<EditBuildDefinition {...props} isAdmin={isAdmin} />)}/> : null }
-            { patronLevel >= 1 || isAdmin ? <Route path="/AddBuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} clone={true} isAdmin={isAdmin} />)}/> : null }
+            <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} patronLevel={patronLevel} isAdmin={isAdmin} /> )} />
+            <Route path="/BuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)}/>
+            <Route path="/AddBuildDefinition" exact render={(props)=>(<EditBuildDefinition {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)}/>
+            <Route path="/AddBuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} patronLevel={patronLevel} clone={true} isAdmin={isAdmin} />)}/>
 
 
             { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }

@@ -15,7 +15,7 @@ import * as subscriptions from '../graphql/subscriptions'
 const env = process.env["REACT_APP_ENV"];
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"];
 const firmwareVersionTableName = process.env["REACT_APP_FIRMWAREVERSIONTABLENAME"];
-console.log(process.env);
+if (env.startsWith('dev')) console.log(process.env);
 
 export class FirmwareVersionsList extends React.Component {
 
