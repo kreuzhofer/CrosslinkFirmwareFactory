@@ -44,7 +44,8 @@ export class BuildDefinitionsList extends React.Component {
       subs: [],
       results: [],
       oldResults: [],    
-      searchValue: ''
+      searchValue: '',
+      patronConfirmOpenState: false
     }
   }
 
@@ -55,7 +56,15 @@ export class BuildDefinitionsList extends React.Component {
         oldResults: this.state.buildDefinitions,    
         searchValue: ''
     });
-}  
+  }  
+
+  handlePatronConfirmCancel = () => {
+    this.setState({ patronConfirmOpenState: false });
+  }
+  handlePatronConfirmOpenLink = () => {
+    this.setState({ patronConfirmOpenState: false });
+    window.open("https://www.patreon.com/crosslink");
+  }
 
   async reloadData() {
     try {
@@ -172,6 +181,15 @@ export class BuildDefinitionsList extends React.Component {
       console.info("clicked build "+def.id);
       mixpanel.track("Click_build");
       let buildDefinitionID = def.id;
+
+      console.log("Patron Level:",this.props.patronLevel)
+      // check patron status, build will anyways not start if not proper level (IAM based check)
+      if(!(this.props.patronLevel>=1 || this.props.isAdmin))
+      {
+        console.error("You have to be a patron")
+        this.setState({ patronConfirmOpenState: true});
+        return;
+      }
 
       // store build job in database (used to be in the lambda, now here)
       let result = await API.graphql(graphqlOperation(mutations.createBuildJob, {
@@ -322,7 +340,9 @@ export class BuildDefinitionsList extends React.Component {
     const boundHandleSearchChange = this.handleSearchChange.bind(this);
     const boundHandleDefinitionDeleteCancel = this.handleDefinitionDeleteCancel.bind(this);
     const boundHandleDefinitionDeleteConfirm = this.handleDefinitionDeleteConfirm.bind(this);
-    const { searchValue, isLoading, definitionDeleteConfirmState } = this.state    
+    const boundHandlePatronConfirmCancel = this.handlePatronConfirmCancel.bind(this);
+    const boundHandlePatronConfirmOpenLink = this.handlePatronConfirmOpenLink.bind(this);
+    const { searchValue, isLoading, definitionDeleteConfirmState, patronConfirmOpenState } = this.state
   
     return (
       <Segment>
@@ -365,6 +385,17 @@ export class BuildDefinitionsList extends React.Component {
             onCancel={boundHandleDefinitionDeleteCancel}
             onConfirm={boundHandleDefinitionDeleteConfirm}
           />
+        <Confirm
+          open={patronConfirmOpenState}
+          header='This is a Patrons-only functionality'
+          cancelButton="Never mind"
+          confirmButton="Yes, take me to Patreon"
+          content="To start builds, you need to be at least a Patron on the Initiate Level."
+          onCancel={boundHandlePatronConfirmCancel}
+          onConfirm={boundHandlePatronConfirmOpenLink}
+          >
+        </Confirm>
+
 
 {/*       <input
         type="file"

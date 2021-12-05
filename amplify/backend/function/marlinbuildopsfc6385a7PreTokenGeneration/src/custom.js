@@ -47,6 +47,9 @@ exports.handler = async (event) => {
   console.log(event);
   const email = event.request.userAttributes.email.toLowerCase();
   console.log(email);
+  console.log(event.request.groupConfiguration.preferredRole);
+  var level1Role = event.request.groupConfiguration.preferredRole.split('/')[0]+"/"+event.userPoolId+"-Level1GroupRole"
+  console.log(level1Role);
 
   const params = {
     // Specify which items in the results are returned.
@@ -72,7 +75,8 @@ exports.handler = async (event) => {
               "patron_level": patron_level
           },
           "groupOverrideDetails": {
-            "groupsToOverride": ["Level1", "Everyone"]
+            "groupsToOverride": ["Level1", "Everyone"],
+            "preferredRole": level1Role
           }
       }
     };
@@ -114,7 +118,8 @@ exports.handler = async (event) => {
                     "patron_level": patron_level
                 },
                 "groupOverrideDetails": {
-                  "groupsToOverride": groupsToOverride
+                  "groupsToOverride": groupsToOverride,
+                  "preferredRole": level1Role
                 }
             }
           }
