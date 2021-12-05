@@ -20,6 +20,32 @@ import AceEditor from "react-ace";
 import 'ace-builds/webpack-resolver'
 import("ace-builds/src-min-noconflict/ext-language_tools");
 
+const defaultJson = JSON.stringify(JSON.parse(`
+{
+  "configformatversion" : "2",
+  "headerfiles" : [
+  {
+      "filename" : "Marlin/Configuration.h",
+      "settings" : [
+        {
+          "key": "STRING_CONFIG_H_AUTHOR",
+          "enabled": "True",
+          "value": "(Your name here)",
+          "comment": "This is an example configuration entry"
+        }
+      ]
+  },
+  {
+      "filename" : "Marlin/Configuration_adv.h",
+      "settings" : [
+      ]
+  }
+  ],
+  "inifiles" : [
+  ]
+}
+`), null, 3);
+
 export class EditBuildDefinition extends React.Component {
 
   constructor(props){
@@ -41,30 +67,7 @@ export class EditBuildDefinition extends React.Component {
       printerVariant: '',
       platformioEnv: '',
       description: '',
-      configurationJSON: `{
-  "configformatversion" : "2",
-  "headerfiles" : [
-  {
-      "filename" : "Marlin/Configuration.h",
-      "settings" : [
-        {
-          "key": "STRING_CONFIG_H_AUTHOR",
-          "enabled": "True",
-          "value": "(Your name here)",
-          "comment": "This is an example configuration entry"
-        }
-      ]
-  },
-  {
-      "filename" : "Marlin/Configuration_adv.h",
-      "settings" : [
-      ]
-  }
-],
-"inifiles" : [
-]
-}
-      `,      
+      configurationJSON: defaultJson,      
       sharedWithEveryone: false,
       firmwareOptions: [],
 		  isAdmin: isAdmin,
@@ -238,6 +241,68 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
+  jsonLower = function (obj)
+  {
+    var ret = null;
+      if (typeof(obj) == "string" || typeof(obj) == "number")
+          return obj;
+      else if (obj.push)
+          ret = [];
+      else
+          ret = {};
+      for (var key in obj)
+          ret[String(key).toLowerCase()] = this.jsonLower(obj[key]);
+      return ret;
+  };
+
+  upgradeJson(json)
+  {
+    if(!json['configformatversion'])
+    {
+      json.configformatversion = '2';
+    }
+    if(!json['headerfiles'])
+    {
+      json.headerfiles = [
+        {
+            "filename" : "Marlin/Configuration.h",
+            "settings" : [
+            ]
+        },
+        {
+            "filename" : "Marlin/Configuration_adv.h",
+            "settings" : [
+            ]
+        }
+      ];
+    }
+    json.headerfiles.forEach(headerfile => {
+      var oldSettings = headerfile.settings;
+      var convertedSettings = [];
+      if(oldSettings)
+      {
+        oldSettings.forEach(setting => {
+          if(Array.isArray(setting))
+          {
+            if(setting.length===2)
+            {
+              convertedSettings.push({"key":setting[0], "enabled": (setting[1].toLowerCase()==="true").toString()});
+            }
+            else if (setting.length===3)
+            {
+              convertedSettings.push({"key":setting[0], "enabled": (setting[1].toLowerCase()==="true").toString(), "value":setting[2]});
+            }
+          }
+          else
+          {
+            convertedSettings.push(setting);
+          }
+        });
+      }
+      headerfile.settings = convertedSettings;
+    });   
+  }
+
   async fetchData() {
     try {
       const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
@@ -297,6 +362,9 @@ export class EditBuildDefinition extends React.Component {
 
       console.log(buildDefinition.platformioEnv);
 
+      var lowerJsonObj = this.jsonLower(JSON.parse(buildDefinition.configurationJSON));
+      var upgradedObj = this.upgradeJson(lowerJsonObj);
+
       this.setState({
         id: buildDefinition.id,
         name: buildDefinition.name,
@@ -308,7 +376,7 @@ export class EditBuildDefinition extends React.Component {
         printerVariant: buildDefinition.printerMainboard,
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
-        configurationJSON: buildDefinition.configurationJSON,
+        configurationJSON: JSON.stringify(lowerJsonObj, null, 3),
         sharedWithEveryone: this.state.clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
 
@@ -482,28 +550,28 @@ export class EditBuildDefinition extends React.Component {
               "settings" : [
                 {
                   "key": "LEVEL_BED_CORNERS",
-                  "enabled": "True"
+                  "enabled": "true"
                 },
                 {
                   "key": "SLIM_LCD_MENUS",
-                  "enabled": "False"
+                  "enabled": "false"
                 },
                 {
                   "key": "LCD_BED_LEVELING",
-                  "enabled": "True"
+                  "enabled": "true"
                 },
                 {
                   "key": "MESH_BED_LEVELING",
-                  "enabled": "True"
+                  "enabled": "true"
                 },
                 {
                   "key": "GRID_MAX_POINTS_X",
-                  "enabled": "True",
+                  "enabled": "true",
                   "value": "3"
                 },
                 {
                   "key": "GRID_MAX_POINTS_Y",
-                  "enabled": "True",
+                  "enabled": "true",
                   "value": "3"
                 }
               ]
@@ -513,7 +581,7 @@ export class EditBuildDefinition extends React.Component {
               "settings" : [
                 {
                   "key": "ARC_SUPPORT",
-                  "enabled": "False"
+                  "enabled": "false"
                 }
               ]
           }
