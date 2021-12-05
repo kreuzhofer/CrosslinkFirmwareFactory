@@ -8,7 +8,8 @@ import {
     Button,
     Form,
     Label,
-    Dropdown
+    Dropdown, 
+    Grid
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -18,6 +19,32 @@ import * as mutations from '../graphql/mutations'
 import AceEditor from "react-ace";
 import 'ace-builds/webpack-resolver'
 import("ace-builds/src-min-noconflict/ext-language_tools");
+
+const defaultJson = JSON.stringify(JSON.parse(`
+{
+  "configformatversion" : "2",
+  "headerfiles" : [
+  {
+      "filename" : "Marlin/Configuration.h",
+      "settings" : [
+        {
+          "key": "STRING_CONFIG_H_AUTHOR",
+          "enabled": "True",
+          "value": "(Your name here)",
+          "comment": "This is an example configuration entry"
+        }
+      ]
+  },
+  {
+      "filename" : "Marlin/Configuration_adv.h",
+      "settings" : [
+      ]
+  }
+  ],
+  "inifiles" : [
+  ]
+}
+`), null, 3);
 
 export class EditBuildDefinition extends React.Component {
 
@@ -40,23 +67,7 @@ export class EditBuildDefinition extends React.Component {
       printerVariant: '',
       platformioEnv: '',
       description: '',
-      configurationJSON: `{
-"HeaderFiles" : [
-  {
-      "FileName" : "Marlin/Configuration.h",
-      "Settings" : [
-      ]
-  },
-  {
-      "FileName" : "Marlin/Configuration_adv.h",
-      "Settings" : [
-      ]
-  }
-],
-"IniFiles" : [
-]
-}
-      `,      
+      configurationJSON: defaultJson,      
       sharedWithEveryone: false,
       firmwareOptions: [],
 		  isAdmin: isAdmin,
@@ -230,50 +241,66 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  setHeaderFileConfigValue(configurationJSON, file, key, value)
+  jsonLower = function (obj)
   {
-    console.log(configurationJSON);
-    var json = JSON.parse(configurationJSON);
-    if(!json['HeaderFiles'])
+    var ret = null;
+      if (typeof(obj) == "string" || typeof(obj) == "number")
+          return obj;
+      else if (obj.push)
+          ret = [];
+      else
+          ret = {};
+      for (var key in obj)
+          ret[String(key).toLowerCase()] = this.jsonLower(obj[key]);
+      return ret;
+  };
+
+  upgradeJson(json)
+  {
+    if(!json['configformatversion'])
     {
-      json.HeaderFiles = [
+      json.configformatversion = '2';
+    }
+    if(!json['headerfiles'])
+    {
+      json.headerfiles = [
         {
-            "FileName" : "Marlin/Configuration.h",
-            "Settings" : [
+            "filename" : "Marlin/Configuration.h",
+            "settings" : [
             ]
         },
         {
-            "FileName" : "Marlin/Configuration_adv.h",
-            "Settings" : [
+            "filename" : "Marlin/Configuration_adv.h",
+            "settings" : [
             ]
         }
       ];
     }
-    var fileSectionQuery = json['HeaderFiles'].filter(s=>s.FileName === file);
-    if(fileSectionQuery.length>0)
-    {
-      var fileSection = fileSectionQuery[0];
-      var settings = fileSection['Settings'];
-      var found = false;
-      console.log(settings);
-      settings.forEach(setting=>{
-        console.log(setting);
-        if(setting[0]===key)
-        {
-          console.log("Found!");
-          setting[1] = "True";
-          setting[2] = value;
-          found = true;
-        }
-      });
-      if(!found)
+    json.headerfiles.forEach(headerfile => {
+      var oldSettings = headerfile.settings;
+      var convertedSettings = [];
+      if(oldSettings)
       {
-        console.log("Not found!");
-        settings.push([key, "True", value])
+        oldSettings.forEach(setting => {
+          if(Array.isArray(setting))
+          {
+            if(setting.length===2)
+            {
+              convertedSettings.push({"key":setting[0], "enabled": (setting[1].toLowerCase()==="true").toString()});
+            }
+            else if (setting.length===3)
+            {
+              convertedSettings.push({"key":setting[0], "enabled": (setting[1].toLowerCase()==="true").toString(), "value":setting[2]});
+            }
+          }
+          else
+          {
+            convertedSettings.push(setting);
+          }
+        });
       }
-    }
-    console.log(json);
-    return JSON.stringify(json, null, 3);
+      headerfile.settings = convertedSettings;
+    });   
   }
 
   async fetchData() {
@@ -335,6 +362,9 @@ export class EditBuildDefinition extends React.Component {
 
       console.log(buildDefinition.platformioEnv);
 
+      var lowerJsonObj = this.jsonLower(JSON.parse(buildDefinition.configurationJSON));
+      var upgradedObj = this.upgradeJson(lowerJsonObj);
+
       this.setState({
         id: buildDefinition.id,
         name: buildDefinition.name,
@@ -346,7 +376,7 @@ export class EditBuildDefinition extends React.Component {
         printerVariant: buildDefinition.printerMainboard,
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
-        configurationJSON: buildDefinition.configurationJSON,
+        configurationJSON: JSON.stringify(lowerJsonObj, null, 3),
         sharedWithEveryone: this.state.clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
 
@@ -423,9 +453,153 @@ export class EditBuildDefinition extends React.Component {
         this.props.history.push('/BuildDefinition');
       else
         console.error(result);
-    }    
+    }
+
+  applySnippet(jsonSnippet){
+    var json = JSON.parse(this.state.configurationJSON);
+    var snippet = JSON.parse(jsonSnippet);
+    if(!json['configformatversion'])
+    {
+      json.configformatversion = '2';
+    }
+    if(!json['headerfiles'])
+    {
+      json.headerfiles = [
+        {
+            "filename" : "Marlin/Configuration.h",
+            "settings" : [
+            ]
+        },
+        {
+            "filename" : "Marlin/Configuration_adv.h",
+            "settings" : [
+            ]
+        }
+      ];
+    }
+    if(!snippet['headerfiles'])
+      throw new Error("headerfiles section missing in snippet");
+    
+    json.headerfiles.forEach(headerfile => {
+      var snippetQuery = snippet.headerfiles.filter(s=>s.filename === headerfile.filename); // does this section exist in snippet?
+      if(snippetQuery.length>0)
+      {
+        var snippetSettings = snippetQuery[0]['settings'];
+        var jsonSettings = headerfile.settings;
+
+        snippetSettings.forEach(snippetSetting => {
+          var found = false;
+          jsonSettings.forEach(setting=>{
+            if(setting.key===snippetSetting.key)
+            {
+              console.log("Found!");
+              setting.enabled = snippetSetting.enabled;
+              if(snippetSetting.value)
+                setting.value = snippetSetting.value;
+              found = true;
+            }
+          });
+          if(!found)
+          {
+            console.log("Not found!");
+            if(snippetSetting.value)
+              jsonSettings.push({"key": snippetSetting.key, "enabled" : snippetSetting.enabled, "value": snippetSetting.value})
+            else
+              jsonSettings.push({"key": snippetSetting.key, "enabled" : snippetSetting.enabled})
+          }
+        });
+      }
+      console.log(json);
+      return JSON.stringify(json, null, 3);
+    });
+    
+    // finally
+    this.setState({configurationJSON: JSON.stringify(json, null, 3)});
+  }
+
+  applySetting(headerFile, key, enabled, value=undefined)
+  {
+    var json = `
+    {
+      "headerfiles" : [
+        {
+            "filename" : "`+headerFile+`",
+            "settings" : [
+              {
+                "key": "`+key+`",
+                "enabled": "`+enabled+`"
+                `+(value ? `, "value" : "`+value+`"` : null)+`
+              }
+            ]
+        }
+      ]
+    }
+    `;
+    console.log(json);
+    this.applySnippet(json);
+  }
+
+  handleTemplateClick(id){
+    switch (id) {
+      case 1:
+        this.applySnippet(`
+      {
+        "headerfiles" : [
+          {
+              "filename" : "Marlin/Configuration.h",
+              "settings" : [
+                {
+                  "key": "LEVEL_BED_CORNERS",
+                  "enabled": "true"
+                },
+                {
+                  "key": "SLIM_LCD_MENUS",
+                  "enabled": "false"
+                },
+                {
+                  "key": "LCD_BED_LEVELING",
+                  "enabled": "true"
+                },
+                {
+                  "key": "MESH_BED_LEVELING",
+                  "enabled": "true"
+                },
+                {
+                  "key": "GRID_MAX_POINTS_X",
+                  "enabled": "true",
+                  "value": "3"
+                },
+                {
+                  "key": "GRID_MAX_POINTS_Y",
+                  "enabled": "true",
+                  "value": "3"
+                }
+              ]
+          },
+          {
+              "filename" : "Marlin/Configuration_adv.h",
+              "settings" : [
+                {
+                  "key": "ARC_SUPPORT",
+                  "enabled": "false"
+                }
+              ]
+          }
+        ]
+      }
+        `);
+        break;
+    
+      default:
+        break;
+    }
+  }
 
   render() { return (
+    <Grid divided>
+      <Grid.Row>
+        <Grid.Column width={7}>
+
       <Segment>
       <Form>
       <Header as='h3'>Edit build definition</Header>
@@ -538,8 +712,9 @@ export class EditBuildDefinition extends React.Component {
         clearable
         onChange={(e, { searchQuery, value}) => {
           this.setState({printerMainboardSearch: "", selectedMainboard: value});
-          var newConfig = this.setHeaderFileConfigValue(this.state.configurationJSON, "Marlin/Configuration.h", "MOTHERBOARD", value);
-          this.setState({configurationJSON: newConfig});
+          //var newConfig = this.setHeaderFileConfigValue(this.state.configurationJSON, "Marlin/Configuration.h", "MOTHERBOARD", value);
+          //this.setState({configurationJSON: newConfig});
+          this.applySetting("Marlin/Configuration.h", "MOTHERBOARD", true, value);
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerMainboardSearch: searchQuery})}
         options={this.state.printerMainboardOptions}
@@ -586,6 +761,7 @@ export class EditBuildDefinition extends React.Component {
         showPrintMargin={true}
         showGutter={true}
         highlightActiveLine={true}
+        width="100%"
         editorProps={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
@@ -615,6 +791,16 @@ export class EditBuildDefinition extends React.Component {
       )}/>        
       </Form>
       </Segment>
+    </Grid.Column>
+    <Grid.Column width={5}>
+      <Segment>
+        <Header>Templates</Header>
+        <Button onClick={(e)=>this.handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button>
+      </Segment>
+    </Grid.Column>
+    </Grid.Row>
+  </Grid>      
+
       );
   }
 }
