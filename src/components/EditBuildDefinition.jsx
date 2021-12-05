@@ -8,7 +8,8 @@ import {
     Button,
     Form,
     Label,
-    Dropdown
+    Dropdown, 
+    Grid
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -41,10 +42,17 @@ export class EditBuildDefinition extends React.Component {
       platformioEnv: '',
       description: '',
       configurationJSON: `{
-"HeaderFiles" : [
+  "ConfigFormatVersion" : "2",
+  "HeaderFiles" : [
   {
       "FileName" : "Marlin/Configuration.h",
       "Settings" : [
+        {
+          "Key": "STRING_CONFIG_H_AUTHOR",
+          "Enabled": "True",
+          "Value": "(Your name here)",
+          "Comment": "This is an example configuration entry"
+        }
       ]
   },
   {
@@ -423,9 +431,127 @@ export class EditBuildDefinition extends React.Component {
         this.props.history.push('/BuildDefinition');
       else
         console.error(result);
-    }    
+    }
+
+  applySnippet(jsonSnippet){
+    var json = JSON.parse(this.state.configurationJSON);
+    var snippet = JSON.parse(jsonSnippet);
+    if(!json['HeaderFiles'])
+    {
+      json.HeaderFiles = [
+        {
+            "FileName" : "Marlin/Configuration.h",
+            "Settings" : [
+            ]
+        },
+        {
+            "FileName" : "Marlin/Configuration_adv.h",
+            "Settings" : [
+            ]
+        }
+      ];
+    }
+    if(!snippet['HeaderFiles'])
+      throw new Error("Headerfiles section missing in snippet");
+    
+    json.HeaderFiles.forEach(headerFile => {
+      var snippetQuery = snippet.HeaderFiles.filter(s=>s.FileName === headerFile.FileName); // does this section exist in snippet?
+      if(snippetQuery.length>0)
+      {
+        var snippetSettings = snippetQuery[0]['Settings'];
+        var jsonSettings = headerFile.Settings;
+
+        snippetSettings.forEach(snippetSetting => {
+          var found = false;
+          jsonSettings.forEach(setting=>{
+            if(setting.Key===snippetSetting.Key)
+            {
+              console.log("Found!");
+              setting.Enabled = snippetSetting.Enabled;
+              if(snippetSetting.Value)
+                setting.Value = snippetSetting.Value;
+              found = true;
+            }
+          });
+          if(!found)
+          {
+            console.log("Not found!");
+            if(snippetSetting.Value)
+              jsonSettings.push({"Key": snippetSetting.Key, "Enabled" : snippetSetting.Enabled, "Value": snippetSetting.Value})
+            else
+              jsonSettings.push({"Key": snippetSetting.Key, "Enabled" : snippetSetting.Enabled})
+          }
+        });
+      }
+      console.log(json);
+      return JSON.stringify(json, null, 3);
+    });
+    
+    // finally
+    this.setState({configurationJSON: JSON.stringify(json, null, 3)});
+  }
+
+  handleTemplateClick(id){
+    switch (id) {
+      case 1:
+        this.applySnippet(`
+      {
+        "HeaderFiles" : [
+          {
+              "FileName" : "Marlin/Configuration.h",
+              "Settings" : [
+                {
+                  "Key": "LEVEL_BED_CORNERS",
+                  "Enabled": "True"
+                },
+                {
+                  "Key": "SLIM_LCD_MENUS",
+                  "Enabled": "False"
+                },
+                {
+                  "Key": "LCD_BED_LEVELING",
+                  "Enabled": "True"
+                },
+                {
+                  "Key": "MESH_BED_LEVELING",
+                  "Enabled": "True"
+                },
+                {
+                  "Key": "GRID_MAX_POINTS_X",
+                  "Enabled": "True",
+                  "Value": "3"
+                },
+                {
+                  "Key": "GRID_MAX_POINTS_Y",
+                  "Enabled": "True",
+                  "Value": "3"
+                }
+              ]
+          },
+          {
+              "FileName" : "Marlin/Configuration_adv.h",
+              "Settings" : [
+                {
+                  "Key": "ARC_SUPPORT",
+                  "Enabled": "False"
+                }
+              ]
+          }
+        ]
+      }
+        `);
+        break;
+    
+      default:
+        break;
+    }
+  }
 
   render() { return (
+    <Grid divided>
+      <Grid.Row>
+        <Grid.Column width={7}>
+
       <Segment>
       <Form>
       <Header as='h3'>Edit build definition</Header>
@@ -586,6 +712,7 @@ export class EditBuildDefinition extends React.Component {
         showPrintMargin={true}
         showGutter={true}
         highlightActiveLine={true}
+        width="100%"
         editorProps={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
@@ -615,6 +742,16 @@ export class EditBuildDefinition extends React.Component {
       )}/>        
       </Form>
       </Segment>
+    </Grid.Column>
+    <Grid.Column width={5}>
+      <Segment>
+        <Header>Templates</Header>
+        <Button onClick={(e)=>this.handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button>
+      </Segment>
+    </Grid.Column>
+    </Grid.Row>
+  </Grid>      
+
       );
   }
 }
