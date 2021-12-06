@@ -20,6 +20,9 @@ import AceEditor from "react-ace";
 import 'ace-builds/webpack-resolver'
 import("ace-builds/src-min-noconflict/ext-language_tools");
 
+const env = process.env["REACT_APP_ENV"];
+function isDev() { return env.startsWith("dev")}
+
 const defaultJson = JSON.stringify(JSON.parse(`
 {
   "configformatversion" : "2",
@@ -93,7 +96,7 @@ export class EditBuildDefinition extends React.Component {
     if(jsonList.length>0) // has config json
     { 
        var json = jsonList[0]['defaultconfigjson'];
-       console.log(json);
+       if(isDev())console.log(json);
        if(json)
        {
           var jsonObj = JSON.parse(json);
@@ -203,6 +206,28 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
+  platformioEnvOptionsByMotherboard(value)
+  {
+    if(!value) return [];
+    var filteredList = this.state.printerMainboardOptions.filter(f=>f.key === value);
+    if(filteredList.length>0)
+    {
+      console.log(filteredList);
+      if('environments' in filteredList[0])
+      {
+        var environments = filteredList[0]['environments'].map(v=>{
+          return {
+            key: v,
+            text: v,
+            value: v
+          }
+        });
+        return environments;
+      }
+      return [];
+    }
+  }  
+
   selectedMainboardByModel(value)
   {
     if(!value) return [];
@@ -233,7 +258,8 @@ export class EditBuildDefinition extends React.Component {
             return {
               key: v.boardName,
               text: v.boardDescription,
-              value: v.boardName
+              value: v.boardName,
+              environments: v.boardEnvironments
             }
           });
         return result;
@@ -300,7 +326,8 @@ export class EditBuildDefinition extends React.Component {
         });
       }
       headerfile.settings = convertedSettings;
-    });   
+    });
+    return json;   
   }
 
   async fetchData() {
@@ -362,8 +389,13 @@ export class EditBuildDefinition extends React.Component {
 
       console.log(buildDefinition.platformioEnv);
 
-      var lowerJsonObj = this.jsonLower(JSON.parse(buildDefinition.configurationJSON));
-      var upgradedObj = this.upgradeJson(lowerJsonObj);
+      if(isDev())console.log(buildDefinition.configurationJSON);
+      if(buildDefinition.configurationJSON)
+      {
+        var sanityCheckJson = JSON.parse(buildDefinition.configurationJSON);
+        var lowerJsonObj = this.jsonLower(sanityCheckJson);
+        var upgradedObj = this.upgradeJson(lowerJsonObj);
+      }
 
       this.setState({
         id: buildDefinition.id,
@@ -376,16 +408,16 @@ export class EditBuildDefinition extends React.Component {
         printerVariant: buildDefinition.printerMainboard,
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
-        configurationJSON: JSON.stringify(lowerJsonObj, null, 3),
+        configurationJSON: JSON.stringify(upgradedObj, null, 3),
         sharedWithEveryone: this.state.clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
 
-      if(buildDefinition.printerMainboard && this.state.printerVariantOptions.length===0)
+      if(buildDefinition.printerMainboard && this.state.printerVariantOptions && this.state.printerVariantOptions.length===0)
       {
         this.setState({printerVariantSearch: buildDefinition.printerMainboard});
       }
 
-      if(buildDefinition.platformioEnv && this.state.platformioEnvOptions.length===0)
+      if(buildDefinition.platformioEnv && this.state.platformioEnvOptions && this.state.platformioEnvOptions.length===0)
       {
         this.setState({platformioEnvSearch: buildDefinition.platformioEnv});
       }
@@ -712,9 +744,8 @@ export class EditBuildDefinition extends React.Component {
         clearable
         onChange={(e, { searchQuery, value}) => {
           this.setState({printerMainboardSearch: "", selectedMainboard: value});
-          //var newConfig = this.setHeaderFileConfigValue(this.state.configurationJSON, "Marlin/Configuration.h", "MOTHERBOARD", value);
-          //this.setState({configurationJSON: newConfig});
           this.applySetting("Marlin/Configuration.h", "MOTHERBOARD", true, value);
+          this.setState({platformioEnvOptions: this.platformioEnvOptionsByMotherboard(value)})
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerMainboardSearch: searchQuery})}
         options={this.state.printerMainboardOptions}

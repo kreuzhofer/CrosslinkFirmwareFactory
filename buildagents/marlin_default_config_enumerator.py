@@ -162,8 +162,7 @@ def parsePinsFile(filename):
         print(right)
         return right.strip()
 
-def parseConfigurationFile(dirpath):
-    mainboard = parseMainboard(dirpath+"/Configuration.h")
+def getEnvironmentsForMainboard(mainboard):
     mainboardSearch = mainboard.split("BOARD_")[1]
     buildOptionsSearch = "MB("+mainboardSearch
     lineNumber = 0
@@ -180,10 +179,17 @@ def parseConfigurationFile(dirpath):
         print(optionsArray)
         environments = list(map(lambda f: f.split(":")[1], filter(lambda c: c.startswith("env:"), optionsArray)))
         print(environments)
+        return environments
+    else:
+        return None        
+
+def parseConfigurationFile(dirpath):
+    mainboard = parseMainboard(dirpath+"/Configuration.h")
+    environments = getEnvironmentsForMainboard(mainboard)
+    if(environments != None):
         return [mainboard, environments]
     else:
         return [None, []]
-
 
 update_job_status_gql(firmwareVersionId, "RUNNING")
 
@@ -243,7 +249,8 @@ with open(boardsFilename, 'r+', encoding="utf8") as f:
             if(len(splitByComment)>1):
                 boardName = splitByComment[0].split()[1]
                 boardDescription = splitByComment[1].strip()
-                tree['mainboards'].append({'boardName': boardName, 'boardDescription': boardDescription})
+                boardEnvironments = getEnvironmentsForMainboard(boardName)
+                tree['mainboards'].append({'boardName': boardName, 'boardDescription': boardDescription, 'boardEnvironments': boardEnvironments})
 
 # STEP 3 - Download config zip
 try:
