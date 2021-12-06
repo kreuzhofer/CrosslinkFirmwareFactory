@@ -366,7 +366,7 @@ export class EditBuildDefinition extends React.Component {
 
       console.log(buildDefinition.platformioEnv);
 
-      if(env.startsWith("dev"))console.log(buildDefinition.configurationJSON);
+      if(isDev())console.log(buildDefinition.configurationJSON);
       if(buildDefinition.configurationJSON)
       {
         var sanityCheckJson = JSON.parse(buildDefinition.configurationJSON);
