@@ -206,6 +206,28 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
+  platformioEnvOptionsByMotherboard(value)
+  {
+    if(!value) return [];
+    var filteredList = this.state.printerMainboardOptions.filter(f=>f.key === value);
+    if(filteredList.length>0)
+    {
+      console.log(filteredList);
+      if('environments' in filteredList[0])
+      {
+        var environments = filteredList[0]['environments'].map(v=>{
+          return {
+            key: v,
+            text: v,
+            value: v
+          }
+        });
+        return environments;
+      }
+      return [];
+    }
+  }  
+
   selectedMainboardByModel(value)
   {
     if(!value) return [];
@@ -236,7 +258,8 @@ export class EditBuildDefinition extends React.Component {
             return {
               key: v.boardName,
               text: v.boardDescription,
-              value: v.boardName
+              value: v.boardName,
+              environments: v.boardEnvironments
             }
           });
         return result;
@@ -722,6 +745,7 @@ export class EditBuildDefinition extends React.Component {
         onChange={(e, { searchQuery, value}) => {
           this.setState({printerMainboardSearch: "", selectedMainboard: value});
           this.applySetting("Marlin/Configuration.h", "MOTHERBOARD", true, value);
+          this.setState({platformioEnvOptions: this.platformioEnvOptionsByMotherboard(value)})
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerMainboardSearch: searchQuery})}
         options={this.state.printerMainboardOptions}
