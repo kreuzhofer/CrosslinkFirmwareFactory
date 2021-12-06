@@ -142,7 +142,7 @@ export class EditBuildDefinition extends React.Component {
     var printerVariantsList = this.state.printerModelOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
-      console.log(printerVariantsList);
+       if(isDev())console.log(printerVariantsList);
        var printerVariants = printerVariantsList[0]['variants'].map(v=>{
           return {
              key: v.name,
@@ -162,7 +162,7 @@ export class EditBuildDefinition extends React.Component {
     var printerVariantsList = this.state.printerVariantOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
-      console.log(printerVariantsList);
+      if(isDev())console.log(printerVariantsList);
       var environments = printerVariantsList[0]['environments'].map(v=>{
         return {
           key: v,
@@ -212,7 +212,7 @@ export class EditBuildDefinition extends React.Component {
     var filteredList = this.state.printerMainboardOptions.filter(f=>f.key === value);
     if(filteredList.length>0)
     {
-      console.log(filteredList);
+      if(isDev())console.log(filteredList);
       if('environments' in filteredList[0])
       {
         var environments = filteredList[0]['environments'].map(v=>{
@@ -250,7 +250,7 @@ export class EditBuildDefinition extends React.Component {
     if(jsonList.length>0) // has config json
     { 
       var json = jsonList[0]['defaultconfigjson'];
-      console.log(json);
+      if(isDev())console.log(json);
       if(json)
       {
         var jsonObj = JSON.parse(json);
