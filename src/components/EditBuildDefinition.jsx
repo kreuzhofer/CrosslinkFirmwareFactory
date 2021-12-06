@@ -20,6 +20,9 @@ import AceEditor from "react-ace";
 import 'ace-builds/webpack-resolver'
 import("ace-builds/src-min-noconflict/ext-language_tools");
 
+const env = process.env["REACT_APP_ENV"];
+function isDev() { return env.startsWith("dev")}
+
 const defaultJson = JSON.stringify(JSON.parse(`
 {
   "configformatversion" : "2",
@@ -93,7 +96,7 @@ export class EditBuildDefinition extends React.Component {
     if(jsonList.length>0) // has config json
     { 
        var json = jsonList[0]['defaultconfigjson'];
-       console.log(json);
+       if(isDev())console.log(json);
        if(json)
        {
           var jsonObj = JSON.parse(json);
@@ -363,7 +366,7 @@ export class EditBuildDefinition extends React.Component {
 
       console.log(buildDefinition.platformioEnv);
 
-      console.log(buildDefinition.configurationJSON);
+      if(env.startsWith("dev"))console.log(buildDefinition.configurationJSON);
       if(buildDefinition.configurationJSON)
       {
         var sanityCheckJson = JSON.parse(buildDefinition.configurationJSON);
@@ -718,8 +721,6 @@ export class EditBuildDefinition extends React.Component {
         clearable
         onChange={(e, { searchQuery, value}) => {
           this.setState({printerMainboardSearch: "", selectedMainboard: value});
-          //var newConfig = this.setHeaderFileConfigValue(this.state.configurationJSON, "Marlin/Configuration.h", "MOTHERBOARD", value);
-          //this.setState({configurationJSON: newConfig});
           this.applySetting("Marlin/Configuration.h", "MOTHERBOARD", true, value);
         }}
         onSearchChange={(e, {searchQuery}) => this.setState({printerMainboardSearch: searchQuery})}
