@@ -300,7 +300,8 @@ export class EditBuildDefinition extends React.Component {
         });
       }
       headerfile.settings = convertedSettings;
-    });   
+    });
+    return json;   
   }
 
   async fetchData() {
@@ -362,8 +363,13 @@ export class EditBuildDefinition extends React.Component {
 
       console.log(buildDefinition.platformioEnv);
 
-      var lowerJsonObj = this.jsonLower(JSON.parse(buildDefinition.configurationJSON));
-      var upgradedObj = this.upgradeJson(lowerJsonObj);
+      console.log(buildDefinition.configurationJSON);
+      if(buildDefinition.configurationJSON)
+      {
+        var sanityCheckJson = JSON.parse(buildDefinition.configurationJSON);
+        var lowerJsonObj = this.jsonLower(sanityCheckJson);
+        var upgradedObj = this.upgradeJson(lowerJsonObj);
+      }
 
       this.setState({
         id: buildDefinition.id,
@@ -376,16 +382,16 @@ export class EditBuildDefinition extends React.Component {
         printerVariant: buildDefinition.printerMainboard,
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
-        configurationJSON: JSON.stringify(lowerJsonObj, null, 3),
+        configurationJSON: JSON.stringify(upgradedObj, null, 3),
         sharedWithEveryone: this.state.clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
 
-      if(buildDefinition.printerMainboard && this.state.printerVariantOptions.length===0)
+      if(buildDefinition.printerMainboard && this.state.printerVariantOptions && this.state.printerVariantOptions.length===0)
       {
         this.setState({printerVariantSearch: buildDefinition.printerMainboard});
       }
 
-      if(buildDefinition.platformioEnv && this.state.platformioEnvOptions.length===0)
+      if(buildDefinition.platformioEnv && this.state.platformioEnvOptions && this.state.platformioEnvOptions.length===0)
       {
         this.setState({platformioEnvSearch: buildDefinition.platformioEnv});
       }
