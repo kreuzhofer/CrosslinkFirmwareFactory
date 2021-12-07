@@ -998,7 +998,7 @@ export class EditBuildDefinition extends React.Component {
         <Header as="h4">Filament Sensor</Header>
         <Button onClick={(e)=>this.handleTemplateClick(3)}>Filament Sensor, default settings</Button>
         <Header as="h4">Memory Optimizations (for 8 Bit boards)</Header>
-        <Button onClick={(e)=>this.handleTemplateClick(4)}>Save program memory, normal</Button><br/><br/>
+        <Button onClick={(e)=>this.handleTemplateClick(4)}>Save program memory, normal</Button>
         <p>This setting disables ARC_SUPPORT and saves quite a bit of program memory.</p>
         <Button onClick={(e)=>this.handleTemplateClick(5)}>Save program memory, aggressive</Button>
         <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
