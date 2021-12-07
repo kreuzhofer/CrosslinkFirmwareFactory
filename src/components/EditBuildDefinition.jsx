@@ -122,7 +122,7 @@ export class EditBuildDefinition extends React.Component {
          return [];
       }
       var firstPrinterManuOption = printerManuOptions[0];
-      console.log(firstPrinterManuOption);
+      if(isDev())console.log(firstPrinterManuOption);
       var printerModelsFiltered = firstPrinterManuOption.printermodels.sort((a,b)=>a.name > b.name ? 1 : -1).map(v=>{
       return {
          key: v.name, 
@@ -676,16 +676,33 @@ export class EditBuildDefinition extends React.Component {
                    {
                       "key": "Z_SAFE_HOMING",
                       "enabled": "true"
+                   },
+                   {
+                     "key": "USE_PROBE_FOR_Z_HOMING",
+                     "enabled": "true"
+                   },
+                   {
+                      "key": "MULTIPLE_PROBING",
+                      "enabled": "true",
+                      "value": "2"
+                   },
+                   {
+                      "key": "Z_MIN_PROBE_REPEATABILITY_TEST",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "HOME_AFTER_DEACTIVATE",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "RESTORE_LEVELING_AFTER_G28",
+                      "enabled": "true"
                    }
                 ]
              },
              {
                 "filename": "Marlin/Configuration_adv.h",
                 "settings": [
-                   {
-                      "key": "BLTOUCH_HS_MODE",
-                      "enabled": "true"
-                   }
                 ]
              }
           ],
@@ -788,7 +805,121 @@ export class EditBuildDefinition extends React.Component {
         }
         `);
         break;    
-      default:
+        case 6:
+          this.applySnippet(`
+          {
+            "configformatversion": "2",
+            "headerfiles": [
+               {
+                  "filename": "Marlin/Configuration.h",
+                  "settings": [
+                     {
+                        "key": "MESH_BED_LEVELING",
+                        "enabled": "false"
+                     },
+                     {
+                        "key": "AUTO_BED_LEVELING_BILINEAR",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "BLTOUCH",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "NOZZLE_TO_PROBE_OFFSET",
+                        "enabled": "true",
+                        "value": "{ 10, 10, 0 }",
+                        "comment": "TODO measure correct offset"
+                     },
+                     {
+                        "key": "PROBING_MARGIN",
+                        "enabled": "true",
+                        "value": "20"
+                     },
+                     {
+                        "key": "GRID_MAX_POINTS_X",
+                        "enabled": "true",
+                        "value": "4"
+                     },
+                     {
+                        "key": "EXTRAPOLATE_BEYOND_GRID",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "LCD_BED_LEVELING",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "LEVEL_BED_CORNERS",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "Z_SAFE_HOMING",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "DEFAULT_MAX_FEEDRATE",
+                        "enabled": "true",
+                        "value": "{ 500, 500, 20, 25 }"
+                     },
+                     {
+                       "key": "USE_PROBE_FOR_Z_HOMING",
+                       "enabled": "true"
+                     },
+                     {
+                        "key": "XY_PROBE_FEEDRATE",
+                        "enabled": "true",
+                        "value": "(150*60)"
+                     },
+                     {
+                        "key": "Z_PROBE_FEEDRATE_FAST",
+                        "enabled": "true",
+                        "value": "(6*60)"
+                     },
+                     {
+                        "key": "MULTIPLE_PROBING",
+                        "enabled": "true",
+                        "value": "2"
+                     },
+                     {
+                        "key": "Z_MIN_PROBE_REPEATABILITY_TEST",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "HOME_AFTER_DEACTIVATE",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "RESTORE_LEVELING_AFTER_G28",
+                        "enabled": "true"
+                     },
+                     {
+                        "key": "HOMING_FEEDRATE_MM_M",
+                        "enabled": "true",
+                        "value": "{ (150*60), (150*60), (6*60) }"
+                     }
+                  ]
+               },
+               {
+                  "filename": "Marlin/Configuration_adv.h",
+                  "settings": [
+                    {
+                      "key": "BLTOUCH_DELAY",
+                      "enabled": "true",
+                      "value": "300"
+                   },                    
+                     {
+                        "key": "BLTOUCH_HS_MODE",
+                        "enabled": "true"
+                     }
+                  ]
+               }
+            ],
+            "inifiles": []
+         }
+          `);
+          break;
+        default:
         break;
     }
   }
@@ -995,10 +1126,11 @@ export class EditBuildDefinition extends React.Component {
         <Header as="h4">Bed Leveling</Header>
         <Button onClick={(e)=>this.handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button><br/><br/>
         <Button onClick={(e)=>this.handleTemplateClick(2)}>Auto Bed Leveling (4x4), BLTouch</Button>
+        <Button onClick={(e)=>this.handleTemplateClick(6)}>Auto Bed Leveling (4x4), BLTouch high speed probing</Button>
         <Header as="h4">Filament Sensor</Header>
         <Button onClick={(e)=>this.handleTemplateClick(3)}>Filament Sensor, default settings</Button>
         <Header as="h4">Memory Optimizations (for 8 Bit boards)</Header>
-        <Button onClick={(e)=>this.handleTemplateClick(4)}>Save program memory, normal</Button><br/><br/>
+        <Button onClick={(e)=>this.handleTemplateClick(4)}>Save program memory, normal</Button>
         <p>This setting disables ARC_SUPPORT and saves quite a bit of program memory.</p>
         <Button onClick={(e)=>this.handleTemplateClick(5)}>Save program memory, aggressive</Button>
         <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
