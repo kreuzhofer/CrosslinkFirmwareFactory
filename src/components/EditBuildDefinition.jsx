@@ -597,6 +597,10 @@ export class EditBuildDefinition extends React.Component {
                   "enabled": "true"
                 },
                 {
+                  "key": "AUTO_BED_LEVELING_BILINEAR",
+                  "enabled": "false"
+                },                
+                {
                   "key": "GRID_MAX_POINTS_X",
                   "enabled": "true",
                   "value": "3"
@@ -621,7 +625,169 @@ export class EditBuildDefinition extends React.Component {
       }
         `);
         break;
-    
+      case 2:
+        this.applySnippet(`
+        {
+          "configformatversion": "2",
+          "headerfiles": [
+             {
+                "filename": "Marlin/Configuration.h",
+                "settings": [
+                   {
+                      "key": "MESH_BED_LEVELING",
+                      "enabled": "false"
+                   },
+                   {
+                      "key": "AUTO_BED_LEVELING_BILINEAR",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "BLTOUCH",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "NOZZLE_TO_PROBE_OFFSET",
+                      "enabled": "true",
+                      "value": "{ 10, 10, 0 }",
+                      "comment": "TODO measure correct offset"
+                   },
+                   {
+                      "key": "PROBING_MARGIN",
+                      "enabled": "true",
+                      "value": "20"
+                   },
+                   {
+                      "key": "GRID_MAX_POINTS_X",
+                      "enabled": "true",
+                      "value": "4"
+                   },
+                   {
+                      "key": "EXTRAPOLATE_BEYOND_GRID",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "LCD_BED_LEVELING",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "LEVEL_BED_CORNERS",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "Z_SAFE_HOMING",
+                      "enabled": "true"
+                   }
+                ]
+             },
+             {
+                "filename": "Marlin/Configuration_adv.h",
+                "settings": [
+                   {
+                      "key": "BLTOUCH_HS_MODE",
+                      "enabled": "true"
+                   }
+                ]
+             }
+          ],
+          "inifiles": []
+       }
+        `);
+        break;
+      case 3:
+        this.applySnippet(`
+        {
+          "configformatversion": "2",
+          "headerfiles": [
+             {
+                "filename": "Marlin/Configuration.h",
+                "settings": [
+                   {
+                      "key": "NOZZLE_PARK_FEATURE",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "ADVANCED_PAUSE_FEATURE",
+                      "enabled": "true"
+                   },
+                   {
+                      "key": "FILAMENT_RUNOUT_SENSOR",
+                      "enabled": "true"
+                   }
+                ]
+             },
+             {
+                "filename": "Marlin/Configuration_adv.h",
+                "settings": [
+                ]
+             }
+          ],
+          "inifiles": []
+       }
+        `);
+        break;
+      case 4:
+        this.applySnippet(`
+        {
+          "headerfiles" : [
+            {
+                "filename" : "Marlin/Configuration.h",
+                "settings" : [
+                ]
+            },
+            {
+                "filename" : "Marlin/Configuration_adv.h",
+                "settings" : [
+                  {
+                    "key": "ARC_SUPPORT",
+                    "enabled": "false"
+                  }
+                ]
+            }
+          ]
+        }
+        `);
+        break;
+      case 5:
+        this.applySnippet(`
+        {
+          "headerfiles" : [
+            {
+                "filename" : "Marlin/Configuration.h",
+                "settings" : [
+                  {
+                    "key": "SLIM_LCD_MENUS",
+                    "enabled": "true"
+                  }                ]
+            },
+            {
+                "filename" : "Marlin/Configuration_adv.h",
+                "settings" : [
+                  {
+                    "key": "ARC_SUPPORT",
+                    "enabled": "false"
+                  },
+                  {
+                    "key": "SDCARD_READONLY",
+                    "enabled": "true"
+                  },
+                  {
+                    "key": "DISABLE_M503",
+                    "enabled": "true"
+                  },
+                  {
+                    "key": "NO_VOLUMETRICS",
+                    "enabled": "true"
+                  },
+                  {
+                    "key": "NO_WORKSPACE_OFFSETS",
+                    "enabled": "true"
+                  }
+                ]
+            }
+          ]
+        }
+        `);
+        break;    
       default:
         break;
     }
@@ -826,7 +992,16 @@ export class EditBuildDefinition extends React.Component {
     <Grid.Column width={5}>
       <Segment>
         <Header>Templates</Header>
-        <Button onClick={(e)=>this.handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button>
+        <Header as="h4">Bed Leveling</Header>
+        <Button onClick={(e)=>this.handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button><br/><br/>
+        <Button onClick={(e)=>this.handleTemplateClick(2)}>Auto Bed Leveling (4x4), BLTouch</Button>
+        <Header as="h4">Filament Sensor</Header>
+        <Button onClick={(e)=>this.handleTemplateClick(3)}>Filament Sensor, default settings</Button>
+        <Header as="h4">Memory Optimizations (for 8 Bit boards)</Header>
+        <Button onClick={(e)=>this.handleTemplateClick(4)}>Save program memory, normal</Button><br/><br/>
+        <p>This setting disables ARC_SUPPORT and saves quite a bit of program memory.</p>
+        <Button onClick={(e)=>this.handleTemplateClick(5)}>Save program memory, aggressive</Button>
+        <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
       </Segment>
     </Grid.Column>
     </Grid.Row>
