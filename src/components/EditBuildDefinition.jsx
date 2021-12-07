@@ -1125,7 +1125,7 @@ export class EditBuildDefinition extends React.Component {
         <Header>Templates</Header>
         <Header as="h4">Bed Leveling</Header>
         <Button onClick={(e)=>this.handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button><br/><br/>
-        <Button onClick={(e)=>this.handleTemplateClick(2)}>Auto Bed Leveling (4x4), BLTouch</Button>
+        <Button onClick={(e)=>this.handleTemplateClick(2)}>Auto Bed Leveling (4x4), BLTouch</Button><br/><br/>
         <Button onClick={(e)=>this.handleTemplateClick(6)}>Auto Bed Leveling (4x4), BLTouch high speed probing</Button>
         <Header as="h4">Filament Sensor</Header>
         <Button onClick={(e)=>this.handleTemplateClick(3)}>Filament Sensor, default settings</Button>
