@@ -61,6 +61,13 @@ exports.handler = async (event) => {
   }
   var userDetails = await cognitoidentityserviceprovider.adminGetUser(getUserParams).promise();
   console.log(userDetails);
+  console.log(userDetails.UserCreateDate);
+  var userCreateDate = Date.parse(userDetails.UserCreateDate.toString());
+  console.log(userCreateDate);
+  var now = Date.now();
+  console.log(now);
+  var diffInDays = Math.trunc((now - userCreateDate)/1000/60/60/24);
+  console.log("User created:",diffInDays, "days ago");
 
   const params = {
     // Specify which items in the results are returned.
@@ -120,6 +127,11 @@ exports.handler = async (event) => {
               patron_level = 1;
             if(data.Items[0].currently_entitled_amount_cents.N >= 500)
               patron_level = 2;
+          }
+          else if(diffInDays<=30)
+          {
+            console.log("Patron Level 1 override due to trial period.")
+            patron_level = 1;
           }
         }
         var groupsToOverride = (patron_level>0 ? ["Level1", "Everyone"] : null);
