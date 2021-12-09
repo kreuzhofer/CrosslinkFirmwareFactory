@@ -1,5 +1,8 @@
 const AWS = require("aws-sdk");
 const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+const cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider({
+  apiVersion: '2016-04-18',
+});
 
 const TABLENAME = process.env.TABLENAME;
 console.log(TABLENAME);
@@ -51,6 +54,13 @@ exports.handler = async (event) => {
   var originalRole = event.request.groupConfiguration.preferredRole
   var level1Role = event.request.groupConfiguration.preferredRole.split('/')[0]+"/"+event.userPoolId+"-Level1GroupRole"
   console.log(level1Role);
+  // get user details
+  var params = {
+    UserPoolId: event.userPoolId,
+    Username: event.userName
+  }
+  var userDetails = await cognitoidentityserviceprovider.adminGetUser(addUserParams).promise();
+  console.log(userDetails);
 
   const params = {
     // Specify which items in the results are returned.
