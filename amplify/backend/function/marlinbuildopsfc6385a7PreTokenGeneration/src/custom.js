@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
 const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-const cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider({
+const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
 });
 
