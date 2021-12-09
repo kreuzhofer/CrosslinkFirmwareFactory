@@ -39,6 +39,10 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "authmarlinbuildopsfc6385a7UserPoolId": {
+      "Type": "String",
+      "Default": "authmarlinbuildopsfc6385a7UserPoolId"
     }
   },
   "Conditions": {
@@ -204,6 +208,33 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "cognito-idp:AdminGetUser"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:cognito-idp:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":userpool/",
+                      {
+                        "Ref": "authmarlinbuildopsfc6385a7UserPoolId"
+                      }
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }
