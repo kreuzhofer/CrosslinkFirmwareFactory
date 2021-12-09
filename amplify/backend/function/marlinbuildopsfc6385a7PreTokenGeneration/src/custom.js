@@ -55,11 +55,11 @@ exports.handler = async (event) => {
   var level1Role = event.request.groupConfiguration.preferredRole.split('/')[0]+"/"+event.userPoolId+"-Level1GroupRole"
   console.log(level1Role);
   // get user details
-  var params = {
+  var getUserParams = {
     UserPoolId: event.userPoolId,
     Username: event.userName
   }
-  var userDetails = await cognitoidentityserviceprovider.adminGetUser(addUserParams).promise();
+  var userDetails = await cognitoidentityserviceprovider.adminGetUser(getUserParams).promise();
   console.log(userDetails);
 
   const params = {
