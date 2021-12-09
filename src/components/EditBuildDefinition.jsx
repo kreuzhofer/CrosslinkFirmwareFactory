@@ -682,6 +682,11 @@ export class EditBuildDefinition extends React.Component {
                      "enabled": "true"
                    },
                    {
+                       "key": "Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN",
+                       "enabled": "false",
+                       "comment": "Disabled if mainboard has dedicated probe/servo port, enabled if sensor is plugged into z-endstop port"
+                      },                   
+                   {
                       "key": "MULTIPLE_PROBING",
                       "enabled": "true",
                       "value": "2"
@@ -865,6 +870,11 @@ export class EditBuildDefinition extends React.Component {
                      {
                        "key": "USE_PROBE_FOR_Z_HOMING",
                        "enabled": "true"
+                     },
+                     {
+                         "key": "Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN",
+                         "enabled": "false",
+                         "comment": "Disabled if mainboard has dedicated probe/servo port, enabled if sensor is plugged into z-endstop port"
                      },
                      {
                         "key": "XY_PROBE_FEEDRATE",

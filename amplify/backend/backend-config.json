@@ -172,6 +172,13 @@
           "attributes": [
             "AdminGroupRole"
           ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "Level1GroupRole"
+          ]
         }
       ]
     }
