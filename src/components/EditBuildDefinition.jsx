@@ -30,12 +30,6 @@ const defaultJson = JSON.stringify(JSON.parse(`
   {
       "filename" : "Marlin/Configuration.h",
       "settings" : [
-        {
-          "key": "STRING_CONFIG_H_AUTHOR",
-          "enabled": "True",
-          "value": "(Your name here)",
-          "comment": "This is an example configuration entry"
-        }
       ]
   },
   {
