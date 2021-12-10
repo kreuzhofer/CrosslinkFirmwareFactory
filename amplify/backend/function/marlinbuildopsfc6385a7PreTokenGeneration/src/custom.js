@@ -52,6 +52,7 @@ exports.handler = async (event) => {
   console.log(email);
   console.log(event.request.groupConfiguration.preferredRole);
   var originalRole = event.request.groupConfiguration.preferredRole
+  var isAdmin = originalRole.endsWith("AdminGroupRole");
   var level1Role = event.request.groupConfiguration.preferredRole.split('/')[0]+"/"+event.userPoolId+"-Level1GroupRole"
   console.log(level1Role);
   // get user details
@@ -128,7 +129,7 @@ exports.handler = async (event) => {
             if(data.Items[0].currently_entitled_amount_cents.N >= 500)
               patron_level = 2;
           }
-          else if(diffInDays<=30)
+          else if(diffInDays<=30 && !isAdmin)
           {
             console.log("Patron Level 1 override due to trial period.")
             patron_level = 1;
