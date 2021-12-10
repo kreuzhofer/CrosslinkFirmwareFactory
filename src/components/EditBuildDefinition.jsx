@@ -722,10 +722,6 @@ export class EditBuildDefinition extends React.Component {
                       "enabled": "true"
                    },
                    {
-                      "key": "ADVANCED_PAUSE_FEATURE",
-                      "enabled": "true"
-                   },
-                   {
                       "key": "FILAMENT_RUNOUT_SENSOR",
                       "enabled": "true"
                    }
@@ -734,6 +730,10 @@ export class EditBuildDefinition extends React.Component {
              {
                 "filename": "Marlin/Configuration_adv.h",
                 "settings": [
+                  {
+                    "key": "ADVANCED_PAUSE_FEATURE",
+                    "enabled": "true"
+                  }                  
                 ]
              }
           ],

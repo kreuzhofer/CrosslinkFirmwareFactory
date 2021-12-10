@@ -197,8 +197,16 @@ def replaceInFile(filename, replacements):
         for rep in replacements:
             print(rep)
             desiredState = bool(distutils.util.strtobool(rep['enabled']))
+            insertAfter = None
+            if("insertafter" in rep):
+                insertAfter = rep['insertafter']
+
             key = rep['key']
-            searchForKey = "#define "+key
+            if(insertAfter is None):
+                searchForKey = "#define "+key
+            else:
+                searchForKey = "#define "+insertAfter
+
             hasValue = False
             if("value" in rep):
                 newValue = rep['value']
@@ -209,29 +217,41 @@ def replaceInFile(filename, replacements):
                 print("Not found: "+key)
                 continue
 
-            if desiredState: # switch should be enabled and optionally has value
-                toFind = "//"+searchForKey
-                while(toFind in text): # switch currently disabled, first enable it
-                    text = re.sub(toFind, searchForKey, text)
-                else:
-                    print("Alread enabled: "+key)
-                if(hasValue):
-                    line = getLineWhereMatch(searchForKey, text)
-                    leadingSpaces = len(line) - len(line.lstrip())
-                    while(line is not None and not (searchForKey+" "+newValue) in line):
-                        print("Found: '"+line+"'")
-                        newLine = (' ' * leadingSpaces) + searchForKey+" "+newValue
-                        print("Replacing with: "+newLine)
-                        text = text.replace(line, newLine, 1)
-                        
+            if(insertAfter is not None):
+                oldLines = text.splitlines()
+                newLines = []
+                for line in oldLines:
+                    newLines.append(line)
+                    if(searchForKey in line):
+                        if(hasValue):
+                            newLines.append("#define "+key+" "+newValue)
+                        else:
+                            newLines.append("#define "+key)
+                text = '\n'.join(newLines)
+            else:
+                if desiredState: # switch should be enabled and optionally has value
+                    toFind = "//"+searchForKey
+                    while(toFind in text): # switch currently disabled, first enable it
+                        text = re.sub(toFind, searchForKey, text)
+                    else:
+                        print("Alread enabled: "+key)
+                    if(hasValue):
                         line = getLineWhereMatch(searchForKey, text)
                         leadingSpaces = len(line) - len(line.lstrip())
-            else: # switch should be disabled
-                toFind = "//"+searchForKey
-                if(toFind in text):
-                    print("Already disabled: "+key)
-                else:
-                    text = re.sub(searchForKey, toFind, text)
+                        while(line is not None and not (searchForKey+" "+newValue) in line):
+                            print("Found: '"+line+"'")
+                            newLine = (' ' * leadingSpaces) + searchForKey+" "+newValue
+                            print("Replacing with: "+newLine)
+                            text = text.replace(line, newLine, 1)
+                            
+                            line = getLineWhereMatch(searchForKey, text)
+                            leadingSpaces = len(line) - len(line.lstrip())
+                else: # switch should be disabled
+                    toFind = "//"+searchForKey
+                    if(toFind in text):
+                        print("Already disabled: "+key)
+                    else:
+                        text = re.sub(searchForKey, toFind, text)
 
         f.seek(0)
         f.write(text)
@@ -429,6 +449,9 @@ try:
     create_buildArtifact("PlatformIO log", "platformio_log.txt")
 except:
     print("Unexpected error:", sys.exc_info()[0])
+    updatefailed()
+    exit(6)
+if(completedProc.returncode!=0):
     updatefailed()
     exit(6)
 
