@@ -1,5 +1,5 @@
 import React from 'react'
-import { API, graphqlOperation } from 'aws-amplify'
+import { API, graphqlOperation, Auth } from 'aws-amplify'
 import {Route} from 'react-router-dom'
 import {
     Header, 
@@ -15,6 +15,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import * as queries from '../graphql/queries'
 import * as mutations from '../graphql/mutations'
+import * as customqueries from '../graphql/customqueries'
+
 
 import AceEditor from "react-ace";
 import 'ace-builds/webpack-resolver'
@@ -440,6 +442,22 @@ export class EditBuildDefinition extends React.Component {
 
       if(this.state.clone || !this.state.id || this.state.id === "")
       {
+        const user =  await Auth.currentAuthenticatedUser();
+        const countresult = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999, 
+          filter: {
+            owner : {
+              eq : user.username
+            }
+          }
+        }));
+        var items = countresult.data.listBuildDefinitions.items
+        console.log("Items:",items.length);
+        if(this.props.patronLevel<=1 && items.length>=1)
+        {
+          alert("You may only hav one custom build definition. You can increase the limit by becoming a Patron on Padawan level.");
+          return false;
+        }
+
         result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
           name: this.state.name,
           firmwareVersionId: this.state.firmwareVersionId,
