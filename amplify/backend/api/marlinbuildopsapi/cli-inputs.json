@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authmarlinbuildopsfc6385a7"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "AWS_IAM"
+      }
+    ],
+    "conflictResolution": {},
+    "apiName": "marlinbuildopsapi",
+    "gqlSchemaPath": "C:\\src\\github\\kreuzhofer\\MarlinBuildOpsAmplify\\amplify\\backend\\api\\marlinbuildopsapi\\schema.graphql"
+  }
+}
