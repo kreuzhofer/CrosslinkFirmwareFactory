@@ -7,6 +7,9 @@ export class Home extends React.Component{
 			<div>
 				<h3>Welcome to the Crosslink firmware factory (alpha)</h3>
 				<p>Here I provide downloads of pre-configured Marlin firmware for specific printers and setups as well as pre-compiled firmware binaries.</p>
+				<a href="https://youtu.be/L9QcTNuHaaY" target="_blank">Watch the introduction video here</a><br/>
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/L9QcTNuHaaY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 				<h3>TERMS OF USE</h3>
 				<p>This website is currently in <strong>BETA</strong> testing, so expect roughness in design, all kinds of bugs and quirks. Functionality is still limited but you see it first, which is awesome!</p>
 				<p>Use the firmware with the fact in mind that I am not taking <strong>ANY</strong> responsibility for any damage possibly happening to your 3D printer or mainboard if you use firmware from this website.</p>
