@@ -452,7 +452,7 @@ export class EditBuildDefinition extends React.Component {
         }));
         var items = countresult.data.listBuildDefinitions.items
         console.log("Items:",items.length);
-        if(this.props.patronLevel<=1 && items.length>=1)
+        if(!this.state.isAdmin && this.props.patronLevel<=1 && items.length>=1)
         {
           alert("You may only hav one custom build definition. You can increase the limit by becoming a Patron on Padawan level.");
           return false;
