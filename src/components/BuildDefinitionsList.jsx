@@ -69,7 +69,7 @@ export class BuildDefinitionsList extends React.Component {
   async reloadData() {
     try {
       const user =  await Auth.currentAuthenticatedUser();
-      const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, { 
+      const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 9999, 
         filter: {
           owner : {
             eq : user.username
