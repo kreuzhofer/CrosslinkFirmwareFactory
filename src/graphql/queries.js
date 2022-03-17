@@ -97,6 +97,57 @@ export const listBuildDefinitions = /* GraphQL */ `
     }
   }
 `;
+export const buildDefinitionsByOwner = /* GraphQL */ `
+  query BuildDefinitionsByOwner(
+    $owner: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelBuildDefinitionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    buildDefinitionsByOwner(
+      owner: $owner
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        firmwareVersionId
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        selectedMainboard
+        platformioEnv
+        description
+        configurationJSON
+        owner
+        groupsCanAccess
+        createdAt
+        updatedAt
+        buildJobs {
+          nextToken
+        }
+        firmwareVersion {
+          id
+          owner
+          name
+          sourceTree
+          configTree
+          parseJobState
+          defaultConfigJson
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
 export const getBuildJob = /* GraphQL */ `
   query GetBuildJob($id: ID!) {
     getBuildJob(id: $id) {
