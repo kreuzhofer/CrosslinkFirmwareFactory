@@ -1,0 +1,712 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Root Stack for AWS Amplify Console",
+  "Parameters": {
+    "DeploymentBucketName": {
+      "Description": "Name of the common deployment bucket provided by the parent stack",
+      "Type": "String",
+      "Default": "DeploymentBucket"
+    },
+    "AuthRoleName": {
+      "Type": "String",
+      "Default": "AuthRoleName"
+    },
+    "UnauthRoleName": {
+      "Type": "String",
+      "Default": "UnauthRoleName"
+    }
+  },
+  "Resources": {
+    "DeploymentBucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "BucketName": {
+          "Ref": "DeploymentBucketName"
+        }
+      }
+    },
+    "AuthRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Ref": "AuthRoleName"
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Deny",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity"
+            }
+          ]
+        }
+      }
+    },
+    "UnauthRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Ref": "UnauthRoleName"
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Deny",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity"
+            }
+          ]
+        }
+      }
+    },
+    "AuthTriggerCustomLambdaStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
+        "Parameters": {
+          "env": "dev",
+          "userpoolId": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "userpoolArn": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.UserPoolArn"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PostConfirmationArn": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PostConfirmation",
+              "Outputs.Arn"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PostConfirmationName": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PostConfirmation",
+              "Outputs.Name"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PreTokenGenerationArn": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PreTokenGeneration",
+              "Outputs.Arn"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PreTokenGenerationName": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PreTokenGeneration",
+              "Outputs.Name"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PreAuthenticationArn": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PreAuthentication",
+              "Outputs.Arn"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PreAuthenticationName": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PreAuthentication",
+              "Outputs.Name"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PreSignupArn": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PreSignup",
+              "Outputs.Arn"
+            ]
+          },
+          "functionmarlinbuildopsfc6385a7PreSignupName": {
+            "Fn::GetAtt": [
+              "functionmarlinbuildopsfc6385a7PreSignup",
+              "Outputs.Name"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "authmarlinbuildopsfc6385a7",
+        "functionmarlinbuildopsfc6385a7PostConfirmation",
+        "functionmarlinbuildopsfc6385a7PreTokenGeneration",
+        "functionmarlinbuildopsfc6385a7PreAuthentication",
+        "functionmarlinbuildopsfc6385a7PreSignup"
+      ]
+    },
+    "apimarlinbuildopsapi": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "Parameters": {
+          "CreateAPIKey": 1,
+          "AppSyncApiName": "marlinbuildopsapi",
+          "DynamoDBBillingMode": "PAY_PER_REQUEST",
+          "DynamoDBEnableServerSideEncryption": "false",
+          "AuthCognitoUserPoolId": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "authRoleName": {
+            "Ref": "AuthRoleName"
+          },
+          "S3DeploymentBucket": "amplify-marlinbuildops-dev-144111-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/ebee4cf16083dc23f79647a6ae4446d0b2b0828a",
+          "env": "dev"
+        }
+      }
+    },
+    "authmarlinbuildopsfc6385a7": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/auth/marlinbuildopsfc6385a7-cloudformation-template.yml",
+        "Parameters": {
+          "identityPoolName": "marlinbuildopsfc6385a7_identitypool_fc6385a7",
+          "allowUnauthenticatedIdentities": false,
+          "resourceNameTruncated": "marlinfc6385a7",
+          "userPoolName": "marlinbuildopsfc6385a7_userpool_fc6385a7",
+          "autoVerifiedAttributes": "email",
+          "mfaConfiguration": "OFF",
+          "mfaTypes": "SMS Text Message",
+          "smsAuthenticationMessage": "Your authentication code is {####}",
+          "smsVerificationMessage": "Your verification code is {####}",
+          "emailVerificationSubject": "Your Crosslink firmware factory verification code:",
+          "emailVerificationMessage": "Your verification code is {####}",
+          "defaultPasswordPolicy": false,
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": "",
+          "requiredAttributes": "email",
+          "aliasAttributes": "",
+          "userpoolClientGenerateSecret": true,
+          "userpoolClientRefreshTokenValidity": "1",
+          "userpoolClientWriteAttributes": "email",
+          "userpoolClientReadAttributes": "email",
+          "userpoolClientLambdaRole": "marlinfc6385a7_userpoolclient_lambda_role",
+          "userpoolClientSetAttributes": false,
+          "sharedId": "fc6385a7",
+          "resourceName": "marlinbuildopsfc6385a7",
+          "authSelections": "identityPoolAndUserPool",
+          "authRoleArn": {
+            "Fn::GetAtt": [
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "unauthRoleArn": {
+            "Fn::GetAtt": [
+              "UnauthRole",
+              "Arn"
+            ]
+          },
+          "useDefault": "manual",
+          "usernameAttributes": "email",
+          "userPoolGroupList": "Everyone,Admin",
+          "dependsOn": "[object Object],[object Object],[object Object],[object Object]",
+          "thirdPartyAuth": false,
+          "userPoolGroups": false,
+          "adminQueries": false,
+          "triggers": "{\n  \"PostConfirmation\": [\n    \"add-to-group\"\n  ],\n  \"PreAuthentication\": [\n    \"custom\"\n  ],\n  \"PreSignup\": [\n    \"custom\"\n  ],\n  \"PreTokenGeneration\": [\n    \"custom\"\n  ]\n}",
+          "hostedUI": false,
+          "parentStack": {
+            "Ref": "AWS::StackId"
+          },
+          "permissions": "{\n  \"policyName\": \"AddToGroupCognito\",\n  \"trigger\": \"PostConfirmation\",\n  \"effect\": \"Allow\",\n  \"actions\": [\n    \"cognito-idp:AdminAddUserToGroup\",\n    \"cognito-idp:GetGroup\",\n    \"cognito-idp:CreateGroup\"\n  ],\n  \"resource\": {\n    \"paramType\": \"!GetAtt\",\n    \"keys\": [\n      \"UserPool\",\n      \"Arn\"\n    ]\n  }\n}",
+          "serviceName": "Cognito",
+          "authProviders": "",
+          "breakCircularDependency": true,
+          "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PostConfirmation\"\n  },\n  {\n    \"triggerType\": \"PreAuthentication\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PreAuthentication\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PreSignup\"\n  },\n  {\n    \"triggerType\": \"PreTokenGeneration\",\n    \"lambdaFunctionName\": \"marlinbuildopsfc6385a7PreTokenGeneration\"\n  }\n]",
+          "env": "dev"
+        }
+      }
+    },
+    "authuserPoolGroups": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/auth/template.json",
+        "Parameters": {
+          "AuthRoleArn": {
+            "Fn::GetAtt": [
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "UnauthRoleArn": {
+            "Fn::GetAtt": [
+              "UnauthRole",
+              "Arn"
+            ]
+          },
+          "authmarlinbuildopsfc6385a7UserPoolId": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "authmarlinbuildopsfc6385a7AppClientIDWeb": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.AppClientIDWeb"
+            ]
+          },
+          "authmarlinbuildopsfc6385a7AppClientID": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.AppClientID"
+            ]
+          },
+          "authmarlinbuildopsfc6385a7IdentityPoolId": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.IdentityPoolId"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "hostingamplifyhosting": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/hosting/amplifyhosting-template.json",
+        "Parameters": {
+          "appId": "d1ojj8niqi0wti",
+          "type": "manual",
+          "env": "dev"
+        }
+      }
+    },
+    "functionAddBuildDefinitionFromWebHook": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/function/AddBuildDefinitionFromWebHook-cloudformation-template.json",
+        "Parameters": {
+          "CloudWatchRule": "NONE",
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/AddBuildDefinitionFromWebHook-747236774f7965325076-build.zip",
+          "apimarlinbuildopsapiGraphQLAPIIdOutput": {
+            "Fn::GetAtt": [
+              "apimarlinbuildopsapi",
+              "Outputs.GraphQLAPIIdOutput"
+            ]
+          },
+          "apimarlinbuildopsapiGraphQLAPIEndpointOutput": {
+            "Fn::GetAtt": [
+              "apimarlinbuildopsapi",
+              "Outputs.GraphQLAPIEndpointOutput"
+            ]
+          },
+          "authmarlinbuildopsfc6385a7UserPoolId": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "functionmarlinbuildopsfc6385a7PostConfirmation": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/function/marlinbuildopsfc6385a7PostConfirmation-cloudformation-template.json",
+        "Parameters": {
+          "modules": "add-to-group",
+          "resourceName": "marlinbuildopsfc6385a7PostConfirmation",
+          "GROUP": "",
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PostConfirmation-43757a54584370394336-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "functionmarlinbuildopsfc6385a7PreTokenGeneration": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/function/marlinbuildopsfc6385a7PreTokenGeneration-cloudformation-template.json",
+        "Parameters": {
+          "modules": "custom",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreTokenGeneration-616e7563317670756349-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "functionmarlinbuildopsfc6385a7PreAuthentication": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/function/marlinbuildopsfc6385a7PreAuthentication-cloudformation-template.json",
+        "Parameters": {
+          "modules": "custom",
+          "resourceName": "marlinbuildopsfc6385a7PreAuthentication",
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreAuthentication-59394d6c4744706e4751-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "functionmarlinbuildopsfc6385a7PreSignup": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/function/marlinbuildopsfc6385a7PreSignup-cloudformation-template.json",
+        "Parameters": {
+          "modules": "custom",
+          "resourceName": "marlinbuildopsfc6385a7PreSignup",
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreSignup-6e33376738672b6f6c34-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "functionparsemarlinversionfunction": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/function/parsemarlinversionfunction-cloudformation-template.json",
+        "Parameters": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/parsemarlinversionfunction-4d634475596874574777-build.zip",
+          "apimarlinbuildopsapiGraphQLAPIIdOutput": {
+            "Fn::GetAtt": [
+              "apimarlinbuildopsapi",
+              "Outputs.GraphQLAPIIdOutput"
+            ]
+          },
+          "apimarlinbuildopsapiGraphQLAPIEndpointOutput": {
+            "Fn::GetAtt": [
+              "apimarlinbuildopsapi",
+              "Outputs.GraphQLAPIEndpointOutput"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "storageuserdata": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+        "Parameters": {
+          "bucketName": "firmwarefactory-userdata",
+          "authPolicyName": "s3_amplify_d2efa888",
+          "unauthPolicyName": "s3_amplify_d2efa888",
+          "authRoleName": {
+            "Ref": "AuthRoleName"
+          },
+          "unauthRoleName": {
+            "Ref": "UnauthRoleName"
+          },
+          "selectedGuestPermissions": "s3:GetObject,s3:ListBucket",
+          "selectedAuthenticatedPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket,s3:DeleteObject",
+          "s3PermissionsAuthenticatedPublic": "DISALLOW",
+          "s3PublicPolicy": "Public_policy_03e650fb",
+          "s3PermissionsAuthenticatedUploads": "DISALLOW",
+          "s3UploadsPolicy": "Uploads_policy_03e650fb",
+          "s3PermissionsAuthenticatedProtected": "DISALLOW",
+          "s3ProtectedPolicy": "Protected_policy_03e650fb",
+          "s3PermissionsAuthenticatedPrivate": "DISALLOW",
+          "s3PrivatePolicy": "Private_policy_03e650fb",
+          "AuthenticatedAllowList": "DISALLOW",
+          "s3ReadPolicy": "read_policy_03e650fb",
+          "s3PermissionsGuestPublic": "DISALLOW",
+          "s3PermissionsGuestUploads": "DISALLOW",
+          "GuestAllowList": "DISALLOW",
+          "triggerFunction": "NONE",
+          "authmarlinbuildopsfc6385a7UserPoolId": {
+            "Fn::GetAtt": [
+              "authmarlinbuildopsfc6385a7",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "authuserPoolGroupsEveryoneGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.EveryoneGroupRole"
+            ]
+          },
+          "authuserPoolGroupsAdminGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.AdminGroupRole"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "customresourcesiamroles": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/customresources/iamroles-template.json",
+        "Parameters": {
+          "authuserPoolGroupsEveryoneGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.EveryoneGroupRole"
+            ]
+          },
+          "authuserPoolGroupsAdminGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.AdminGroupRole"
+            ]
+          },
+          "env": "dev"
+        }
+      }
+    },
+    "UpdateRolesWithIDPFunction": {
+      "DependsOn": [
+        "AuthRole",
+        "UnauthRole",
+        "authmarlinbuildopsfc6385a7"
+      ],
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": {
+            "Fn::Join": [
+              "\n",
+              [
+                "const response = require('cfn-response');",
+                "const aws = require('aws-sdk');",
+                "let responseData = {};",
+                "exports.handler = function(event, context) {",
+                "  try {",
+                "    let authRoleName = event.ResourceProperties.authRoleName;",
+                "    let unauthRoleName = event.ResourceProperties.unauthRoleName;",
+                "    let idpId = event.ResourceProperties.idpId;",
+                "    let promises = [];",
+                "    let authParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'authenticated'}}}]};",
+                "    let unauthParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'unauthenticated'}}}]};",
+                "    if (event.RequestType == 'Delete') {",
+                "        delete authParamsJson.Statement[0].Condition;",
+                "        delete unauthParamsJson.Statement[0].Condition;",
+                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
+                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
+                "        const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
+                "        promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
+                "        promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
+                "        Promise.all(promises)",
+                "         .then((res) => {",
+                "            console.log(\"delete response data\" + JSON.stringify(res));",
+                "            response.send(event, context, response.SUCCESS, {});",
+                "         });",
+                "    }",
+                "    if (event.RequestType == 'Update' || event.RequestType == 'Create') {",
+                "       const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
+                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
+                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
+                "        promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
+                "        promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
+                "        Promise.all(promises)",
+                "         .then((res) => {",
+                "            console.log(\"createORupdate\" + res);",
+                "            console.log(\"response data\" + JSON.stringify(res));",
+                "            response.send(event, context, response.SUCCESS, {});",
+                "         });",
+                "    }",
+                "  } catch(err) {",
+                "       console.log(err.stack);",
+                "       responseData = {Error: err};",
+                "       response.send(event, context, response.FAILED, responseData);",
+                "       throw err;",
+                "  }",
+                "};"
+              ]
+            ]
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs12.x",
+        "Timeout": 300,
+        "Role": {
+          "Fn::GetAtt": [
+            "UpdateRolesWithIDPFunctionRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "UpdateRolesWithIDPFunctionOutputs": {
+      "Type": "Custom::LambdaCallout",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "UpdateRolesWithIDPFunction",
+            "Arn"
+          ]
+        },
+        "region": {
+          "Ref": "AWS::Region"
+        },
+        "idpId": {
+          "Fn::GetAtt": [
+            "authmarlinbuildopsfc6385a7",
+            "Outputs.IdentityPoolId"
+          ]
+        },
+        "authRoleName": {
+          "Ref": "AuthRoleName"
+        },
+        "unauthRoleName": {
+          "Ref": "UnauthRoleName"
+        }
+      }
+    },
+    "UpdateRolesWithIDPFunctionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AuthRoleName"
+              },
+              "-idp"
+            ]
+          ]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "UpdateRolesWithIDPFunctionPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "arn:aws:logs:*:*:*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "iam:UpdateAssumeRolePolicy",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "AuthRole",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "iam:UpdateAssumeRolePolicy",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "UnauthRole",
+                      "Arn"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "Region": {
+      "Description": "CloudFormation provider root stack Region",
+      "Value": {
+        "Ref": "AWS::Region"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-Region"
+        }
+      }
+    },
+    "StackName": {
+      "Description": "CloudFormation provider root stack ID",
+      "Value": {
+        "Ref": "AWS::StackName"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-StackName"
+        }
+      }
+    },
+    "StackId": {
+      "Description": "CloudFormation provider root stack name",
+      "Value": {
+        "Ref": "AWS::StackId"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-StackId"
+        }
+      }
+    },
+    "DeploymentBucketName": {
+      "Description": "CloudFormation provider root stack deployment bucket name",
+      "Value": {
+        "Ref": "DeploymentBucketName"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-DeploymentBucketName"
+        }
+      }
+    },
+    "AuthRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "AuthRole",
+          "Arn"
+        ]
+      }
+    },
+    "UnauthRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "UnauthRole",
+          "Arn"
+        ]
+      }
+    },
+    "AuthRoleName": {
+      "Value": {
+        "Ref": "AuthRole"
+      }
+    },
+    "UnauthRoleName": {
+      "Value": {
+        "Ref": "UnauthRole"
+      }
+    }
+  }
+}
