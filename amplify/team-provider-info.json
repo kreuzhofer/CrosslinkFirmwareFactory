@@ -20,7 +20,7 @@
         },
         "marlinbuildopsfc6385a7PostConfirmation": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PostConfirmation-54716369344f442b3472-build.zip"
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PostConfirmation-663567634d52486c7154-build.zip"
         },
         "marlinbuildopsfc6385a7PreTokenGeneration": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",

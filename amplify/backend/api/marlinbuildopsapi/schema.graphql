@@ -4,7 +4,8 @@ type BuildDefinition @model
     {allow: private, provider: iam, operations: [create, delete, read, update]},
     {allow: groups, groupsField: "groupsCanAccess", operations: [read]}    
 #    {allow: private, operations: [read]}
-  ]) 
+  ])
+  @key(name: "buildDefinitionsByOwner", fields: ["owner"], queryField: "buildDefinitionsByOwner")
 {
   id: ID!
   name: String!
