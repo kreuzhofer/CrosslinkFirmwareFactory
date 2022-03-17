@@ -79,7 +79,7 @@ export const listBuildDefinitionsWithJobs = /* GraphQL */ `
   }
 `;
 
-export const f = /* GraphQL */ `
+export const buildDefinitionsByOwnerWithJobs = /* GraphQL */ `
   query BuildDefinitionsByOwner(
     $owner: String
     $sortDirection: ModelSortDirection
