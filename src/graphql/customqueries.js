@@ -78,3 +78,89 @@ export const listBuildDefinitionsWithJobs = /* GraphQL */ `
     }
   }
 `;
+
+export const f = /* GraphQL */ `
+  query BuildDefinitionsByOwner(
+    $owner: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelBuildDefinitionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    buildDefinitionsByOwner(
+      owner: $owner
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        firmwareVersionId
+        sourceTree
+        configTree
+        printerManufacturer
+        printerModel
+        printerMainboard
+        selectedMainboard
+        platformioEnv
+        description
+        configurationJSON
+        owner
+        groupsCanAccess
+        createdAt
+        updatedAt
+        buildJobs {
+          items {
+              id
+              buildDefinitionID
+              jobState
+              startTime
+              endTime
+              message
+              log
+              createdAt
+              updatedAt
+              owner
+              buildJobArtifacts {
+                items {
+                  id
+                  buildJobID
+                  artifactName
+                  artifactFileName
+                  owner
+                  createdAt
+                  updatedAt
+                }
+                nextToken
+              }
+              firmwareVersionId
+              firmwareVersion {
+                id
+                owner
+                name
+                sourceTree
+                configTree
+                createdAt
+                updatedAt
+              }
+          }
+        nextToken
+        }
+        firmwareVersion {
+          id
+          owner
+          name
+          sourceTree
+          configTree
+          parseJobState
+          defaultConfigJson
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
