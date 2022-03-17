@@ -69,13 +69,7 @@ export class BuildDefinitionsList extends React.Component {
   async reloadData() {
     try {
       const user =  await Auth.currentAuthenticatedUser();
-      const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 9999, 
-        filter: {
-          owner : {
-            eq : user.username
-          }
-        }
-      }));
+      const result = await API.graphql(graphqlOperation(customqueries.buildDefinitionsByOwnerWithJobs, {limit: 999, owner: user.username}));
       var items = result.data.listBuildDefinitions.items
       items.forEach(item => {
         if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
