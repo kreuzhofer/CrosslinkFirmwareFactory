@@ -70,7 +70,7 @@ export class BuildDefinitionsList extends React.Component {
     try {
       const user =  await Auth.currentAuthenticatedUser();
       const result = await API.graphql(graphqlOperation(customqueries.buildDefinitionsByOwnerWithJobs, {limit: 999, owner: user.username}));
-      var items = result.data.listBuildDefinitions.items
+      var items = result.data.buildDefinitionsByOwnerWithJobs.items
       items.forEach(item => {
         if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
           item.buildRunning = true;
