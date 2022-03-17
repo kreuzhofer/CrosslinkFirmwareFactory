@@ -1,0 +1,54 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-marlinbuildops-dev-144111-authRole",
+      "UnauthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-dev-144111-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::416703677996:role/amplify-marlinbuildops-dev-144111-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+      "UnauthRoleName": "amplify-marlinbuildops-dev-144111-unauthRole",
+      "StackName": "amplify-marlinbuildops-dev-144111",
+      "StackId": "arn:aws:cloudformation:eu-west-1:416703677996:stack/amplify-marlinbuildops-dev-144111/dbd44560-9de7-11eb-9e3b-02d4122c088f",
+      "AmplifyAppId": "d1ojj8niqi0wti",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-marlinbuildops-dev-144111-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "function": {
+        "AddBuildDefinitionFromWebHook": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/AddBuildDefinitionFromWebHook-747236774f7965325076-build.zip"
+        },
+        "marlinbuildopsfc6385a7PostConfirmation": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PostConfirmation-663567634d52486c7154-build.zip"
+        },
+        "marlinbuildopsfc6385a7PreTokenGeneration": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreTokenGeneration-794555546f3550646649-build.zip"
+        },
+        "marlinbuildopsfc6385a7PreAuthentication": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreAuthentication-38704539376c48616359-build.zip"
+        },
+        "marlinbuildopsfc6385a7PreSignup": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreSignup-4c307a31323264705148-build.zip"
+        },
+        "parsemarlinversionfunction": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/parsemarlinversionfunction-4a365156337a63696674-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1ojj8niqi0wti",
+          "type": "manual"
+        }
+      },
+      "auth": {
+        "marlinbuildopsfc6385a7": {},
+        "userPoolGroups": {}
+      }
+    }
+  }
+}
