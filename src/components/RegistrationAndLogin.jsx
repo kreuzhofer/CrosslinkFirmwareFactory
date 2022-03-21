@@ -15,9 +15,9 @@ export class RegistrationAndLogin extends React.Component{
             <Segment>
               <div className='ui centered medium'>Welcome to the Crosslink firmware factory<br/>
               the place to download and build your custom 3D printer firmware<br/>
-              Support this project by <a href="https://www.patreon.com/crosslink" target='_blank' rel="noopener noreferrer">becoming a Patron of Daniel Crosslink!</a><br/>
+              Support this project by <a href="https://www.patreon.com/crosslink" target='_blank' rel="noreferrer">becoming a Patron of Daniel Crosslink!</a><br/>
               User support in our discord channel <a href='https://discord.com/channels/554332400998547486/738041652282916895' target='_blank' rel="noopener noreferrer">#firmware-factory-alpha</a><br/>
-              <a href="https://youtu.be/L9QcTNuHaaY" target="_blank">Watch the introduction video here</a>
+              <a href="https://youtu.be/L9QcTNuHaaY" target="_blank" rel="noreferrer">Watch the introduction video here</a>
             </div>
             </Segment>
           </Grid.Column>

@@ -6,11 +6,12 @@ import {
     Table,
     Button,
     Icon,
-    Search
+    Search,
+    Message
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import * as customqueries from '../graphql/customqueries'
-//import * as queries from '../graphql/queries'
+import * as queries from '../graphql/queries'
 import _ from 'lodash';
 
 import mixpanel from 'mixpanel-browser';
@@ -40,7 +41,7 @@ export class MarlinFirmwareDownloads extends React.Component {
 
     async reloadData() {
         try {
-            const result = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit:999}));
+            const result = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit:999}));
             var items = result.data.listBuildDefinitions.items
             this.setState({buildDefinitions: items, oldResults: items});
         } catch (error) {
@@ -52,24 +53,24 @@ export class MarlinFirmwareDownloads extends React.Component {
         await this.reloadData();
     }
 
-    firmwareArtifacts(jobs){
-
-        function downloadBlob(blob, filename) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
+    downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
 //            console.log("Download URL for "+filename+": "+url);
-            a.download = filename || 'download';
-            const clickHandler = () => {
-              setTimeout(() => {
-                URL.revokeObjectURL(url);
-                a.removeEventListener('click', clickHandler);
-              }, 150);
-            };
-            a.addEventListener('click', clickHandler, false);
-            a.click();
-            return a;
-          }
+        a.download = filename || 'download';
+        const clickHandler = () => {
+          setTimeout(() => {
+            URL.revokeObjectURL(url);
+            a.removeEventListener('click', clickHandler);
+          }, 150);
+        };
+        a.addEventListener('click', clickHandler, false);
+        a.click();
+        return a;
+      }
+
+    firmwareArtifacts(jobs){
 
         const handleDownload = async(e, jobId, file) => {
             e.preventDefault();
@@ -77,7 +78,7 @@ export class MarlinFirmwareDownloads extends React.Component {
             const result = await Storage.get(jobId+'/'+file, { download: true });
             //const result = await Storage.get(job.id+'/'+file);
 //            console.log(result);
-            downloadBlob(result.Body, file);
+            this.downloadBlob(result.Body, file);
           }
 
         if(jobs == null)
@@ -138,7 +139,41 @@ export class MarlinFirmwareDownloads extends React.Component {
     renderBuildDefinitions() {
         const { searchValue, results, oldResults, isLoading } = this.state
         const dataToShow = (_.isEmpty(results) && !searchValue) || isLoading ? oldResults : results
-    
+
+        const handleBuildDownload = async(e, defId) => {
+            e.preventDefault();
+            mixpanel.track("Download_Artifact");
+
+            try {
+                const result = await API.graphql(graphqlOperation(customqueries.getBuildDefinitionWithBuildJobs, {id: defId}));
+                var defWithJobs = result.data.getBuildDefinition
+                console.log(defWithJobs);
+                console.log(defWithJobs.buildJobs.items);
+                var jobs = defWithJobs.buildJobs.items.filter((value)=>value.jobState==="DONE");
+                console.log(jobs);
+                var jobsSorted = jobs.sort((a, b)=>a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0)
+                console.log(jobsSorted);
+                if(jobsSorted.length>0)
+                {
+                    var latestJob = jobsSorted[0];
+                    console.log(latestJob);
+                    var binaryArtifacts = latestJob.buildJobArtifacts.items.filter((value)=>value.artifactName === "Marlin firmware binary");
+                    console.log(binaryArtifacts);
+                    if(binaryArtifacts.length>0)
+                    {
+                        var binaryArtifact = binaryArtifacts[0];
+                        console.log(binaryArtifact);
+                        const result = await Storage.get(latestJob.id+'/'+binaryArtifact.artifactFileName, { download: true });
+                        console.log(result);
+                        this.downloadBlob(result.Body, binaryArtifact.artifactFileName);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+
+          }
+
         return dataToShow
         .sort((a,b)=>{
             return comparator.makeComparator('printerManufacturer')(a,b)+comparator.makeComparator('printerModel')(a,b)+comparator.makeComparator('printerMainboard')(a,b)
@@ -149,8 +184,15 @@ export class MarlinFirmwareDownloads extends React.Component {
           <Table.Cell>{def.printerModel}</Table.Cell>
           <Table.Cell>{def.printerMainboard}</Table.Cell>            
           <Table.Cell>{def.firmwareVersion ? def.firmwareVersion.name : "custom"}</Table.Cell>
-          <Table.Cell><h4>{def.name}</h4><br/>{def.description}</Table.Cell>
-          <Table.Cell>{this.firmwareArtifacts(def.buildJobs.items)}</Table.Cell>
+          <Table.Cell><a href={"/Marlin/"+def.id}>{def.name}</a></Table.Cell>
+          <Table.Cell>{def.description}</Table.Cell>
+          <Table.Cell>
+              <Button animated='vertical' onClick={(e)=>handleBuildDownload(e, def.id)}>
+                  <Button.Content hidden>Download</Button.Content>
+                  <Button.Content visible><Icon name='download'/></Button.Content>
+              </Button>
+          </Table.Cell>
+          {/* <Table.Cell>{this.firmwareArtifacts(def.buildJobs.items)}</Table.Cell> */}
             <Table.Cell>
                     <Button animated='vertical' onClick={()=>this.props.history.push('/AddBuildDefinition/'+def.id)}>
                         <Button.Content hidden>Clone</Button.Content>
@@ -194,6 +236,14 @@ export class MarlinFirmwareDownloads extends React.Component {
         return (
             <Segment>
                 <Header as='h3'>Firmware builds</Header>
+                <Message>
+                    <Message.Header>We made some changes to this page</Message.Header>
+                    <Message.List>
+                        <Message.Item>The list of firmware has been condensed to contain only the essential information.</Message.Item>
+                        <Message.Item>You can download the latest build for a firmware by clicking on the download button in each row.</Message.Item>
+                        <Message.Item>For more details about a firmware, click on the name of the firmware.</Message.Item>
+                    </Message.List>
+                </Message>                
                 <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
                 <Search 
                     open={false}
@@ -209,6 +259,7 @@ export class MarlinFirmwareDownloads extends React.Component {
                     <Table.HeaderCell>Variant / Preset</Table.HeaderCell>                        
                     <Table.HeaderCell>Firmware</Table.HeaderCell>
                     <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Description</Table.HeaderCell>
                     <Table.HeaderCell>Builds</Table.HeaderCell>
 					<Table.HeaderCell>Actions</Table.HeaderCell>
                     </Table.Row>

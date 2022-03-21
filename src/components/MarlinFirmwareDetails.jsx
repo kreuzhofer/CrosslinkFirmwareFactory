@@ -6,7 +6,8 @@ import {
     Table,
     Button,
     Icon,
-    Search
+    Search,
+	Label
   } from 'semantic-ui-react'
 import * as queries from '../graphql/queries'
 
@@ -17,17 +18,22 @@ export class MarlinFirmwareDetails extends React.Component
 {
 	constructor(props){
 		super(props);
+		console.log(props);
 		this.state = {
+			id: props.match.params.id,
+			buildDefinition: null
 		};
 	}
 
 	async reloadData() {
 		try {
       	const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
-      	const buildDefinition = result.data.getBuildDefinition
+      	var buildDefinition = result.data.getBuildDefinition;
+		console.log(buildDefinition);
 		} catch (error) {
 				console.error(error);
 		}
+		this.setState({buildDefinition: buildDefinition});
 	}
 
 	async componentDidMount()
@@ -35,9 +41,18 @@ export class MarlinFirmwareDetails extends React.Component
 		await this.reloadData();
 	}
 
-	render (){
-		return
+	render () {
+		if(this.state.buildDefinition) return (
+			<>
 			<Segment>
+				<Label>Name</Label>
+				{this.state.buildDefinition.name}
 			</Segment>
+			<Segment>
+				
+			</Segment>
+			</>
+		)
+		else return null;
 	}
 }
