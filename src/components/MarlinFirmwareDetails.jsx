@@ -38,7 +38,6 @@ export class MarlinFirmwareDetails extends React.Component
 	render (){
 		return
 			<Segment>
-
 			</Segment>
 	}
 }

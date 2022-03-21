@@ -9,7 +9,8 @@ import {
     Form,
     Label,
     Dropdown, 
-    Grid
+    Grid,
+    Message
   } from 'semantic-ui-react'
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -82,6 +83,7 @@ export class EditBuildDefinition extends React.Component {
       printerMainboardOptions: [],
       selectedMainboard: undefined,
       printerMainboardSearch: '',
+      jsonErrors: []
     }
   }
 
@@ -383,9 +385,13 @@ export class EditBuildDefinition extends React.Component {
       if(isDev())console.log(buildDefinition.configurationJSON);
       if(buildDefinition.configurationJSON)
       {
-        var sanityCheckJson = JSON.parse(buildDefinition.configurationJSON);
-        var lowerJsonObj = this.jsonLower(sanityCheckJson);
-        var upgradedObj = this.upgradeJson(lowerJsonObj);
+        try {
+          var sanityCheckJson = JSON.parse(buildDefinition.configurationJSON);
+          var lowerJsonObj = this.jsonLower(sanityCheckJson);
+          var upgradedObj = this.upgradeJson(lowerJsonObj);
+          } catch (error) {
+          // error in json, continue without parsing
+        }
       }
 
       this.setState({
@@ -399,7 +405,7 @@ export class EditBuildDefinition extends React.Component {
         printerVariant: buildDefinition.printerMainboard,
         platformioEnv: buildDefinition.platformioEnv,
         description: buildDefinition.description,
-        configurationJSON: JSON.stringify(upgradedObj, null, 3),
+        configurationJSON: upgradedObj ? JSON.stringify(upgradedObj, null, 3) : buildDefinition.configurationJSON,
         sharedWithEveryone: this.state.clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
       });
 
@@ -1100,12 +1106,23 @@ export class EditBuildDefinition extends React.Component {
           value={this.state.description}
           onChange={(e) => this.setState({description: e.target.value})}
       /><br/>
+      { this.state.jsonErrors.length>0 ? 
+      <Message negative header='You have some error(s) in your config JSON. Please fix before building.' list={this.state.jsonErrors} />
+      : null }
       <Label>Config JSON</Label>
       <AceEditor
         mode="json"
         theme="github"
         value={this.state.configurationJSON}
         onChange={(e) => this.setState({configurationJSON: e})}
+        onValidate= {(annotations) => {
+          if(isDev())console.log(annotations);
+          var errorList = [];
+          annotations.forEach(element => {
+            errorList.push("Row: "+element.row+", Col: "+element.column+": "+element.text);
+          });
+          this.setState({jsonErrors: errorList})
+        }}
         name="UNIQUE_ID_OF_DIV"
         fontSize={14}
         showPrintMargin={true}
