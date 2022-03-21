@@ -10,6 +10,7 @@ import {
 	Label
   } from 'semantic-ui-react'
 import * as queries from '../graphql/queries'
+import * as customqueries from '../graphql/customqueries'
 
 import mixpanel from 'mixpanel-browser';
 mixpanel.init('b797e33ed9db411af6893878c06f6522');
@@ -27,7 +28,7 @@ export class MarlinFirmwareDetails extends React.Component
 
 	async reloadData() {
 		try {
-      	const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
+      	const result = await API.graphql(graphqlOperation(customqueries.getBuildDefinitionWithBuildJobs, {id: this.state.id}));
       	var buildDefinition = result.data.getBuildDefinition;
 		console.log(buildDefinition);
 		} catch (error) {
