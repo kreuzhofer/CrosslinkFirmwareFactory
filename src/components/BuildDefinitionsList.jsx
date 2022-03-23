@@ -258,6 +258,7 @@ export class BuildDefinitionsList extends React.Component {
       })
       .map(def => 
       <Table.Row key={def.id}>
+        <Table.Cell>{def.groupsCanAccess ? def.groupsCanAccess.includes("Everyone") ? <span class='green-dot'/> : null : null}</Table.Cell>
         <Table.Cell>{def.printerManufacturer}</Table.Cell>
         <Table.Cell>{def.printerModel}</Table.Cell>
         <Table.Cell>{def.printerMainboard}</Table.Cell>
@@ -358,6 +359,7 @@ export class BuildDefinitionsList extends React.Component {
         <Table celled>
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell>Public</Table.HeaderCell>
               <Table.HeaderCell>Manufacturer</Table.HeaderCell>
               <Table.HeaderCell>Model</Table.HeaderCell>
               <Table.HeaderCell>Mainboard</Table.HeaderCell>

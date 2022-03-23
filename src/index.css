@@ -18,3 +18,11 @@ code {
   align-items: var(--container-align);
   --container-height: 0;
 }
+
+.green-dot {
+  height: 25px;
+  width: 25px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+}
