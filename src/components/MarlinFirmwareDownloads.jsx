@@ -42,14 +42,13 @@ export class MarlinFirmwareDownloads extends React.Component {
     async reloadData() {
         try {
             var result = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit:999}));
-            console.info(result);
             var items = result.data.listBuildDefinitions.items
             var nextToken = null;
             if(result.data.listBuildDefinitions.nextToken) nextToken = result.data.listBuildDefinitions.nextToken
             while(nextToken)
             {
                 var nextResult = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit: 999, nextToken: nextToken}));
-                items.push(nextResult.data.listBuildDefinitions.items)
+                nextResult.data.listBuildDefinitions.items.forEach((v,i,a)=>items.push(i));
                 nextToken = nextResult.data.listBuildDefinitions.nextToken;
             }
             console.info(items);
