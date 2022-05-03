@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateBuildDefinition = /* GraphQL */ `
-  subscription OnCreateBuildDefinition($owner: String) {
-    onCreateBuildDefinition(owner: $owner) {
+  subscription OnCreateBuildDefinition {
+    onCreateBuildDefinition {
       id
       name
       firmwareVersionId
@@ -51,8 +51,8 @@ export const onCreateBuildDefinition = /* GraphQL */ `
   }
 `;
 export const onUpdateBuildDefinition = /* GraphQL */ `
-  subscription OnUpdateBuildDefinition($owner: String) {
-    onUpdateBuildDefinition(owner: $owner) {
+  subscription OnUpdateBuildDefinition {
+    onUpdateBuildDefinition {
       id
       name
       firmwareVersionId
@@ -100,8 +100,8 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
   }
 `;
 export const onDeleteBuildDefinition = /* GraphQL */ `
-  subscription OnDeleteBuildDefinition($owner: String) {
-    onDeleteBuildDefinition(owner: $owner) {
+  subscription OnDeleteBuildDefinition {
+    onDeleteBuildDefinition {
       id
       name
       firmwareVersionId

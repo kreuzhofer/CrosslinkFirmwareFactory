@@ -3,7 +3,7 @@ type BuildDefinition @model
     {allow: owner},
     {allow: private, provider: iam, operations: [create, delete, read, update]},
     {allow: groups, groupsField: "groupsCanAccess", operations: [read]}    
-#    {allow: private, operations: [read]}
+    {allow: private, operations: [read]}
   ])
   @key(name: "buildDefinitionsByOwner", fields: ["owner"], queryField: "buildDefinitionsByOwner")
 {

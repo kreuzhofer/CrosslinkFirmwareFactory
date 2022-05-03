@@ -313,14 +313,16 @@ for manufacturer in manuFacturers:
             for (dirpath, dirnames, filenames) in walk(rootDir+"/"+manufacturer+"/"+printerModel+"/"+printerVariant):
                 if("Configuration.h" in filenames):
                     result = parseConfigurationFile(dirpath)
-                else:
-                    result = [None, []]                    
+                    newPrinterModelObj['variants'].append({
+                        'name': printerVariant,
+                        'mainboard': result[0],
+                        'environments': result[1]
+                    })
+                if(len(dirnames)>0):
+                    for(printerSubVariant in dirnames):
+                                  
                 break
-            newPrinterModelObj['variants'].append({
-                'name': printerVariant,
-                'mainboard': result[0],
-                'environments': result[1]
-            })
+
         newManufacturerObj['printerModels'].append(newPrinterModelObj)
 #print(json.dumps(tree, indent=3))
 
