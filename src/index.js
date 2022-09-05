@@ -5,8 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
-import MyApp from './components/amplify-authentication';
+//import MyApp from './components/amplify-authentication';
 import {Helmet} from "react-helmet";
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css'; // default theme
+
 import 'semantic-ui-css/semantic.min.css'
 
 Amplify.configure(awsExports);
@@ -24,7 +27,9 @@ ReactDOM.render(
         </script>
         <script type='text/javascript' src='https://euc-widget.freshworks.com/widgets/80000006868.js' async defer></script>        
       </Helmet>
-      <MyApp Component={App}/>
+      <Authenticator.Provider>
+        <App/>
+      </Authenticator.Provider>
       </>
 //  </React.StrictMode>
   ,

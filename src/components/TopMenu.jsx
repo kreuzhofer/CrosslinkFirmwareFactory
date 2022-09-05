@@ -43,7 +43,7 @@ export class TopMenu extends React.Component {
 			</Container>
 			<Container>
 			{ this.props.authState ? 
-				<Menu.Item><AmplifySignOut /></Menu.Item>
+				<Menu.Item>{/* <AmplifySignOut /> */}</Menu.Item>
 				: null }
 				</Container>
 		</Menu> 

@@ -7,6 +7,8 @@ import {
   Grid, 
 } from 'semantic-ui-react'
 import { Auth } from 'aws-amplify'
+import { useAuthenticator } from '@aws-amplify/ui-react';
+
 import { FirmwareVersionsList } from './components/FirmwareVersionsList'
 import { AddFirmwareVersion } from './components/AddFirmwareVersion'
 import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
@@ -37,35 +39,37 @@ const App = () => {
   const [isAdmin, setisAdmin] = useState(false)
 	const [patronLevel, setPatronLevel] = useState(0);
 
-	Auth.currentSession().then(data => {
-		//console.log("data: ");
-		//console.log(data);
-		if(data.idToken.payload.patron_level)
-			setPatronLevel(data.idToken.payload.patron_level);
-		//console.log("Patron level: "+patronLevel);
-		//console.log(data.accessToken);
-/* 		function parseJwt (token) {
-			var base64Url = token.split('.')[1];
-			var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-			var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-					return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-			}).join(''));
-	
-			return JSON.parse(jsonPayload);
-		}; */
-		//console.log(parseJwt(data.accessToken.jwtToken));
-	});
+  const { authStatus } = useAuthenticator(context => [context.authStatus]);
+  console.log(authStatus);
 
-  Auth.currentAuthenticatedUser().then((user)=>{
-    const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
-    //console.info(groups)
-    if(groups && groups.filter(f=>f === "Admin").length>0)
-      setisAdmin(true)
-    setAuthState(true)
-  });
-  if(!authState)
+	if(authStatus === 'authenticated')
   {
-    return null;
+    Auth.currentSession().then(data => {
+      //console.log("data: ");
+      //console.log(data);
+      if(data.idToken.payload.patron_level)
+        setPatronLevel(data.idToken.payload.patron_level);
+      //console.log("Patron level: "+patronLevel);
+      //console.log(data.accessToken);
+  /* 		function parseJwt (token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    
+        return JSON.parse(jsonPayload);
+      }; */
+      //console.log(parseJwt(data.accessToken.jwtToken));
+    });
+
+    Auth.currentAuthenticatedUser().then((user)=>{
+      const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
+      //console.info(groups)
+      if(groups && groups.filter(f=>f === "Admin").length>0)
+        setisAdmin(true)
+      setAuthState(true)
+    });
   }
   return (
     <>
