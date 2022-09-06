@@ -36,7 +36,11 @@
         },
         "parsemarlinversionfunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/parsemarlinversionfunction-4a365156337a63696674-build.zip"
+          "s3Key": "amplify-builds/parsemarlinversionfunction-6677374736753030486b-build.zip"
+        },
+        "firmwarebuildsapifunction": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/firmwarebuildsapifunction-71667476597573685a48-build.zip"
         }
       },
       "hosting": {

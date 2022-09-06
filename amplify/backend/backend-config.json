@@ -18,6 +18,20 @@
           }
         }
       }
+    },
+    "firmwarebuildsapi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "firmwarebuildsapifunction",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "auth": {
@@ -132,6 +146,21 @@
       "service": "Lambda"
     },
     "parsemarlinversionfunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "marlinbuildopsapi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "firmwarebuildsapifunction": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",

@@ -24,5 +24,8 @@
       "securityEnhancementNotification": false,
       "showfieldauthnotification": false
     }
+  },
+  "debug": {
+    "shareProjectConfig": false
   }
 }

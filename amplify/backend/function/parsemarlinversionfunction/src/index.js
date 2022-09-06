@@ -23,7 +23,7 @@ const https = require('https');
 const urlParse = require("url").URL;
 const endpoint = new urlParse(graphQLApiUrl).hostname.toString();
 
-const gqlUpdateFirmwareVersion = /* GraphQL */ gql`
+const gqlUpdateFirmwareVersion = /* GraphQL */ gql(`
   mutation UpdateFirmwareVersion(
     $input: UpdateFirmwareVersionInput!
     $condition: ModelFirmwareVersionConditionInput
@@ -40,7 +40,7 @@ const gqlUpdateFirmwareVersion = /* GraphQL */ gql`
       updatedAt
     }
   }
-`;
+`);
 
 async function updateFirmwareVersion(id, newstate)
 {
@@ -77,7 +77,7 @@ async function updateFirmwareVersion(id, newstate)
                 resolve(data);
             });
             result.on('error', (err) => {
-                console.log(error.toString());
+                console.log(err.toString());
                 reject(err);
             });
         });

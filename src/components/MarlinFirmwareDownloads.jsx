@@ -11,11 +11,13 @@ import {
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import * as customqueries from '../graphql/customqueries'
-import * as queries from '../graphql/queries'
 import _ from 'lodash';
-
 import mixpanel from 'mixpanel-browser';
 mixpanel.init('b797e33ed9db411af6893878c06f6522');
+
+const https = require('https')
+const env = process.env["REACT_APP_ENV"];
+const restapiurl = process.env["REACT_APP_REST_API_BASEURL"]+env;
 
 export class MarlinFirmwareDownloads extends React.Component {
 
@@ -39,20 +41,23 @@ export class MarlinFirmwareDownloads extends React.Component {
         });
     }
 
+    async request(url, data) {
+        return new Promise((resolve, reject) => {
+            let req = https.request(url, function (res) {
+                let body = ''
+                res.on('data', (chunk) => { body += chunk })
+                res.on('end', () => { resolve(body) })
+            })
+            req.write(data)
+            req.end()
+        })
+    }    
+
     async reloadData() {
         try {
-            var result = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit:999}));
-            var items = result.data.listBuildDefinitions.items
-            var nextToken = null;
-            if(result.data.listBuildDefinitions.nextToken) nextToken = result.data.listBuildDefinitions.nextToken
-            while(nextToken)
-            {
-                var nextResult = await API.graphql(graphqlOperation(queries.listBuildDefinitions, {limit: 999, nextToken: nextToken}));
-                nextResult.data.listBuildDefinitions.items.forEach((v)=>items.push(v));
-                nextToken = nextResult.data.listBuildDefinitions.nextToken;
-            }
+            var result = await this.request(restapiurl+"/firmwarebuilds", "");
+            var items = JSON.parse(result);
             console.info(items);
-            items = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
             this.setState({buildDefinitions: items, oldResults: items});
         } catch (error) {
             console.error(error);
