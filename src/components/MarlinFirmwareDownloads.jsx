@@ -1,5 +1,4 @@
 import React from 'react'
-import { API, graphqlOperation, Storage } from 'aws-amplify'
 import {
     Header, 
     Segment, 
@@ -10,7 +9,6 @@ import {
     Message
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
-import * as customqueries from '../graphql/customqueries'
 import _ from 'lodash';
 import mixpanel from 'mixpanel-browser';
 mixpanel.init('b797e33ed9db411af6893878c06f6522');
@@ -68,15 +66,13 @@ export class MarlinFirmwareDownloads extends React.Component {
         await this.reloadData();
     }
 
-    downloadBlob(blob, filename) {
-        const url = URL.createObjectURL(blob);
+    downloadBlob(url, filename) {
         const a = document.createElement('a');
         a.href = url;
-//            console.log("Download URL for "+filename+": "+url);
+        console.log("Download URL for "+filename+": "+url);
         a.download = filename || 'download';
         const clickHandler = () => {
           setTimeout(() => {
-            URL.revokeObjectURL(url);
             a.removeEventListener('click', clickHandler);
           }, 150);
         };
@@ -84,72 +80,6 @@ export class MarlinFirmwareDownloads extends React.Component {
         a.click();
         return a;
       }
-
-    firmwareArtifacts(jobs){
-
-        const handleDownload = async(e, jobId, file) => {
-            e.preventDefault();
-            mixpanel.track("Download_Artifact");
-            const result = await Storage.get(jobId+'/'+file, { download: true });
-            //const result = await Storage.get(job.id+'/'+file);
-//            console.log(result);
-            this.downloadBlob(result.Body, file);
-          }
-
-        if(jobs == null)
-            return null;
-        let finishedJobs = jobs.sort(comparator.makeComparator('createdAt', 'desc')).filter(j=>j.jobState === 'DONE').slice(0,1);
-//        console.log(finishedJobs);
-        if(finishedJobs){
-            let first = finishedJobs[0];
-            if(!first)
-                return null;
-//            console.log(first);
-            let artifacts = first.buildJobArtifacts.items
-            return (
-                <Table celled>
-                    <Table.Header>
-                        <Table.Row>
-                        <Table.HeaderCell>Firmware</Table.HeaderCell>
-                        <Table.HeaderCell>Artifacts</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.Cell>
-                                {first.firmwareVersion ? first.firmwareVersion.name : "custom"}
-                            </Table.Cell>
-                            <Table.Cell>
-                                <Table celled>
-                                    <Table.Header>
-                                        <Table.Row>
-                                            <Table.HeaderCell>Name</Table.HeaderCell>
-                                            <Table.HeaderCell>File</Table.HeaderCell>
-                                        </Table.Row>
-                                    </Table.Header>
-
-                                    <Table.Body>
-                                        {artifacts.map(a=>
-                                            <Table.Row key={a.id}>
-                                                <Table.Cell>{a.artifactName}</Table.Cell>
-                                                <Table.Cell>
-                                                    {a.artifactFileName}
-                                                    <Button animated='vertical' onClick={(e)=>handleDownload(e, a.buildJobID, a.artifactFileName)}>
-                                                        <Button.Content hidden>Download</Button.Content>
-                                                        <Button.Content visible><Icon name="download"/></Button.Content>
-                                                    </Button>
-                                                </Table.Cell>
-                                            </Table.Row>
-                                        )}
-                                    </Table.Body>
-                                </Table>
-                            </Table.Cell>
-                        </Table.Row>                    
-                    </Table.Body>
-                </Table>
-            )
-        }
-    }
 
     renderBuildDefinitions() {
         const { searchValue, results, oldResults, isLoading } = this.state
@@ -160,9 +90,9 @@ export class MarlinFirmwareDownloads extends React.Component {
             mixpanel.track("Download_Artifact");
 
             try {
-                const result = await API.graphql(graphqlOperation(customqueries.getBuildDefinitionWithBuildJobs, {id: defId}));
-                var defWithJobs = result.data.getBuildDefinition
-                console.log(defWithJobs);
+                var firmwareBuildResult = await this.request(restapiurl+"/firmwarebuilds/"+defId, "");
+                var defWithJobs = JSON.parse(firmwareBuildResult);
+                console.info(defWithJobs);
                 console.log(defWithJobs.buildJobs.items);
                 var jobs = defWithJobs.buildJobs.items.filter((value)=>value.jobState==="DONE");
                 console.log(jobs);
@@ -178,9 +108,11 @@ export class MarlinFirmwareDownloads extends React.Component {
                     {
                         var binaryArtifact = binaryArtifacts[0];
                         console.log(binaryArtifact);
-                        const result = await Storage.get(latestJob.id+'/'+binaryArtifact.artifactFileName, { download: true });
+                        // fetch signed url from service
+                        var result = await this.request(restapiurl+"/firmwareartifact/"+latestJob.id+"/"+binaryArtifact.artifactFileName, "");
                         console.log(result);
-                        this.downloadBlob(result.Body, binaryArtifact.artifactFileName);
+                        var jsonResult = JSON.parse(result);
+                        this.downloadBlob(jsonResult.url, binaryArtifact.artifactFileName);
                     }
                 }
             } catch (error) {
@@ -194,6 +126,7 @@ export class MarlinFirmwareDownloads extends React.Component {
             return comparator.makeComparator('printerManufacturer')(a,b)+comparator.makeComparator('printerModel')(a,b)+comparator.makeComparator('printerMainboard')(a,b)
           })
         .map(def => 
+        
         <Table.Row key={def.id}>
           <Table.Cell>{def.printerManufacturer}</Table.Cell>
           <Table.Cell>{def.printerModel}</Table.Cell>
@@ -201,13 +134,15 @@ export class MarlinFirmwareDownloads extends React.Component {
           <Table.Cell>{def.firmwareVersion ? def.firmwareVersion.name : "custom"}</Table.Cell>
           <Table.Cell><a href={"/Marlin/"+def.id}>{def.name}</a></Table.Cell>
           <Table.Cell>{def.description}</Table.Cell>
+
           <Table.Cell>
-              <Button animated='vertical' onClick={(e)=>handleBuildDownload(e, def.id)}>
+          { def.buildJobs.items.length > 0 ? 
+                <Button animated='vertical' onClick={(e)=>handleBuildDownload(e, def.id)}>
                   <Button.Content hidden>Download</Button.Content>
                   <Button.Content visible><Icon name='download'/></Button.Content>
               </Button>
+          : null }
           </Table.Cell>
-          {/* <Table.Cell>{this.firmwareArtifacts(def.buildJobs.items)}</Table.Cell> */}
             <Table.Cell>
                     <Button animated='vertical' onClick={()=>this.props.history.push('/AddBuildDefinition/'+def.id)}>
                         <Button.Content hidden>Clone</Button.Content>

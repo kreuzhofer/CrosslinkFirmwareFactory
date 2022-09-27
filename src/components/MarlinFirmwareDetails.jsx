@@ -1,15 +1,9 @@
 import React from 'react'
-import { API, graphqlOperation, Storage } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify'
 import {
-    Header, 
     Segment, 
-    Table,
-    Button,
-    Icon,
-    Search,
 	Label
   } from 'semantic-ui-react'
-import * as queries from '../graphql/queries'
 import * as customqueries from '../graphql/customqueries'
 
 import mixpanel from 'mixpanel-browser';

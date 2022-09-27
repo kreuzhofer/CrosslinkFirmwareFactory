@@ -52,6 +52,22 @@ const listBuildDefinitions = /* GraphQL */ gql`
         createdAt
         updatedAt
         buildJobs {
+          items {
+            id
+            buildDefinitionID
+            jobState
+            startTime
+            endTime
+            message
+            log
+            firmwareVersionId
+            owner
+            createdAt
+            updatedAt
+            buildJobArtifacts {
+              nextToken
+            }          
+          }
           nextToken
         }
       }
@@ -60,24 +76,60 @@ const listBuildDefinitions = /* GraphQL */ gql`
   }
 `;
 
-async function rungqlquery(gqlquery, nextToken = null)
-{
-    const req = new AWS.HttpRequest(graphQLApiUrl, region);
-
-    let vars = null;
-    if(nextToken)
-    {
-      vars = {
-        limit: 999,
-        nextToken: nextToken
-      };
-    }
-    else
-    {
-      vars = {
-        limit: 999
+const getBuildDefinitionWithBuildJobs = /* GraphQL */ gql`
+  query GetBuildDefinition($id: ID!) {
+    getBuildDefinition(id: $id) {
+      id
+      name
+      firmwareVersionId
+      sourceTree
+      configTree
+      printerManufacturer
+      printerModel
+      printerMainboard
+      selectedMainboard
+      platformioEnv
+      description
+      configurationJSON
+      owner
+      groupsCanAccess
+      createdAt
+      updatedAt
+      buildJobs {
+        items {
+          id
+          buildDefinitionID
+          jobState
+          startTime
+          endTime
+          message
+          log
+          firmwareVersionId
+          owner
+          createdAt
+          updatedAt
+          buildJobArtifacts {
+            items {
+              id
+              buildJobID
+              artifactName
+              artifactFileName
+              owner
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }          
+        }
+        nextToken
       }
     }
+  }
+`;
+
+async function rungqlquery(gqlquery, vars)
+{
+    const req = new AWS.HttpRequest(graphQLApiUrl, region);
 
     req.method = "POST";
     req.path = "/graphql";
@@ -119,22 +171,39 @@ async function rungqlquery(gqlquery, nextToken = null)
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    //console.log(`EVENT: ${JSON.stringify(event)}`);
-
-    var result = await rungqlquery(listBuildDefinitions);
+  console.log(`EVENT: ${JSON.stringify(event)}`);
+  let returnValue = null;
+  if(event.resource == "/firmwarebuilds")
+  {
+    let vars = {
+      limit: 999
+    }
+    var result = await rungqlquery(listBuildDefinitions, vars);
     result = JSON.parse(result.toString());
 
-    var items = result.data.listBuildDefinitions.items
-    items = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
+    var items = result.data.listBuildDefinitions.items;
+    returnValue = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
+  }
+  else if(event.resource == "/firmwarebuilds/{proxy+}")
+  {
+    let id = event.path.split("/")[2];
+    console.log("id: ", id);
+    let vars = {
+      id: id
+    }
+    var result = await rungqlquery(getBuildDefinitionWithBuildJobs, vars);
+    result = JSON.parse(result.toString());
 
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-     headers: {
-         "Access-Control-Allow-Origin": "*",
-         "Access-Control-Allow-Headers": "*",
-         "Access-Control-Allow-Methods": "GET"
-     }, 
-        body: JSON.stringify(items),
-    };
+    returnValue = result.data.getBuildDefinition;
+  }
+  return {
+      statusCode: 200,
+  //  Uncomment below to enable CORS requests
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Methods": "GET"
+    }, 
+      body: JSON.stringify(returnValue),
+  };
 };

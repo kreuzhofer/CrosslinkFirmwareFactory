@@ -7,6 +7,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/firmwareartifact": {
+      "name": "/firmwareartifact",
+      "lambdaFunction": "firmwareartifactapifunction",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

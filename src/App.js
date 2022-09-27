@@ -1,22 +1,20 @@
 /* src/App.js */
 import React, {useState} from 'react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import {EditBuildDefinition} from './components/EditBuildDefinition'
-import {BuildDefinitionsList} from './components/BuildDefinitionsList'
-import {
-  Grid, 
-} from 'semantic-ui-react'
+import BuildDefinitionsList from './components/BuildDefinitionsList'
 import { Auth } from 'aws-amplify'
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
 import { FirmwareVersionsList } from './components/FirmwareVersionsList'
 import { AddFirmwareVersion } from './components/AddFirmwareVersion'
 import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
-import { TopMenu } from './components/TopMenu.jsx'
+import TopMenu from './components/TopMenu'
 import { MembershipExceptionList } from './components/MembershipExceptionList'
 import { AddMembershipException } from './components/AddMembershipException'
 import { Home } from './components/Home'
 import { MarlinFirmwareDetails } from './components/MarlinFirmwareDetails'
+import { Login } from './components/Login'
 
 //const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 //console.log(buildAgentJobQueueUrl)
@@ -74,33 +72,25 @@ const App = () => {
   return (
     <>
     <Router>
-      <TopMenu isAdmin={isAdmin} patronLevel={patronLevel} authState={authState}/>
-      <Grid padded>
-        <Grid.Row>
-          <Grid.Column>
-            {/* This is a spacer */}
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <Route path="/" exact component={Home}/>
-            <Route path="/Marlin" exact render={(props)=>(<MarlinFirmwareDownloads {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)} />
-            <Route path="/Marlin/:id" render={(props)=>(<MarlinFirmwareDetails {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)} />
+      <Routes>
+          <Route path='/' element={<TopMenu patronLevel={patronLevel} isAdmin={isAdmin} />}>
+            <Route index element={<Home/>}/>
+            <Route path="/Marlin" element={<MarlinFirmwareDownloads patronLevel={patronLevel} isAdmin={isAdmin} />}/>
+            <Route path="/Marlin/:id" element={<MarlinFirmwareDetails patronLevel={patronLevel} isAdmin={isAdmin} />}/>
 
-            <Route path="/BuildDefinition" exact render={(props) => (<BuildDefinitionsList {...props} patronLevel={patronLevel} isAdmin={isAdmin} /> )} />
-            <Route path="/BuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)}/>
-            <Route path="/AddBuildDefinition" exact render={(props)=>(<EditBuildDefinition {...props} patronLevel={patronLevel} isAdmin={isAdmin} />)}/>
-            <Route path="/AddBuildDefinition/:id" render={(props)=>(<EditBuildDefinition {...props} patronLevel={patronLevel} clone={true} isAdmin={isAdmin} />)}/>
+            <Route path="/BuildDefinition" element={<BuildDefinitionsList patronLevel={patronLevel} isAdmin={isAdmin} />}/>
+            <Route path="/BuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} />}/>
+            <Route path="/AddBuildDefinition" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} />}/>
+            <Route path="/AddBuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} clone={true} isAdmin={isAdmin} />}/>
 
+            { isAdmin ? <Route path="/FirmwareVersions" element={<FirmwareVersionsList/>}/> : null }
+            { isAdmin ? <Route path="/AddFirmwareVersion" element={<AddFirmwareVersion/>}/> : null }
+            { isAdmin ? <Route path="/MembershipExceptions" element={<MembershipExceptionList/>}/> : null }
+            { isAdmin ? <Route path="/AddMembershipException" element={<AddMembershipException/>}/> : null }
 
-            { isAdmin ? <Route path="/FirmwareVersions" exact component={FirmwareVersionsList}/> : null }
-            { isAdmin ? <Route path="/AddFirmwareVersion" exact component={AddFirmwareVersion}/> : null }
-            { isAdmin ? <Route path="/MembershipExceptions" exact component={MembershipExceptionList}/> : null }
-            { isAdmin ? <Route path="/AddMembershipException" exact component={AddMembershipException}/> : null }
-
-          </Grid.Column>
-         </Grid.Row>
-       </Grid>
+            <Route path="/login" element={<Login />} />
+          </Route>
+       </Routes>
     </Router>
     </>
   )

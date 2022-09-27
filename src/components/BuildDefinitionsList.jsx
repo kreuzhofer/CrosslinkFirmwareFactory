@@ -1,6 +1,7 @@
 import React from 'react'
 import { API, graphqlOperation, Auth } from 'aws-amplify'
-import {Route, NavLink} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
+import { withRouter } from './withRouter'
 import {
     Header, 
     Segment, 
@@ -265,14 +266,10 @@ export class BuildDefinitionsList extends React.Component {
         <Table.Cell>{def.firmwareVersion ? def.firmwareVersion.name : "custom"}</Table.Cell>
         <Table.Cell><NavLink to={`/BuildDefinition/${def.id}`}>{def.name}</NavLink><br/><br/>{def.description}</Table.Cell>
         <Table.Cell>
-        <Route render={({history}) => (
-          <Button animated='vertical' onClick={()=>history.push('/AddBuildDefinition/'+def.id)}>
+          <Button animated='vertical' onClick={()=>this.props.navigate('/AddBuildDefinition/'+def.id)}>
             <Button.Content hidden>Clone</Button.Content>
             <Button.Content visible><Icon name='clone'/></Button.Content>
           </Button>            
-        )}>
-        </Route>
-
         <Button loading={def.buildRunning} disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
             <Button.Content hidden>Build</Button.Content>
             <Button.Content visible><Icon name='cubes'/></Button.Content>
@@ -350,11 +347,8 @@ export class BuildDefinitionsList extends React.Component {
           value={searchValue}
           />
         <br/>
-        <Route render={({history}) => (
-            <Button icon='add' onClick={()=>history.push('/AddBuildDefinition')}>                 
-            </Button>
-          )}>
-        </Route>
+        <Button icon='add' onClick={()=>this.props.navigate('/AddBuildDefinition')}>                 
+        </Button>
 
         <Table celled>
           <Table.Header>
@@ -403,3 +397,4 @@ export class BuildDefinitionsList extends React.Component {
   }
 }
 
+export default withRouter(BuildDefinitionsList);
