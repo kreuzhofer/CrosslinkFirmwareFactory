@@ -1,7 +1,6 @@
 /* src/App.js */
 import React, {useState} from 'react'
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
-import {EditBuildDefinition} from './components/EditBuildDefinition'
 import BuildDefinitionsList from './components/BuildDefinitionsList'
 import { Auth } from 'aws-amplify'
 import { useAuthenticator } from '@aws-amplify/ui-react';
@@ -15,6 +14,7 @@ import { AddMembershipException } from './components/AddMembershipException'
 import { Home } from './components/Home'
 import { MarlinFirmwareDetails } from './components/MarlinFirmwareDetails'
 import { Login } from './components/Login'
+import EditBuildDefinition from './components/EditBuildDefinition'
 
 //const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 //console.log(buildAgentJobQueueUrl)
