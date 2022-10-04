@@ -128,7 +128,7 @@ function MarlinFirmwareDownloads () {
           <Table.Cell>{def.printerModel}</Table.Cell>
           <Table.Cell>{def.printerMainboard}</Table.Cell>            
           <Table.Cell>{def.firmwareVersion ? def.firmwareVersion.name : "custom"}</Table.Cell>
-          <Table.Cell><a href={"/Marlin/"+def.id}>{def.name}</a></Table.Cell>
+          <Table.Cell><a href={"/BuildDefinition/"+def.id}>{def.name}</a></Table.Cell>
           <Table.Cell>{def.description}</Table.Cell>
 
           <Table.Cell>
