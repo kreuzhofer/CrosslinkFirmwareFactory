@@ -428,7 +428,7 @@ function EditBuildDefinition() {
 
   useEffect(()=> {
     fetchData();
-  });
+  }, []);
   
   async function handleSubmit(event) {
       event.preventDefault();
