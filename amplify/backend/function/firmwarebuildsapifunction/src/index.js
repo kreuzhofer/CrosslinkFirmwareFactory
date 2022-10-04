@@ -6,16 +6,12 @@
 Amplify Params - DO NOT EDIT */
 
 console.info(process.env);
-const amiId = process.env['AmiId'];
-const subnetId = process.env['SubnetId'];
 const graphQLApiUrl = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIENDPOINTOUTPUT;
 const apiKey = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIKEYOUTPUT;
 const region = process.env.REGION;
 
 const AWS = require('aws-sdk');
 AWS.config.update({region: region});
-const ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
-const fs = require('fs')
 const graphql = require('graphql');
 const gql = require('graphql-tag');
 const { print } = graphql;

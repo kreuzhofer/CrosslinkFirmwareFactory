@@ -14,6 +14,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/firmwareversion": {
+      "name": "/firmwareversion",
+      "lambdaFunction": "firmwareversionapifunction",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }
