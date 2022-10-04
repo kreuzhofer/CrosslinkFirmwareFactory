@@ -7,7 +7,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 
 import { FirmwareVersionsList } from './components/FirmwareVersionsList'
 import { AddFirmwareVersion } from './components/AddFirmwareVersion'
-import { MarlinFirmwareDownloads } from './components/MarlinFirmwareDownloads'
+import MarlinFirmwareDownloads from './components/MarlinFirmwareDownloads'
 import TopMenu from './components/TopMenu'
 import { MembershipExceptionList } from './components/MembershipExceptionList'
 import { AddMembershipException } from './components/AddMembershipException'

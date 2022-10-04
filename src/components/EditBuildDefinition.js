@@ -324,7 +324,7 @@ function EditBuildDefinition() {
     return json;   
   }
 
-  async function fetchData() {
+  const fetchData = async () => {
     try {
       console.log("fetchData");
       const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
@@ -424,16 +424,11 @@ function EditBuildDefinition() {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  useEffect(() =>
-  {
-    async function initialLoad()
-    {
-      await fetchData();
-    }
-    initialLoad();
-  }, []);
+  useEffect(()=> {
+    fetchData();
+  });
   
   async function handleSubmit(event) {
       event.preventDefault();

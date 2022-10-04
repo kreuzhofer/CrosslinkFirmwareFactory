@@ -1,4 +1,6 @@
-import React from 'react'
+import _ from 'lodash';
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
     Header, 
     Segment, 
@@ -9,37 +11,31 @@ import {
     Message
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
-import _ from 'lodash';
 import mixpanel from 'mixpanel-browser';
+import { filter } from 'underscore';
 mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
 const https = require('https')
 const env = process.env["REACT_APP_ENV"];
 const restapiurl = process.env["REACT_APP_REST_API_BASEURL"]+env;
 
-export class MarlinFirmwareDownloads extends React.Component {
+function MarlinFirmwareDownloads () {
 
-    constructor(props){
-        super(props);
-        this.state = {
-            isLoading: false,
-            buildDefinitions: [],
-            results: [],
-            oldResults: [],    
-            searchValue: ''
-        }
+    const [isLoading, setIsLoading] = useState(false);
+    const [buildDefinitions, setBuildDefinitions] = useState([]);
+    const [results, setResults] = useState([]);
+    const [oldResults, setOldResults] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
+    const navigate = useNavigate();
+
+    const resetComponent = () => {
+        setIsLoading(false);
+        setResults([]);
+        setOldResults(buildDefinitions);
+        setSearchValue('');
     }
 
-    resetComponent = () => {
-        this.setState ({
-            isLoading: false,
-            results: [],
-            oldResults: this.state.buildDefinitions,    
-            searchValue: ''
-        });
-    }
-
-    async request(url, data) {
+    async function request(url, data) {
         return new Promise((resolve, reject) => {
             let req = https.request(url, function (res) {
                 let body = ''
@@ -51,22 +47,23 @@ export class MarlinFirmwareDownloads extends React.Component {
         })
     }    
 
-    async reloadData() {
-        try {
-            var result = await this.request(restapiurl+"/firmwarebuilds", "");
-            var items = JSON.parse(result);
-            console.info(items);
-            this.setState({buildDefinitions: items, oldResults: items});
-        } catch (error) {
-            console.error(error);
+    useEffect(()=>{
+        const reloadData = async () => {
+            try {
+                var result = await request(restapiurl+"/firmwarebuilds", "");
+                var items = JSON.parse(result);
+                console.info(items);
+                setBuildDefinitions(items);
+                setOldResults(items);
+            } catch (error) {
+                console.error(error);
+            }
+            return true;
         }
-    }
+        reloadData();
+    }, []);
 
-    async componentDidMount() {
-        await this.reloadData();
-    }
-
-    downloadBlob(url, filename) {
+    function downloadBlob(url, filename) {
         const a = document.createElement('a');
         a.href = url;
         console.log("Download URL for "+filename+": "+url);
@@ -81,8 +78,7 @@ export class MarlinFirmwareDownloads extends React.Component {
         return a;
       }
 
-    renderBuildDefinitions() {
-        const { searchValue, results, oldResults, isLoading } = this.state
+    function renderBuildDefinitions() {
         const dataToShow = (_.isEmpty(results) && !searchValue) || isLoading ? oldResults : results
 
         const handleBuildDownload = async(e, defId) => {
@@ -90,7 +86,7 @@ export class MarlinFirmwareDownloads extends React.Component {
             mixpanel.track("Download_Artifact");
 
             try {
-                var firmwareBuildResult = await this.request(restapiurl+"/firmwarebuilds/"+defId, "");
+                var firmwareBuildResult = await request(restapiurl+"/firmwarebuilds/"+defId, "");
                 var defWithJobs = JSON.parse(firmwareBuildResult);
                 console.info(defWithJobs);
                 console.log(defWithJobs.buildJobs.items);
@@ -109,10 +105,10 @@ export class MarlinFirmwareDownloads extends React.Component {
                         var binaryArtifact = binaryArtifacts[0];
                         console.log(binaryArtifact);
                         // fetch signed url from service
-                        var result = await this.request(restapiurl+"/firmwareartifact/"+latestJob.id+"/"+binaryArtifact.artifactFileName, "");
+                        var result = await request(restapiurl+"/firmwareartifact/"+latestJob.id+"/"+binaryArtifact.artifactFileName, "");
                         console.log(result);
                         var jsonResult = JSON.parse(result);
-                        this.downloadBlob(jsonResult.url, binaryArtifact.artifactFileName);
+                        downloadBlob(jsonResult.url, binaryArtifact.artifactFileName);
                     }
                 }
             } catch (error) {
@@ -144,7 +140,7 @@ export class MarlinFirmwareDownloads extends React.Component {
           : null }
           </Table.Cell>
             <Table.Cell>
-                    <Button animated='vertical' onClick={()=>this.props.history.push('/AddBuildDefinition/'+def.id)}>
+                    <Button animated='vertical' onClick={()=>navigate('/AddBuildDefinition/'+def.id)}>
                         <Button.Content hidden>Clone</Button.Content>
                         <Button.Content visible><Icon name='clone'/></Button.Content>
                     </Button>
@@ -152,13 +148,14 @@ export class MarlinFirmwareDownloads extends React.Component {
         </Table.Row>)
     }
 
-    handleSearchChange(e, { value }) {
+    function handleSearchChange(e, { value }) {
         setTimeout(() => {
-        this.setState({ isLoading: true, searchValue: value })
+        setIsLoading(true);
+        setSearchValue(value);
     
-        if (this.state.searchValue.length < 1) return this.resetComponent()
+        if (value.length < 1) return resetComponent()
                 
-        var terms = this.state.searchValue.split(' ');
+        var terms = value.split(' ');
         var escapedTerms = [];
         terms.forEach(element => {
             if(element !== '')
@@ -166,61 +163,58 @@ export class MarlinFirmwareDownloads extends React.Component {
         });
         var regExpString = escapedTerms.join('');
         const re = new RegExp(regExpString, 'i');
-        const filteredResults = _.filter(this.state.buildDefinitions, result => 
+        let filteredResults = _.filter(buildDefinitions, result => 
             re.test(result.printerManufacturer+' '+
             result.printerModel+ ' '+
             result.printerMainboard + ' '+
             result.name)
-            )
-            this.setState({
-                isLoading: false,
-                results: filteredResults,
-                oldResults: filteredResults
-            })
+            );
+            setIsLoading(false);
+            setResults(filteredResults);
+            setOldResults(filteredResults);
         }, 30);
     };
 
-    render() {
-        const boundHandleSearchChange = this.handleSearchChange.bind(this);
-        const { searchValue, isLoading } = this.state
-        return (
-            <Segment>
-                <Header as='h3'>Firmware builds</Header>
-                <Message>
-                    <Message.Header>We made some changes to this page</Message.Header>
-                    <Message.List>
-                        <Message.Item>The list of firmware has been condensed to contain only the essential information.</Message.Item>
-                        <Message.Item>You can download the latest build for a firmware by clicking on the download button in each row.</Message.Item>
-                        <Message.Item>For more details about a firmware, click on the name of the firmware.</Message.Item>
-                    </Message.List>
-                </Message>                
-                <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
-                <Search 
-                    open={false}
-                    loading={isLoading}
-                    onSearchChange={_.debounce(boundHandleSearchChange, 500, { leading: true})}
-                    value={searchValue}
-                    />
-                <Table celled>
-                <Table.Header>
-                    <Table.Row>
-                    <Table.HeaderCell>Manufacturer</Table.HeaderCell>
-                    <Table.HeaderCell>Model</Table.HeaderCell>
-                    <Table.HeaderCell>Variant / Preset</Table.HeaderCell>                        
-                    <Table.HeaderCell>Firmware</Table.HeaderCell>
-                    <Table.HeaderCell>Name</Table.HeaderCell>
-                    <Table.HeaderCell>Description</Table.HeaderCell>
-                    <Table.HeaderCell>Builds</Table.HeaderCell>
-					<Table.HeaderCell>Actions</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
+    const boundHandleSearchChange = handleSearchChange.bind(this);
+    return (
+        <Segment>
+            <Header as='h3'>Firmware builds</Header>
+            <Message>
+                <Message.Header>We made some changes to this page</Message.Header>
+                <Message.List>
+                    <Message.Item>The list of firmware has been condensed to contain only the essential information.</Message.Item>
+                    <Message.Item>You can download the latest build for a firmware by clicking on the download button in each row.</Message.Item>
+                    <Message.Item>For more details about a firmware, click on the name of the firmware.</Message.Item>
+                </Message.List>
+            </Message>                
+            <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
+            <Search 
+                open={false}
+                loading={isLoading}
+                onSearchChange={_.debounce(boundHandleSearchChange, 500, { leading: true})}
+                value={searchValue}
+                />
+            <Table celled>
+            <Table.Header>
+                <Table.Row>
+                <Table.HeaderCell>Manufacturer</Table.HeaderCell>
+                <Table.HeaderCell>Model</Table.HeaderCell>
+                <Table.HeaderCell>Variant / Preset</Table.HeaderCell>                        
+                <Table.HeaderCell>Firmware</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Description</Table.HeaderCell>
+                <Table.HeaderCell>Builds</Table.HeaderCell>
+                <Table.HeaderCell>Actions</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
 
-                <Table.Body>
-                    {this.renderBuildDefinitions()}
-                </Table.Body>
-                </Table>
-                <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
-            </Segment>
-        )
-    }
+            <Table.Body>
+                {renderBuildDefinitions()}
+            </Table.Body>
+            </Table>
+            <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
+        </Segment>
+    );
 }
+
+export default MarlinFirmwareDownloads;
