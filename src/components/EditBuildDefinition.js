@@ -83,10 +83,10 @@ function EditBuildDefinition() {
   const [printerMainboardSearch, setPrinterMainboardSearch] = useState('');
   const [jsonErrors, setJsonErrors] = useState([]);
 
-  function printerManufacturersByFirmwareVersion(id)
+  function printerManufacturersByFirmwareVersion(options, id)
   {
     if(!id) return [];
-    var jsonList = firmwareOptions.filter(f=>f.key === id)
+    var jsonList = options.filter(f=>f.key === id)
     if(jsonList.length>0) // has config json
     { 
        var json = jsonList[0]['defaultconfigjson'];
@@ -107,10 +107,10 @@ function EditBuildDefinition() {
     }
   }
 
-  function printerModelsByManufacturer(value)
+  function printerModelsByManufacturer(options, value)
   {
       if(!value) return [];
-      var printerManuOptions = printerManufacturerOptions.filter(f=>f.value === value);
+      var printerManuOptions = options.filter(f=>f.value === value);
       if(printerManuOptions.length===0)
       {
          return [];
@@ -130,10 +130,10 @@ function EditBuildDefinition() {
       return printerModelsFiltered;
   }
 
-  function printerVariantsByPrinterModel(value)
+  function printerVariantsByPrinterModel(modelOptions, value)
   {
     if(!value) return [];
-    var printerVariantsList = printerModelOptions.filter(f=>f.key === value);
+    var printerVariantsList = modelOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
        if(isDev())console.log(printerVariantsList);
@@ -150,10 +150,10 @@ function EditBuildDefinition() {
     }
   }
 
-  function platformioEnvOptionsByVariant(value)
+  function platformioEnvOptionsByVariant(variantOptions, value)
   {
     if(!value) return [];
-    var printerVariantsList = printerVariantOptions.filter(f=>f.key === value);
+    var printerVariantsList = variantOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
       if(isDev())console.log(printerVariantsList);
@@ -168,20 +168,20 @@ function EditBuildDefinition() {
     }
   }
 
-  function selectedMainboardByPrinterVariant(value)
+  function selectedMainboardByPrinterVariant(variantOptions, value)
   {
     if(!value) return [];
-    var printerVariantsList = printerVariantOptions.filter(f=>f.key === value);
+    var printerVariantsList = variantOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
       return printerVariantsList[0]['mainboard'];
     }
   }
 
-  function platformioEnvOptionsByModel(value)
+  function platformioEnvOptionsByModel(modelOptions, value)
   {
     if(!value) return [];
-    var filteredList = printerModelOptions.filter(f=>f.key === value);
+    var filteredList = modelOptions.filter(f=>f.key === value);
     if(filteredList.length>0)
     {
       console.log(filteredList);
@@ -200,10 +200,10 @@ function EditBuildDefinition() {
     }
   }
 
-  function platformioEnvOptionsByMotherboard(value)
+  function platformioEnvOptionsByMotherboard(mainboardOptions, value)
   {
     if(!value) return [];
-    var filteredList = printerMainboardOptions.filter(f=>f.key === value);
+    var filteredList = mainboardOptions.filter(f=>f.key === value);
     if(filteredList.length>0)
     {
       if(isDev())console.log(filteredList);
@@ -222,10 +222,10 @@ function EditBuildDefinition() {
     }
   }  
 
-  function selectedMainboardByModel(value)
+  function selectedMainboardByModel(modelOptions, value)
   {
     if(!value) return [];
-    var filteredList = printerModelOptions.filter(f=>f.key === value);
+    var filteredList = modelOptions.filter(f=>f.key === value);
     if(filteredList.length>0)
     {
       console.log(filteredList);
@@ -237,10 +237,10 @@ function EditBuildDefinition() {
     }
   }
 
-  function mainboardOptionsByFirmware(id)
+  function mainboardOptionsByFirmware(options, id)
   {
     if(!id) return [];
-    var jsonList = firmwareOptions.filter(f=>f.key === id)
+    var jsonList = options.filter(f=>f.key === id)
     if(jsonList.length>0) // has config json
     { 
       var json = jsonList[0]['defaultconfigjson'];
@@ -348,34 +348,47 @@ function EditBuildDefinition() {
         buildDefinition.name = "(Copy of) "+ buildDefinition.name;
       }
 
-   
+      setId(buildDefinition.id);
+      setName(buildDefinition.name);
+      setSourceTree(buildDefinition.sourceTree);
+      setConfigTree(buildDefinition.configTree);
+
+      console.log("Firmware version: "+buildDefinition.firmwareVersionId);
       if(buildDefinition.firmwareVersionId)
       {
-        setPrinterManufacturerOptions(printerManufacturersByFirmwareVersion(buildDefinition.firmwareVersionId));
-        setPrinterMainboardOptions(mainboardOptionsByFirmware(buildDefinition.firmwareVersionId));
+        var localPrinterManufacturerOptions = printerManufacturersByFirmwareVersion(firmwareOptions, buildDefinition.firmwareVersionId)
+        console.log("Printer manufacturer options: ", localPrinterManufacturerOptions);
+        setPrinterManufacturerOptions(localPrinterManufacturerOptions);
+        var localPrinterMainboardOptions = mainboardOptionsByFirmware(firmwareOptions, buildDefinition.firmwareVersionId);
+        setPrinterMainboardOptions(localPrinterMainboardOptions);
       }
 
-      console.log(buildDefinition.printerManufacturer);
-      if(buildDefinition.printerManufacturer && printerManufacturerOptions)
+      console.log("Printer manufacturer: ", buildDefinition.printerManufacturer);
+      console.log("Printer manufacturer options: ", localPrinterManufacturerOptions);
+      if(buildDefinition.printerManufacturer && localPrinterManufacturerOptions)
       {
-        setPrinterModelOptions(printerModelsByManufacturer(buildDefinition.printerManufacturer));
+        console.log("populating list of printer models")
+        var localPrinterModelsByManufacturer = printerModelsByManufacturer(localPrinterManufacturerOptions, buildDefinition.printerManufacturer)
+        setPrinterModelOptions(localPrinterModelsByManufacturer);
       }
 
-      console.log(buildDefinition.printerModel);
-      if(buildDefinition.printerModel && printerModelOptions)
+      console.log("Printer model: ", buildDefinition.printerModel);
+      if(buildDefinition.printerModel && localPrinterModelsByManufacturer)
       {
-        setPrinterVariantOptions(printerVariantsByPrinterModel(buildDefinition.printerModel));
-        setPlatformioEnvOptions(platformioEnvOptionsByModel(buildDefinition.printerModel));
+        var localPrinterVariantOptions = printerVariantsByPrinterModel(localPrinterModelsByManufacturer, buildDefinition.printerModel);
+        setPrinterVariantOptions(localPrinterVariantOptions);
+        var localPlatformioEnvOptions = platformioEnvOptionsByModel(localPrinterModelsByManufacturer, buildDefinition.printerModel);
+        setPlatformioEnvOptions(localPlatformioEnvOptions);
         if(!buildDefinition.selectedMainboard)
-          setSelectedMainboard(selectedMainboardByModel(buildDefinition.printerModel));
+          setSelectedMainboard(selectedMainboardByModel(localPrinterModelsByManufacturer, buildDefinition.printerModel));
       }
 
       console.log(buildDefinition.printerMainboard);
-      if(buildDefinition.printerMainboard && printerVariantOptions)
+      if(buildDefinition.printerMainboard && localPrinterVariantOptions)
       {
-        setPlatformioEnvOptions(platformioEnvOptionsByVariant(buildDefinition.printerMainboard))
+        setPlatformioEnvOptions(platformioEnvOptionsByVariant(localPrinterVariantOptions, buildDefinition.printerMainboard))
         if(!buildDefinition.selectedMainboard)
-          setSelectedMainboard(selectedMainboardByPrinterVariant(buildDefinition.printerMainboard));
+          setSelectedMainboard(selectedMainboardByPrinterVariant(localPrinterVariantOptions, buildDefinition.printerMainboard));
       }
 
       console.log(buildDefinition.platformioEnv);
@@ -392,11 +405,7 @@ function EditBuildDefinition() {
         }
       }
 
-      setId(buildDefinition.id);
-      setName(buildDefinition.name);
       setFirmwareVersionId(buildDefinition.firmwareVersionId);
-      setSourceTree(buildDefinition.sourceTree);
-      setConfigTree(buildDefinition.configTree);
       setPrinterManufacturer(buildDefinition.printerManufacturer);
       setPrinterModel(buildDefinition.printerModel);
       setPrinterVariant(buildDefinition.printerMainboard);
@@ -405,7 +414,7 @@ function EditBuildDefinition() {
       setConfigurationJSON(upgradedObj ? JSON.stringify(upgradedObj, null, 3) : buildDefinition.configurationJSON);
       setSharedWithEveryone(clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined);
 
-      if(buildDefinition.printerMainboard && printerVariantOptions && printerVariantOptions.length===0)
+      if(buildDefinition.printerMainboard && localPrinterVariantOptions && localPrinterVariantOptions.length===0)
       {
         setPrinterVariantSearch(buildDefinition.printerMainboard);
       }
@@ -413,10 +422,11 @@ function EditBuildDefinition() {
       if(buildDefinition.selectedMainboard)
       {
         setSelectedMainboard(buildDefinition.selectedMainboard);
-        setPlatformioEnvOptions(platformioEnvOptionsByMotherboard(buildDefinition.selectedMainboard));
+        var localPlatformioEnvOptions = platformioEnvOptionsByMotherboard(localPrinterMainboardOptions, buildDefinition.selectedMainboard);
+        setPlatformioEnvOptions(localPlatformioEnvOptions);
       }
 
-      if(buildDefinition.platformioEnv && platformioEnvOptions && platformioEnvOptions.length===0)
+      if(buildDefinition.platformioEnv && localPlatformioEnvOptions && localPlatformioEnvOptions.length===0)
       {
         setPlatformioEnvSearch(buildDefinition.platformioEnv);
       }
@@ -949,7 +959,7 @@ function EditBuildDefinition() {
   return (
     <Grid divided>
       <Grid.Row>
-        <Grid.Column width={7}>
+        <Grid.Column>
 
       <Segment>
       <Form>
@@ -1156,7 +1166,7 @@ function EditBuildDefinition() {
       </Form>
       </Segment>
     </Grid.Column>
-    <Grid.Column width={5}>
+{/*     <Grid.Column width={5}>
       <Segment>
         <Header>Templates</Header>
         <Header as="h4">Bed Leveling</Header>
@@ -1171,7 +1181,7 @@ function EditBuildDefinition() {
         <Button onClick={(e)=>handleTemplateClick(5)}>Save program memory, aggressive</Button>
         <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
       </Segment>
-    </Grid.Column>
+    </Grid.Column> */}
     </Grid.Row>
   </Grid>      
 
