@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -18,14 +17,6 @@ ReactDOM.render(
 //  <React.StrictMode>
       <>
       <Helmet>
-        <script>{`
-          window.fwSettings={
-          'widget_id':80000006868
-          };
-          !function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}() 
-          `}
-        </script>
-        <script type='text/javascript' src='https://euc-widget.freshworks.com/widgets/80000006868.js' async defer></script>        
       </Helmet>
       <Authenticator.Provider>
         <App/>
