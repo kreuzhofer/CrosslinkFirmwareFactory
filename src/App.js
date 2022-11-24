@@ -32,6 +32,14 @@ Fix for 404 access denied in amplify deployed app:
 https://github.com/aws-amplify/amplify-console/issues/436
 */
 
+function PageNotFound() {
+  return (
+    <div>
+      <h2>404 Page not found</h2>
+    </div>
+  );
+}
+
 const App = () => {
   const [authState, setAuthState] = useState(false)
   const [isAdmin, setisAdmin] = useState(false)
@@ -91,6 +99,8 @@ const App = () => {
             { isAdmin ? <Route path="/AddMembershipException" element={<AddMembershipException/>}/> : null }
 
             <Route path="/login" element={<Login />} />
+
+            <Route path="*" element={<PageNotFound />} />
           </Route>
        </Routes>
     </Router>
