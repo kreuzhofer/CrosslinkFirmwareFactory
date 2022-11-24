@@ -373,11 +373,12 @@ function EditBuildDefinition() {
       }
 
       console.log("Printer model: ", buildDefinition.printerModel);
+      var localPlatformioEnvOptions;
       if(buildDefinition.printerModel && localPrinterModelsByManufacturer)
       {
         var localPrinterVariantOptions = printerVariantsByPrinterModel(localPrinterModelsByManufacturer, buildDefinition.printerModel);
         setPrinterVariantOptions(localPrinterVariantOptions);
-        var localPlatformioEnvOptions = platformioEnvOptionsByModel(localPrinterModelsByManufacturer, buildDefinition.printerModel);
+        localPlatformioEnvOptions = platformioEnvOptionsByModel(localPrinterModelsByManufacturer, buildDefinition.printerModel);
         setPlatformioEnvOptions(localPlatformioEnvOptions);
         if(!buildDefinition.selectedMainboard)
           setSelectedMainboard(selectedMainboardByModel(localPrinterModelsByManufacturer, buildDefinition.printerModel));
@@ -422,7 +423,7 @@ function EditBuildDefinition() {
       if(buildDefinition.selectedMainboard)
       {
         setSelectedMainboard(buildDefinition.selectedMainboard);
-        var localPlatformioEnvOptions = platformioEnvOptionsByMotherboard(localPrinterMainboardOptions, buildDefinition.selectedMainboard);
+        localPlatformioEnvOptions = platformioEnvOptionsByMotherboard(localPrinterMainboardOptions, buildDefinition.selectedMainboard);
         setPlatformioEnvOptions(localPlatformioEnvOptions);
       }
 
