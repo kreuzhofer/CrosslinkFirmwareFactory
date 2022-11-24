@@ -65,7 +65,7 @@ function EditBuildDefinition() {
   const [description, setDescription] = useState('');
   const [configurationJSON, setConfigurationJSON] = useState(defaultJson);
   const [sharedWithEveryone, setSharedWithEveryone] = useState(false);
-  const [firmwareOptions, setFirmwareOptions] = useState([]);
+  const [firmwareVersionOptions, setFirmwareOptions] = useState([]);
   const [isAdmin, setIsAdmin] = useState(params.isAdmin ? params.isAdmin : false);
 	console.log("IsAdmin "+isAdmin);
   const [printerManufacturerSearch, setPrinterManufacturerSearch] = useState('');
@@ -107,10 +107,10 @@ function EditBuildDefinition() {
     }
   }
 
-  function printerModelsByManufacturer(options, value)
+  function printerModelsByManufacturer(printerManufacturerOptions, value)
   {
       if(!value) return [];
-      var printerManuOptions = options.filter(f=>f.value === value);
+      var printerManuOptions = printerManufacturerOptions.filter(f=>f.value === value);
       if(printerManuOptions.length===0)
       {
          return [];
@@ -237,10 +237,10 @@ function EditBuildDefinition() {
     }
   }
 
-  function mainboardOptionsByFirmware(options, id)
+  function mainboardOptionsByFirmwareVersion(firmwareVersionOptions, id)
   {
     if(!id) return [];
-    var jsonList = options.filter(f=>f.key === id)
+    var jsonList = firmwareVersionOptions.filter(f=>f.key === id)
     if(jsonList.length>0) // has config json
     { 
       var json = jsonList[0]['defaultconfigjson'];
@@ -359,7 +359,7 @@ function EditBuildDefinition() {
         var localPrinterManufacturerOptions = printerManufacturersByFirmwareVersion(firmwareOptions, buildDefinition.firmwareVersionId)
         console.log("Printer manufacturer options: ", localPrinterManufacturerOptions);
         setPrinterManufacturerOptions(localPrinterManufacturerOptions);
-        var localPrinterMainboardOptions = mainboardOptionsByFirmware(firmwareOptions, buildDefinition.firmwareVersionId);
+        var localPrinterMainboardOptions = mainboardOptionsByFirmwareVersion(firmwareOptions, buildDefinition.firmwareVersionId);
         setPrinterMainboardOptions(localPrinterMainboardOptions);
       }
 
@@ -959,7 +959,7 @@ function EditBuildDefinition() {
   return (
     <Grid divided>
       <Grid.Row>
-        <Grid.Column>
+        <Grid.Column width={7}>
 
       <Segment>
       <Form>
@@ -977,12 +977,12 @@ function EditBuildDefinition() {
         placeholder='select firmware version'
         selection
         clearable
-        options={firmwareOptions}
+        options={firmwareVersionOptions}
         value={firmwareVersionId}
         onChange={(e, {value}) => {
           setFirmwareVersionId(value);
-          setPrinterManufacturerOptions(printerManufacturersByFirmwareVersion(value));
-          setPrinterMainboardOptions(mainboardOptionsByFirmware(value))
+          setPrinterManufacturerOptions(printerManufacturersByFirmwareVersion(firmwareVersionOptions, value));
+          setPrinterMainboardOptions(mainboardOptionsByFirmwareVersion(firmwareVersionOptions, value))
           }}/>
       <br/>
       
@@ -1013,7 +1013,7 @@ function EditBuildDefinition() {
           setPrinterManufacturerSearch("");
           setPrinterManufacturer(value);
           console.log(value);
-          setPrinterModelOptions(printerModelsByManufacturer(value));
+          setPrinterModelOptions(printerModelsByManufacturer(printerManufacturerOptions, value));
         }}
         onSearchChange={(e, {searchQuery}) => setPrinterManufacturerSearch(searchQuery)}
         options={printerManufacturerOptions}
@@ -1035,9 +1035,9 @@ function EditBuildDefinition() {
           setPrinterModelSearch("");
           setPrinterModel(value);
           console.log(value);
-          setPrinterVariantOptions(printerVariantsByPrinterModel(value));
-          setPlatformioEnvOptions(platformioEnvOptionsByModel(value));
-          setSelectedMainboard(selectedMainboardByModel(value));
+          setPrinterVariantOptions(printerVariantsByPrinterModel(printerModelOptions, value));
+          setPlatformioEnvOptions(platformioEnvOptionsByModel(printerModelOptions, value));
+          setSelectedMainboard(selectedMainboardByModel(printerModelOptions, value));
         }}
         onSearchChange={(e, {searchQuery}) => setPrinterModelSearch(searchQuery)}
         options={printerModelOptions}
@@ -1058,8 +1058,8 @@ function EditBuildDefinition() {
           setPrinterVariant(value);
           // filter subsequent list accordingly
           console.log(value);
-          setPlatformioEnvOptions(platformioEnvOptionsByVariant(value))
-          setSelectedMainboard(selectedMainboardByPrinterVariant(value));
+          setPlatformioEnvOptions(platformioEnvOptionsByVariant(printerVariantOptions, value))
+          setSelectedMainboard(selectedMainboardByPrinterVariant(printerVariantOptions, value));
         }}
         onSearchChange={(e, {searchQuery}) => setPrinterVariantSearch(searchQuery)}
         options={printerVariantOptions}
@@ -1078,7 +1078,7 @@ function EditBuildDefinition() {
           setPrinterMainboardSearch("");
           setSelectedMainboard(value);
           applySetting("Marlin/Configuration.h", "MOTHERBOARD", true, value);
-          setPlatformioEnvOptions(platformioEnvOptionsByMotherboard(value))
+          setPlatformioEnvOptions(platformioEnvOptionsByMotherboard(printerMainboardOptions, value))
         }}
         onSearchChange={(e, {searchQuery}) => setPrinterMainboardSearch(searchQuery)}
         options={printerMainboardOptions}
@@ -1166,7 +1166,7 @@ function EditBuildDefinition() {
       </Form>
       </Segment>
     </Grid.Column>
-{/*     <Grid.Column width={5}>
+    <Grid.Column width={5}>
       <Segment>
         <Header>Templates</Header>
         <Header as="h4">Bed Leveling</Header>
@@ -1181,7 +1181,7 @@ function EditBuildDefinition() {
         <Button onClick={(e)=>handleTemplateClick(5)}>Save program memory, aggressive</Button>
         <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
       </Segment>
-    </Grid.Column> */}
+    </Grid.Column>
     </Grid.Row>
   </Grid>      
 
