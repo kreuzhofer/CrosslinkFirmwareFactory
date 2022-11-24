@@ -319,8 +319,9 @@ for manufacturer in manuFacturers:
                         'environments': result[1]
                     })
                 if(len(dirnames)>0):
-                    for(printerSubVariant in dirnames):
-                                  
+                    for printerSubVariant in dirnames:
+                        print("printerSubVariant: ", printerSubVariant)  
+                        break        
                 break
 
         newManufacturerObj['printerModels'].append(newPrinterModelObj)
