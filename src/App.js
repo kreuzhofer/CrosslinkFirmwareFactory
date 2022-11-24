@@ -5,7 +5,7 @@ import BuildDefinitionsList from './components/BuildDefinitionsList'
 import { Auth } from 'aws-amplify'
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
-import { FirmwareVersionsList } from './components/FirmwareVersionsList'
+import FirmwareVersionsList from './components/FirmwareVersionsList'
 import { AddFirmwareVersion } from './components/AddFirmwareVersion'
 import MarlinFirmwareDownloads from './components/MarlinFirmwareDownloads'
 import TopMenu from './components/TopMenu'
@@ -63,9 +63,11 @@ const App = () => {
 
     Auth.currentAuthenticatedUser().then((user)=>{
       const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
-      //console.info(groups)
+      console.info(groups)
       if(groups && groups.filter(f=>f === "Admin").length>0)
+      {
         setisAdmin(true)
+      }
       setAuthState(true)
     });
   }
