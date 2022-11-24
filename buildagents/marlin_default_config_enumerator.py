@@ -310,7 +310,10 @@ for manufacturer in manuFacturers:
             'environments': result[1]
         }
         for printerVariant in printerVariants:
+            printerSubVariants = []
             for (dirpath, dirnames, filenames) in walk(rootDir+"/"+manufacturer+"/"+printerModel+"/"+printerVariant):
+                print("dirnames: ", dirnames)
+                printerSubVariants.extend(dirnames)
                 if("Configuration.h" in filenames):
                     result = parseConfigurationFile(dirpath)
                     newPrinterModelObj['variants'].append({
@@ -318,11 +321,18 @@ for manufacturer in manuFacturers:
                         'mainboard': result[0],
                         'environments': result[1]
                     })
-                if(len(dirnames)>0):
-                    for printerSubVariant in dirnames:
-                        print("printerSubVariant: ", printerSubVariant)  
-                        break        
                 break
+            for printerSubVariant in printerSubVariants:
+                print("printerModel: ", printerModel, ", printerVariant: ", printerVariant, ", printerSubVariant: ", printerSubVariant)
+                for (dirpath, dirnames, filenames) in walk(rootDir+"/"+manufacturer+"/"+printerModel+"/"+printerVariant+"/"+printerSubVariant):
+                    if("Configuration.h" in filenames):
+                        result = parseConfigurationFile(dirpath)
+                        newPrinterModelObj['variants'].append({
+                            'name': printerVariant+"/"+printerSubVariant,
+                            'mainboard': result[0],
+                            'environments': result[1]
+                        })
+                    break
 
         newManufacturerObj['printerModels'].append(newPrinterModelObj)
 #print(json.dumps(tree, indent=3))
