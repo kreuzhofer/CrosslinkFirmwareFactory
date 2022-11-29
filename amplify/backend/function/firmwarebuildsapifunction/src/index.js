@@ -171,13 +171,18 @@ exports.handler = async (event) => {
   let returnValue = null;
   if(event.resource == "/firmwarebuilds")
   {
-    let vars = {
-      limit: 999
-    }
-    var result = await rungqlquery(listBuildDefinitions, vars);
+    var result = await rungqlquery(listBuildDefinitions);
     result = JSON.parse(result.toString());
 
-    var items = result.data.listBuildDefinitions.items;
+    var data = result.data.listBuildDefinitions;
+    var nextToken = data.nextToken;
+    var items = data.items;
+    while(nextToken) {
+      const nextResult = await API.graphql(graphqlOperation(listBuildDefinitions, {nextToken: nextToken}));
+      var nextData = nextResult.data.listBuildDefinitions;
+      nextToken = nextData.nextToken;
+      items = items.concat(nextData.items);
+    }
     console.log(`Items: ${JSON.stringify(items)}`);
     returnValue = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
   }
