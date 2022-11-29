@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { API, graphqlOperation, Auth } from 'aws-amplify'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import {
     Header, 
     Input, 
@@ -46,14 +46,18 @@ const defaultJson = JSON.stringify(JSON.parse(`
 }
 `), null, 3);
 
-function EditBuildDefinition() {
+function EditBuildDefinition({isAdmin, clone, authState}) {
 
   let navigate = useNavigate();
   const params = useParams();
-  console.log("PARAMS: ", params);
+  //console.log("PARAMS: ", params);
+  const location = useLocation();
 
   const [id, setId] = useState(params.id ? params.id : "");
   console.log("Id "+id);
+	console.log("IsAdmin "+isAdmin);
+  console.log("Clone "+clone);
+  console.log("authState "+authState);
   const [name, setName] = useState('');
   const [firmwareVersionId, setFirmwareVersionId] = useState(undefined);
   const [sourceTree, setSourceTree] = useState('');
@@ -66,8 +70,6 @@ function EditBuildDefinition() {
   const [configurationJSON, setConfigurationJSON] = useState(defaultJson);
   const [sharedWithEveryone, setSharedWithEveryone] = useState(false);
   const [firmwareVersionOptions, setFirmwareOptions] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(params.isAdmin ? params.isAdmin : false);
-	console.log("IsAdmin "+isAdmin);
   const [printerManufacturerSearch, setPrinterManufacturerSearch] = useState('');
   const [printerManufacturerOptions, setPrinterManufacturerOptions] = useState([]);
   const [printerModelSearch, setPrinterModelSearch] = useState('');
@@ -76,8 +78,6 @@ function EditBuildDefinition() {
   const [printerVariantOptions, setPrinterVariantOptions] = useState([]);
   const [platformioEnvSearch, setPlatformioEnvSearch] = useState('');
   const [platformioEnvOptions, setPlatformioEnvOptions] = useState([]);
-  const [clone, setClone] = useState(params.clone ? true : false);
-  console.log("Clone "+clone);
   const [printerMainboardOptions, setPrinterMainboardOptions] = useState([]);
   const [selectedMainboard, setSelectedMainboard] = useState(undefined);
   const [printerMainboardSearch, setPrinterMainboardSearch] = useState('');
@@ -438,6 +438,10 @@ function EditBuildDefinition() {
   };
 
   useEffect(()=> {
+    if(!authState)
+    {
+      navigate("/login", {state: {from: location}, replace: true});
+    }
     fetchData();
   }, []);
   

@@ -41,12 +41,13 @@ function PageNotFound() {
 }
 
 const App = () => {
-  const [authState, setAuthState] = useState(false)
   const [isAdmin, setisAdmin] = useState(false)
 	const [patronLevel, setPatronLevel] = useState(0);
 
   const { authStatus } = useAuthenticator(context => [context.authStatus]);
-  console.log(authStatus);
+  console.log("authStatus: " + authStatus);
+  const authState = authStatus === 'authenticated';
+  console.log("authState: " + authState);
 
 	if(authStatus === 'authenticated')
   {
@@ -76,7 +77,6 @@ const App = () => {
       {
         setisAdmin(true)
       }
-      setAuthState(true)
     });
   }
   return (
@@ -88,10 +88,10 @@ const App = () => {
             <Route path="/Marlin" element={<MarlinFirmwareDownloads patronLevel={patronLevel} isAdmin={isAdmin} />}/>
             <Route path="/Marlin/:id" element={<MarlinFirmwareDetails patronLevel={patronLevel} isAdmin={isAdmin} />}/>
 
-            <Route path="/BuildDefinition" element={<BuildDefinitionsList patronLevel={patronLevel} isAdmin={isAdmin} />}/>
-            <Route path="/BuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} />}/>
-            <Route path="/AddBuildDefinition" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} />}/>
-            <Route path="/AddBuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} clone={true} isAdmin={isAdmin} />}/>
+            <Route path="/BuildDefinition" element={<BuildDefinitionsList patronLevel={patronLevel} isAdmin={isAdmin} authState={authState} />}/>
+            <Route path="/BuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} authState={authState} />}/>
+            <Route path="/AddBuildDefinition" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} authState={authState} />}/>
+            <Route path="/AddBuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} clone={true} isAdmin={isAdmin} authState={authState} />}/>
 
             { isAdmin ? <Route path="/FirmwareVersions" element={<FirmwareVersionsList/>}/> : null }
             { isAdmin ? <Route path="/AddFirmwareVersion" element={<AddFirmwareVersion/>}/> : null }
