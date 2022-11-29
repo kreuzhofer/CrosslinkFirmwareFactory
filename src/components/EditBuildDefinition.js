@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { API, graphqlOperation, Auth } from 'aws-amplify'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import {
     Header, 
     Input, 
@@ -51,6 +51,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
   let navigate = useNavigate();
   const params = useParams();
   //console.log("PARAMS: ", params);
+  const location = useLocation();
 
   const [id, setId] = useState(params.id ? params.id : "");
   console.log("Id "+id);
@@ -439,7 +440,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
   useEffect(()=> {
     if(!authState)
     {
-      navigate("/login");
+      navigate("/login", {state: {from: location}, replace: true});
     }
     fetchData();
   }, []);
