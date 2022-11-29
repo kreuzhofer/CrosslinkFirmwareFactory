@@ -1,5 +1,6 @@
-import React from 'react';
-import { Route } from "react-router-dom";
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+
 import {
     Header, 
     Segment, 
@@ -10,34 +11,31 @@ import {
 import * as mutations from '../graphql/mutations'
 import { API, graphqlOperation } from 'aws-amplify'
 
-export class AddFirmwareVersion extends React.Component
+function AddFirmwareVersion()
 {
-    constructor(props)
-    {
-        super(props);
-        this.state = {
-            name: "",
-            sourceTree: "",
-            configTree: ""
-        }
-    }
+    const [name, setName] = useState("");
+    const [sourceTree, setSourceTree] = useState("");
+    const [configTree, setConfigTree] = useState("");
 
-    async handleSubmit() {
-        if(this.state.name === '' || this.state.sourceTree === '' || this.state.configTree === '')
+    let navigate = useNavigate();
+    const params = useParams();
+    console.log("PARAMS: ", params);
+
+    async function handleSubmit() {
+        if(name === '' || sourceTree === '' || configTree === '')
         {
             alert("All fields have to be filled")
             return false
         }
-        let inputData = { name: this.state.name.trim(),  sourceTree: this.state.sourceTree.trim(),  configTree: this.state.configTree.trim() };
+        let inputData = { name: name.trim(),  sourceTree: sourceTree.trim(),  configTree: configTree.trim() };
 
         let result = await API.graphql(graphqlOperation(mutations.createFirmwareVersion, {input: inputData}
         ));
         console.log(result);
         console.log("ID : "+result.data.createFirmwareVersion.id)
-        this.props.history.push('/FirmwareVersions');
+        navigate('/FirmwareVersions');
     }
 
-    render() {
         return(
             <Segment>
                 <Form>
@@ -47,35 +45,34 @@ export class AddFirmwareVersion extends React.Component
                     label='New Firmware Version Name'
                     placeholder='New Firmware Version Name'
                     name='name'
-                    value={this.state.name}
-                    onChange={(e) => this.setState({name: e.target.value})}/><br/>
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}/><br/>
                 <Input
                     label='Source tree URL'
                     type='text'
                     placeholder='Source tree URL'
                     name='sourceTree'
-                    value={this.state.sourceTree}
-                    onChange={(e) => this.setState({sourceTree: e.target.value})}
+                    value={sourceTree}
+                    onChange={(e) => setSourceTree(e.target.value)}
                 /><br/>
                 <Input
                     type='text'
                     label='Config tree URL'
                     placeholder='Config tree URL'
                     name='configTree'
-                    value={this.state.configTree}
-                    onChange={(e) => this.setState({configTree: e.target.value})}
+                    value={configTree}
+                    onChange={(e) => setConfigTree(e.target.value)}
                 /><br/><br/>
                <Button
                     content='Create'
-                    onClick={()=> this.handleSubmit()}
+                    onClick={()=> handleSubmit()}
                 />
-                <Route render={({history}) => (
-                    <Button onClick={()=>history.push('/FirmwareVersions')}>     
-                        Cancel            
-                    </Button>
-                )}/>
+                <Button onClick={()=>navigate('/FirmwareVersions')}>     
+                    Cancel            
+                </Button>
                 </Form>
             </Segment>
         )
-    }
 }
+
+export default AddFirmwareVersion;

@@ -1,4 +1,6 @@
-import React from 'react';
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+
 import { API, graphqlOperation, Auth, Storage } from 'aws-amplify'
 import { listFirmwareVersions } from '../graphql/queries';
 import {
@@ -9,7 +11,6 @@ import {
     Icon
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
-import { Route } from "react-router-dom";
 import Lambda from 'aws-sdk/clients/lambda';
 import * as subscriptions from '../graphql/subscriptions'
 const env = process.env["REACT_APP_ENV"];
@@ -17,29 +18,28 @@ const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"];
 const firmwareVersionTableName = process.env["REACT_APP_FIRMWAREVERSIONTABLENAME"];
 if (env.startsWith('dev')) console.log(process.env);
 
-export class FirmwareVersionsList extends React.Component {
+function FirmwareVersionsList() {
 
-    constructor(props){
-        super(props);
-        this.state = {
-            firmwareVersions: [],
-            subs: []
-        }
-    }
+    const [firmwareVersions, setFirmwareVersions] = useState([]);
+    const [subs, setSubs] = useState([]);
 
-    async reloadData() {
+    let navigate = useNavigate();
+    const params = useParams();
+    console.log("PARAMS: ", params);
+  
+    async function reloadData(){
         try {
             const result = await API.graphql(graphqlOperation(listFirmwareVersions));
             var items = result.data.listFirmwareVersions.items
             console.info(items);
-            this.setState({firmwareVersions: items});
+            setFirmwareVersions(items);
         } catch (error) {
             console.error(error);
         }
     }
 
-    async componentDidMount() {
-        await this.reloadData();
+    async function reloadAndSubscribe() {
+        await reloadData();
 
         const user =  await Auth.currentAuthenticatedUser();
         const username = user.username;
@@ -47,22 +47,21 @@ export class FirmwareVersionsList extends React.Component {
         try {
             const updateFirmwareVersionSub = await API.graphql(graphqlOperation(subscriptions.onUpdateFirmwareVersion, {owner: username})).subscribe({
                 next: async (eventData) => {
-                    await this.reloadData();
+                    await reloadData();
                 }
             })
-            this.state.subs.push(updateFirmwareVersionSub);
+            subs.push(updateFirmwareVersionSub);
         } catch (error) {
             console.error(error)
         }
     }
 
-    async componentWillUnmount() {
-        this.state.subs.forEach(function(item, index, array){
-            item.unsubscribe();
-          })
-    }
+    useEffect(() => { 
+        reloadAndSubscribe();
+        return () => { subs.forEach(s => s.unsubscribe()) } 
+    }, [subs]);
 
-    async handleParse(event, firmwareVersion)
+    async function handleParse(event, firmwareVersion)
     {
         var credentials = await Auth.currentCredentials()
         console.info(credentials)
@@ -84,7 +83,7 @@ export class FirmwareVersionsList extends React.Component {
         console.info(lambdaResult);
     }
 
-    downloadBlob(blob, filename) {
+    function downloadBlob(blob, filename) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -101,16 +100,16 @@ export class FirmwareVersionsList extends React.Component {
         return a;
       }
   
-    handleDownload = async(e, job, file) => {
+    const handleDownload = async(e, job, file) => {
         e.preventDefault();
         const result = await Storage.get(job.id+'/'+file, { download: true });
         //const result = await Storage.get(job.id+'/'+file);
         //console.log(result);
-        this.downloadBlob(result.Body, file);
+        downloadBlob(result.Body, file);
       }
 
-    firmwareVersions() {
-        return this.state.firmwareVersions
+    function renderFirmwareVersions() {
+        return firmwareVersions
         .sort(comparator.makeComparator('name'))
         .map(ver => 
         <Table.Row key={ver.id}>
@@ -119,27 +118,22 @@ export class FirmwareVersionsList extends React.Component {
           <Table.Cell>{ver.configTree}</Table.Cell>
           <Table.Cell>{ver.parseJobState}</Table.Cell>
           <Table.Cell>Logfile.txt
-            <Button animated='vertical' onClick={(e)=>this.handleDownload(e, ver, "logfile.txt")}>
+            <Button animated='vertical' onClick={(e)=>handleDownload(e, ver, "logfile.txt")}>
                 <Button.Content hidden>Download</Button.Content>
                 <Button.Content visible><Icon name="download"/></Button.Content>
             </Button>
         </Table.Cell>          
           <Table.Cell>
-            <Button onClick={(e)=>this.handleParse(e, ver)}>Parse
+            <Button onClick={(e)=>handleParse(e, ver)}>Parse
             </Button>              
           </Table.Cell>
         </Table.Row>)
     }
 
-    render() {
         return( 
             <Segment>
                 <Header as='h3'>Firmware versions</Header>
-                <Route render={({history}) => (
-                    <Button icon='add' onClick={()=>history.push('/AddFirmwareVersion')}>                 
-                    </Button>
-                )}>
-                </Route>
+                <Button icon='add' onClick={()=>navigate('/AddFirmwareVersion')} />                 
                 <Table celled>
                 <Table.Header>
                     <Table.Row>
@@ -153,10 +147,11 @@ export class FirmwareVersionsList extends React.Component {
                 </Table.Header>
 
                 <Table.Body>
-                    {this.firmwareVersions()}
+                    {renderFirmwareVersions()}
                 </Table.Body>
                 </Table>
             </Segment>
             )
-    }
 }
+
+export default FirmwareVersionsList;

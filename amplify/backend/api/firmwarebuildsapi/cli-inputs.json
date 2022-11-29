@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "paths": {
+    "/firmwarebuilds": {
+      "name": "/firmwarebuilds",
+      "lambdaFunction": "firmwarebuildsapifunction",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/firmwareartifact": {
+      "name": "/firmwareartifact",
+      "lambdaFunction": "firmwareartifactapifunction",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/firmwareversion": {
+      "name": "/firmwareversion",
+      "lambdaFunction": "firmwareversionapifunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

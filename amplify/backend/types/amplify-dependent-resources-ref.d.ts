@@ -3,6 +3,11 @@ export type AmplifyDependentResourcesAttributes = {
         "marlinbuildopsapi": {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
+        },
+        "firmwarebuildsapi": {
+            "RootUrl": "string",
+            "ApiName": "string",
+            "ApiId": "string"
         }
     },
     "auth": {
@@ -54,6 +59,24 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string"
         },
         "parsemarlinversionfunction": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
+        },
+        "firmwarebuildsapifunction": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
+        },
+        "firmwareartifactapifunction": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
+        },
+        "firmwareversionapifunction": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",

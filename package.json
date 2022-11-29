@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/auth": "^4.3.3",
-    "@aws-amplify/interactions": "^4.0.13",
-    "@aws-amplify/storage": "^4.3.8",
-    "@aws-amplify/ui-components": "^1.7.6",
-    "@aws-amplify/ui-react": "^1.2.13",
+    "@aws-amplify/auth": "^4.6.5",
+    "@aws-amplify/interactions": "^4.1.0",
+    "@aws-amplify/storage": "^4.5.5",
+    "@aws-amplify/ui-components": "^1.9.6",
+    "@aws-amplify/ui-react": "^3.5.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -15,19 +15,19 @@
     "aws-amplify": "^4.2.7",
     "aws-sdk": "^2.983.0",
     "axios": "^0.21.4",
-    "caniuse-lite": "^1.0.30001319",
     "lodash": "^4.17.21",
     "mixpanel-browser": "^2.41.0",
     "react": "^17.0.2",
     "react-ace": "^9.4.3",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "react-textarea-autosize": "^8.3.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.1.2",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.2",
+    "underscore": "^1.13.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,7 +51,6 @@
     ]
   },
   "devDependencies": {
-    "@types/mixpanel-browser": "^2.35.7",
-    "@types/underscore": "^1.11.3"
+    "@types/underscore": "^1.11.4"
   }
 }

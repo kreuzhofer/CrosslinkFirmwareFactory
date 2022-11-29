@@ -36,7 +36,19 @@
         },
         "parsemarlinversionfunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/parsemarlinversionfunction-4a365156337a63696674-build.zip"
+          "s3Key": "amplify-builds/parsemarlinversionfunction-6677374736753030486b-build.zip"
+        },
+        "firmwarebuildsapifunction": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/firmwarebuildsapifunction-63442f77617677455151-build.zip"
+        },
+        "firmwareartifactapifunction": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/firmwareartifactapifunction-6a48544335636869304b-build.zip"
+        },
+        "firmwareversionapifunction": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/firmwareversionapifunction-343564723854515a4a4a-build.zip"
         }
       },
       "hosting": {
@@ -48,6 +60,16 @@
       "auth": {
         "marlinbuildopsfc6385a7": {},
         "userPoolGroups": {}
+      },
+      "api": {
+        "marlinbuildopsapi": {},
+        "firmwarebuildsapi": {}
+      },
+      "storage": {
+        "userdata": {}
+      },
+      "customresources": {
+        "iamroles": {}
       }
     }
   }

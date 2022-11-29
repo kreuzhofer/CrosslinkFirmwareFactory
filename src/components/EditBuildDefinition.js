@@ -1,6 +1,6 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { API, graphqlOperation, Auth } from 'aws-amplify'
-import {Route} from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
     Header, 
     Input, 
@@ -46,51 +46,47 @@ const defaultJson = JSON.stringify(JSON.parse(`
 }
 `), null, 3);
 
-export class EditBuildDefinition extends React.Component {
+function EditBuildDefinition() {
 
-  constructor(props){
-    super(props);
-    let id = props.match.params.id ? props.match.params.id : "";
-    console.log("Id "+id);
-    let clone = props.clone ? true : false;
-    console.log("Clone "+clone);
-		let isAdmin = props.isAdmin ? props.isAdmin : false;
-		console.log("IsAdmin "+isAdmin)
-    this.state = {
-      id: id,
-      name: '',
-      firmwareVersionId: undefined,
-      sourceTree: '',
-      configTree: '',
-      printerManufacturer: '',
-      printerModel: '',
-      printerVariant: '',
-      platformioEnv: '',
-      description: '',
-      configurationJSON: defaultJson,      
-      sharedWithEveryone: false,
-      firmwareOptions: [],
-		  isAdmin: isAdmin,
-      printerManufacturerSearch: '',
-      printerManufacturerOptions: [],
-      printerModelSearch: '',
-      printerModelOptions: [],
-      printerVariantSearch: '',
-      printerVariantOptions: [],
-      platformioEnvSearch: '',
-      platformioEnvOptions: [],
-      clone: clone,
-      printerMainboardOptions: [],
-      selectedMainboard: undefined,
-      printerMainboardSearch: '',
-      jsonErrors: []
-    }
-  }
+  let navigate = useNavigate();
+  const params = useParams();
+  console.log("PARAMS: ", params);
 
-  printerManufacturersByFirmwareVersion(id)
+  const [id, setId] = useState(params.id ? params.id : "");
+  console.log("Id "+id);
+  const [name, setName] = useState('');
+  const [firmwareVersionId, setFirmwareVersionId] = useState(undefined);
+  const [sourceTree, setSourceTree] = useState('');
+  const [configTree, setConfigTree] = useState('');
+  const [printerManufacturer, setPrinterManufacturer] = useState('');
+  const [printerModel, setPrinterModel] = useState('');
+  const [printerVariant, setPrinterVariant] = useState('');
+  const [platformioEnv, setPlatformioEnv] = useState('');
+  const [description, setDescription] = useState('');
+  const [configurationJSON, setConfigurationJSON] = useState(defaultJson);
+  const [sharedWithEveryone, setSharedWithEveryone] = useState(false);
+  const [firmwareVersionOptions, setFirmwareOptions] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(params.isAdmin ? params.isAdmin : false);
+	console.log("IsAdmin "+isAdmin);
+  const [printerManufacturerSearch, setPrinterManufacturerSearch] = useState('');
+  const [printerManufacturerOptions, setPrinterManufacturerOptions] = useState([]);
+  const [printerModelSearch, setPrinterModelSearch] = useState('');
+  const [printerModelOptions, setPrinterModelOptions] = useState([]);
+  const [printerVariantSearch, setPrinterVariantSearch] = useState('');
+  const [printerVariantOptions, setPrinterVariantOptions] = useState([]);
+  const [platformioEnvSearch, setPlatformioEnvSearch] = useState('');
+  const [platformioEnvOptions, setPlatformioEnvOptions] = useState([]);
+  const [clone, setClone] = useState(params.clone ? true : false);
+  console.log("Clone "+clone);
+  const [printerMainboardOptions, setPrinterMainboardOptions] = useState([]);
+  const [selectedMainboard, setSelectedMainboard] = useState(undefined);
+  const [printerMainboardSearch, setPrinterMainboardSearch] = useState('');
+  const [jsonErrors, setJsonErrors] = useState([]);
+
+  function printerManufacturersByFirmwareVersion(options, id)
   {
     if(!id) return [];
-    var jsonList = this.state.firmwareOptions.filter(f=>f.key === id)
+    var jsonList = options.filter(f=>f.key === id)
     if(jsonList.length>0) // has config json
     { 
        var json = jsonList[0]['defaultconfigjson'];
@@ -111,10 +107,10 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  printerModelsByManufacturer(value)
+  function printerModelsByManufacturer(printerManufacturerOptions, value)
   {
       if(!value) return [];
-      var printerManuOptions = this.state.printerManufacturerOptions.filter(f=>f.value === value);
+      var printerManuOptions = printerManufacturerOptions.filter(f=>f.value === value);
       if(printerManuOptions.length===0)
       {
          return [];
@@ -134,10 +130,10 @@ export class EditBuildDefinition extends React.Component {
       return printerModelsFiltered;
   }
 
-  printerVariantsByPrinterModel(value)
+  function printerVariantsByPrinterModel(modelOptions, value)
   {
     if(!value) return [];
-    var printerVariantsList = this.state.printerModelOptions.filter(f=>f.key === value);
+    var printerVariantsList = modelOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
        if(isDev())console.log(printerVariantsList);
@@ -154,10 +150,10 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  platformioEnvOptionsByVariant(value)
+  function platformioEnvOptionsByVariant(variantOptions, value)
   {
     if(!value) return [];
-    var printerVariantsList = this.state.printerVariantOptions.filter(f=>f.key === value);
+    var printerVariantsList = variantOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
       if(isDev())console.log(printerVariantsList);
@@ -172,20 +168,20 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  selectedMainboardByPrinterVariant(value)
+  function selectedMainboardByPrinterVariant(variantOptions, value)
   {
     if(!value) return [];
-    var printerVariantsList = this.state.printerVariantOptions.filter(f=>f.key === value);
+    var printerVariantsList = variantOptions.filter(f=>f.key === value);
     if(printerVariantsList.length>0)
     {
       return printerVariantsList[0]['mainboard'];
     }
   }
 
-  platformioEnvOptionsByModel(value)
+  function platformioEnvOptionsByModel(modelOptions, value)
   {
     if(!value) return [];
-    var filteredList = this.state.printerModelOptions.filter(f=>f.key === value);
+    var filteredList = modelOptions.filter(f=>f.key === value);
     if(filteredList.length>0)
     {
       console.log(filteredList);
@@ -204,10 +200,10 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  platformioEnvOptionsByMotherboard(value)
+  function platformioEnvOptionsByMotherboard(mainboardOptions, value)
   {
     if(!value) return [];
-    var filteredList = this.state.printerMainboardOptions.filter(f=>f.key === value);
+    var filteredList = mainboardOptions.filter(f=>f.key === value);
     if(filteredList.length>0)
     {
       if(isDev())console.log(filteredList);
@@ -226,10 +222,10 @@ export class EditBuildDefinition extends React.Component {
     }
   }  
 
-  selectedMainboardByModel(value)
+  function selectedMainboardByModel(modelOptions, value)
   {
     if(!value) return [];
-    var filteredList = this.state.printerModelOptions.filter(f=>f.key === value);
+    var filteredList = modelOptions.filter(f=>f.key === value);
     if(filteredList.length>0)
     {
       console.log(filteredList);
@@ -241,10 +237,10 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  mainboardOptionsByFirmware(id)
+  function mainboardOptionsByFirmwareVersion(firmwareVersionOptions, id)
   {
     if(!id) return [];
-    var jsonList = this.state.firmwareOptions.filter(f=>f.key === id)
+    var jsonList = firmwareVersionOptions.filter(f=>f.key === id)
     if(jsonList.length>0) // has config json
     { 
       var json = jsonList[0]['defaultconfigjson'];
@@ -265,7 +261,7 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  jsonLower = function (obj)
+  function jsonLower(obj)
   {
     var ret = null;
       if (typeof(obj) == "string" || typeof(obj) == "number")
@@ -275,11 +271,11 @@ export class EditBuildDefinition extends React.Component {
       else
           ret = {};
       for (var key in obj)
-          ret[String(key).toLowerCase()] = this.jsonLower(obj[key]);
+          ret[String(key).toLowerCase()] = jsonLower(obj[key]);
       return ret;
   };
 
-  upgradeJson(json)
+  function upgradeJson(json)
   {
     if(!json['configformatversion'])
     {
@@ -328,8 +324,9 @@ export class EditBuildDefinition extends React.Component {
     return json;   
   }
 
-  async fetchData() {
+  const fetchData = async () => {
     try {
+      console.log("fetchData");
       const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
       const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.sort((a,b)=>a.name > b.name ? 1 : -1).map(v=>{return {
         key: v.id,
@@ -338,46 +335,61 @@ export class EditBuildDefinition extends React.Component {
         defaultconfigjson: v.defaultConfigJson,
         mainboards: v.mainboards
       }})
-      this.setState({firmwareOptions: firmwareOptions});
-      if(!this.state.id || this.state.id === "")
+      setFirmwareOptions(firmwareOptions);
+      if(!id || id === "")
         return;
 
-      const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: this.state.id}));
+      const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: id}));
       const buildDefinition = result.data.getBuildDefinition
+      console.log(buildDefinition);
 
-      if(this.state.clone)
+      if(clone)
       {
         buildDefinition.name = "(Copy of) "+ buildDefinition.name;
       }
 
-   
+      setId(buildDefinition.id);
+      setName(buildDefinition.name);
+      setSourceTree(buildDefinition.sourceTree);
+      setConfigTree(buildDefinition.configTree);
+
+      console.log("Firmware version: "+buildDefinition.firmwareVersionId);
       if(buildDefinition.firmwareVersionId)
       {
-        this.setState({printerManufacturerOptions: this.printerManufacturersByFirmwareVersion(buildDefinition.firmwareVersionId)});
-        this.setState({printerMainboardOptions: this.mainboardOptionsByFirmware(buildDefinition.firmwareVersionId)});
+        var localPrinterManufacturerOptions = printerManufacturersByFirmwareVersion(firmwareOptions, buildDefinition.firmwareVersionId)
+        console.log("Printer manufacturer options: ", localPrinterManufacturerOptions);
+        setPrinterManufacturerOptions(localPrinterManufacturerOptions);
+        var localPrinterMainboardOptions = mainboardOptionsByFirmwareVersion(firmwareOptions, buildDefinition.firmwareVersionId);
+        setPrinterMainboardOptions(localPrinterMainboardOptions);
       }
 
-      console.log(buildDefinition.printerManufacturer);
-      if(buildDefinition.printerManufacturer && this.state.printerManufacturerOptions)
+      console.log("Printer manufacturer: ", buildDefinition.printerManufacturer);
+      console.log("Printer manufacturer options: ", localPrinterManufacturerOptions);
+      if(buildDefinition.printerManufacturer && localPrinterManufacturerOptions)
       {
-        this.setState({printerModelOptions: this.printerModelsByManufacturer(buildDefinition.printerManufacturer)});
+        console.log("populating list of printer models")
+        var localPrinterModelsByManufacturer = printerModelsByManufacturer(localPrinterManufacturerOptions, buildDefinition.printerManufacturer)
+        setPrinterModelOptions(localPrinterModelsByManufacturer);
       }
 
-      console.log(buildDefinition.printerModel);
-      if(buildDefinition.printerModel && this.state.printerModelOptions)
+      console.log("Printer model: ", buildDefinition.printerModel);
+      var localPlatformioEnvOptions;
+      if(buildDefinition.printerModel && localPrinterModelsByManufacturer)
       {
-        this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(buildDefinition.printerModel)});
-        this.setState({platformioEnvOptions: this.platformioEnvOptionsByModel(buildDefinition.printerModel)});
+        var localPrinterVariantOptions = printerVariantsByPrinterModel(localPrinterModelsByManufacturer, buildDefinition.printerModel);
+        setPrinterVariantOptions(localPrinterVariantOptions);
+        localPlatformioEnvOptions = platformioEnvOptionsByModel(localPrinterModelsByManufacturer, buildDefinition.printerModel);
+        setPlatformioEnvOptions(localPlatformioEnvOptions);
         if(!buildDefinition.selectedMainboard)
-          this.setState({selectedMainboard: this.selectedMainboardByModel(buildDefinition.printerModel)});
+          setSelectedMainboard(selectedMainboardByModel(localPrinterModelsByManufacturer, buildDefinition.printerModel));
       }
 
       console.log(buildDefinition.printerMainboard);
-      if(buildDefinition.printerMainboard && this.state.printerVariantOptions)
+      if(buildDefinition.printerMainboard && localPrinterVariantOptions)
       {
-        this.setState({platformioEnvOptions: this.platformioEnvOptionsByVariant(buildDefinition.printerMainboard)})
+        setPlatformioEnvOptions(platformioEnvOptionsByVariant(localPrinterVariantOptions, buildDefinition.printerMainboard))
         if(!buildDefinition.selectedMainboard)
-          this.setState({selectedMainboard: this.selectedMainboardByPrinterVariant(buildDefinition.printerMainboard)});
+          setSelectedMainboard(selectedMainboardByPrinterVariant(localPrinterVariantOptions, buildDefinition.printerMainboard));
       }
 
       console.log(buildDefinition.platformioEnv);
@@ -387,66 +399,59 @@ export class EditBuildDefinition extends React.Component {
       {
         try {
           var sanityCheckJson = JSON.parse(buildDefinition.configurationJSON);
-          var lowerJsonObj = this.jsonLower(sanityCheckJson);
-          var upgradedObj = this.upgradeJson(lowerJsonObj);
+          var lowerJsonObj = jsonLower(sanityCheckJson);
+          var upgradedObj = upgradeJson(lowerJsonObj);
           } catch (error) {
           // error in json, continue without parsing
         }
       }
 
-      this.setState({
-        id: buildDefinition.id,
-        name: buildDefinition.name,
-        firmwareVersionId: buildDefinition.firmwareVersionId,
-        sourceTree: buildDefinition.sourceTree,
-        configTree: buildDefinition.configTree,
-        printerManufacturer: buildDefinition.printerManufacturer,
-        printerModel: buildDefinition.printerModel,
-        printerVariant: buildDefinition.printerMainboard,
-        platformioEnv: buildDefinition.platformioEnv,
-        description: buildDefinition.description,
-        configurationJSON: upgradedObj ? JSON.stringify(upgradedObj, null, 3) : buildDefinition.configurationJSON,
-        sharedWithEveryone: this.state.clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined,
-      });
+      setFirmwareVersionId(buildDefinition.firmwareVersionId);
+      setPrinterManufacturer(buildDefinition.printerManufacturer);
+      setPrinterModel(buildDefinition.printerModel);
+      setPrinterVariant(buildDefinition.printerMainboard);
+      setPlatformioEnv(buildDefinition.platformioEnv);
+      setDescription(buildDefinition.description);
+      setConfigurationJSON(upgradedObj ? JSON.stringify(upgradedObj, null, 3) : buildDefinition.configurationJSON);
+      setSharedWithEveryone(clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined);
 
-      if(buildDefinition.printerMainboard && this.state.printerVariantOptions && this.state.printerVariantOptions.length===0)
+      if(buildDefinition.printerMainboard && localPrinterVariantOptions && localPrinterVariantOptions.length===0)
       {
-        this.setState({printerVariantSearch: buildDefinition.printerMainboard});
+        setPrinterVariantSearch(buildDefinition.printerMainboard);
       }
 
       if(buildDefinition.selectedMainboard)
       {
-        this.setState({selectedMainboard: buildDefinition.selectedMainboard});
-        this.setState({platformioEnvOptions: this.platformioEnvOptionsByMotherboard(buildDefinition.selectedMainboard)})
+        setSelectedMainboard(buildDefinition.selectedMainboard);
+        localPlatformioEnvOptions = platformioEnvOptionsByMotherboard(localPrinterMainboardOptions, buildDefinition.selectedMainboard);
+        setPlatformioEnvOptions(localPlatformioEnvOptions);
       }
 
-      if(buildDefinition.platformioEnv && this.state.platformioEnvOptions && this.state.platformioEnvOptions.length===0)
+      if(buildDefinition.platformioEnv && localPlatformioEnvOptions && localPlatformioEnvOptions.length===0)
       {
-        this.setState({platformioEnvSearch: buildDefinition.platformioEnv});
+        setPlatformioEnvSearch(buildDefinition.platformioEnv);
       }
 
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  async componentDidMount()
-  {
-    console.info("componentDidMount");
-    await this.fetchData();
-  }
+  useEffect(()=> {
+    fetchData();
+  }, []);
   
-  handleSubmit = async(event) => {
+  async function handleSubmit(event) {
       event.preventDefault();
-      if(this.state.name === '')
+      if(name === '')
       {
         alert("Name has to be filled")
         return false
       }
-      let groupsCanAccess = this.state.sharedWithEveryone ? ["Everyone"] : [];
+      let groupsCanAccess = sharedWithEveryone ? ["Everyone"] : [];
       let result;
 
-      if(this.state.clone || !this.state.id || this.state.id === "")
+      if(clone || !id || id === "")
       {
         const user =  await Auth.currentAuthenticatedUser();
         const countresult = await API.graphql(graphqlOperation(customqueries.listBuildDefinitionsWithJobs, {limit: 999, 
@@ -458,24 +463,24 @@ export class EditBuildDefinition extends React.Component {
         }));
         var items = countresult.data.listBuildDefinitions.items
         console.log("Items:",items.length);
-        if(!this.state.isAdmin && this.props.patronLevel<=1 && items.length>=1)
+        if(!isAdmin && params.patronLevel<=1 && items.length>=1)
         {
           alert("You may only hav one custom build definition. You can increase the limit by becoming a Patron on Padawan level.");
           return false;
         }
 
         result = await API.graphql(graphqlOperation(mutations.createBuildDefinition, {input: {
-          name: this.state.name,
-          firmwareVersionId: this.state.firmwareVersionId,
-          sourceTree: this.state.sourceTree,
-          configTree: this.state.configTree,
-          printerManufacturer: this.state.printerManufacturer,
-          printerModel: this.state.printerModel,
-          printerMainboard: this.state.printerVariant,
-          selectedMainboard: this.state.selectedMainboard,
-          platformioEnv: this.state.platformioEnv,
-          description: this.state.description,
-          configurationJSON: this.state.configurationJSON,
+          name: name,
+          firmwareVersionId: firmwareVersionId,
+          sourceTree: sourceTree,
+          configTree: configTree,
+          printerManufacturer: printerManufacturer,
+          printerModel: printerModel,
+          printerMainboard: printerVariant,
+          selectedMainboard: selectedMainboard,
+          platformioEnv: platformioEnv,
+          description: description,
+          configurationJSON: configurationJSON,
           groupsCanAccess: groupsCanAccess          
         }}));
         console.log(result);
@@ -484,29 +489,29 @@ export class EditBuildDefinition extends React.Component {
       else 
       {
         result = await API.graphql(graphqlOperation(mutations.updateBuildDefinition, {input: {
-          id:this.state.id, 
-          name: this.state.name, 
-          firmwareVersionId: this.state.firmwareVersionId,
-          sourceTree: this.state.sourceTree,
-          configTree: this.state.configTree,
-          printerManufacturer: this.state.printerManufacturer ? this.state.printerManufacturer : this.state.printerManufacturerSearch,
-          printerModel: this.state.printerModel, 
-          printerMainboard: this.state.printerVariant, 
-          selectedMainboard: this.state.selectedMainboard,
-          platformioEnv:this.state.platformioEnv, 
-          description: this.state.description, 
-          configurationJSON: this.state.configurationJSON, 
+          id:id, 
+          name: name, 
+          firmwareVersionId: firmwareVersionId,
+          sourceTree: sourceTree,
+          configTree: configTree,
+          printerManufacturer: printerManufacturer ? printerManufacturer : printerManufacturerSearch,
+          printerModel: printerModel, 
+          printerMainboard: printerVariant, 
+          selectedMainboard: selectedMainboard,
+          platformioEnv:platformioEnv, 
+          description: description, 
+          configurationJSON: configurationJSON, 
           groupsCanAccess: groupsCanAccess
         }}));
       }
       if(result)
-        this.props.history.push('/BuildDefinition');
+        navigate('/BuildDefinition');
       else
         console.error(result);
     }
 
-  applySnippet(jsonSnippet){
-    var json = JSON.parse(this.state.configurationJSON);
+  function applySnippet(jsonSnippet){
+    var json = JSON.parse(configurationJSON);
     var snippet = JSON.parse(jsonSnippet);
     if(!json['configformatversion'])
     {
@@ -564,10 +569,10 @@ export class EditBuildDefinition extends React.Component {
     });
     
     // finally
-    this.setState({configurationJSON: JSON.stringify(json, null, 3)});
+    setConfigurationJSON(JSON.stringify(json, null, 3));
   }
 
-  applySetting(headerFile, key, enabled, value=undefined)
+  function applySetting(headerFile, key, enabled, value=undefined)
   {
     var json = `
     {
@@ -586,13 +591,13 @@ export class EditBuildDefinition extends React.Component {
     }
     `;
     console.log(json);
-    this.applySnippet(json);
+    applySnippet(json);
   }
 
-  handleTemplateClick(id){
+  function handleTemplateClick(id){
     switch (id) {
       case 1:
-        this.applySnippet(`
+        applySnippet(`
       {
         "headerfiles" : [
           {
@@ -644,7 +649,7 @@ export class EditBuildDefinition extends React.Component {
         `);
         break;
       case 2:
-        this.applySnippet(`
+        applySnippet(`
         {
           "configformatversion": "2",
           "headerfiles": [
@@ -734,7 +739,7 @@ export class EditBuildDefinition extends React.Component {
         `);
         break;
       case 3:
-        this.applySnippet(`
+        applySnippet(`
         {
           "configformatversion": "2",
           "headerfiles": [
@@ -766,7 +771,7 @@ export class EditBuildDefinition extends React.Component {
         `);
         break;
       case 4:
-        this.applySnippet(`
+        applySnippet(`
         {
           "headerfiles" : [
             {
@@ -788,7 +793,7 @@ export class EditBuildDefinition extends React.Component {
         `);
         break;
       case 5:
-        this.applySnippet(`
+        applySnippet(`
         {
           "headerfiles" : [
             {
@@ -829,7 +834,7 @@ export class EditBuildDefinition extends React.Component {
         `);
         break;    
         case 6:
-          this.applySnippet(`
+          applySnippet(`
           {
             "configformatversion": "2",
             "headerfiles": [
@@ -952,7 +957,7 @@ export class EditBuildDefinition extends React.Component {
     }
   }
 
-  render() { return (
+  return (
     <Grid divided>
       <Grid.Row>
         <Grid.Column width={7}>
@@ -965,60 +970,61 @@ export class EditBuildDefinition extends React.Component {
           label='Build Definition Name'
           placeholder='Build Definition Name'
           name='name'
-          value={this.state.name}
-          onChange={(e) => this.setState({name: e.target.value})}/>
+          value={name}
+          onChange={(e) => setName(e.target.value)}/>
       <br/>
       <Label>Firmware version</Label>
       <Dropdown
         placeholder='select firmware version'
         selection
         clearable
-        options={this.state.firmwareOptions}
-        value={this.state.firmwareVersionId}
+        options={firmwareVersionOptions}
+        value={firmwareVersionId}
         onChange={(e, {value}) => {
-          this.setState({firmwareVersionId: value})
-          this.setState({printerManufacturerOptions: this.printerManufacturersByFirmwareVersion(value)});
-          this.setState({printerMainboardOptions: this.mainboardOptionsByFirmware(value)})
+          setFirmwareVersionId(value);
+          setPrinterManufacturerOptions(printerManufacturersByFirmwareVersion(firmwareVersionOptions, value));
+          setPrinterMainboardOptions(mainboardOptionsByFirmwareVersion(firmwareVersionOptions, value))
           }}/>
       <br/>
       
-      { this.state.firmwareVersionId ? null : <>
+      { firmwareVersionId ? null : <>
       <Input
           label='Source tree URL'
           type='text'
           placeholder='Source tree URL'
           name='sourceTree'
-          value={this.state.sourceTree}
-          onChange={(e) => this.setState({sourceTree: e.target.value})}
-          disabled={this.state.firmwareVersionId?true:false}
+          value={sourceTree}
+          onChange={(e) => setSourceTree(e.target.value)}
+          disabled={firmwareVersionId?true:false}
       /><br/>
       <Input
           type='text'
           label='Config tree URL'
           placeholder='Config tree URL'
           name='configTree'
-          value={this.state.configTree}
-          onChange={(e) => this.setState({configTree: e.target.value})}
-          disabled={this.state.firmwareVersionId?true:false}
+          value={configTree}
+          onChange={(e) => setConfigTree(e.target.value)}
+          disabled={firmwareVersionId?true:false}
       /><br/> </> }
 
       <Label>Printer Manufacturer</Label>
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({printerManufacturerSearch: "", printerManufacturer: value});
+          setPrinterManufacturerSearch("");
+          setPrinterManufacturer(value);
           console.log(value);
-          this.setState({printerModelOptions: this.printerModelsByManufacturer(value)});
+          setPrinterModelOptions(printerModelsByManufacturer(printerManufacturerOptions, value));
         }}
-        onSearchChange={(e, {searchQuery}) => this.setState({printerManufacturerSearch: searchQuery})}
-        options={this.state.printerManufacturerOptions}
+        onSearchChange={(e, {searchQuery}) => setPrinterManufacturerSearch(searchQuery)}
+        options={printerManufacturerOptions}
         placeholder='Select printer manufacturer'
         name='printerManufacturer'
         id='printerManufacturer'
         search
-        searchQuery={this.state.printerManufacturerSearch}
+        searchQuery={printerManufacturerSearch}
         selection
-        value={this.state.printerManufacturer}
+        value={printerManufacturer}
       />      
       
       <br/>
@@ -1027,20 +1033,21 @@ export class EditBuildDefinition extends React.Component {
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({printerModelSearch: "", printerModel: value});
+          setPrinterModelSearch("");
+          setPrinterModel(value);
           console.log(value);
-          this.setState({printerVariantOptions: this.printerVariantsByPrinterModel(value)});
-          this.setState({platformioEnvOptions: this.platformioEnvOptionsByModel(value)});
-          this.setState({selectedMainboard: this.selectedMainboardByModel(value)});
+          setPrinterVariantOptions(printerVariantsByPrinterModel(printerModelOptions, value));
+          setPlatformioEnvOptions(platformioEnvOptionsByModel(printerModelOptions, value));
+          setSelectedMainboard(selectedMainboardByModel(printerModelOptions, value));
         }}
-        onSearchChange={(e, {searchQuery}) => this.setState({printerModelSearch: searchQuery})}
-        options={this.state.printerModelOptions}
+        onSearchChange={(e, {searchQuery}) => setPrinterModelSearch(searchQuery)}
+        options={printerModelOptions}
         placeholder='Select printer model'
         name='printerModel'
         search
-        searchQuery={this.state.printerModelSearch}
+        searchQuery={printerModelSearch}
         selection
-        value={this.state.printerModel}
+        value={printerModel}
       />
 
       <br/>
@@ -1048,37 +1055,39 @@ export class EditBuildDefinition extends React.Component {
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({printerVariantSearch: "", printerVariant: value});
+          setPrinterVariantSearch("");
+          setPrinterVariant(value);
           // filter subsequent list accordingly
           console.log(value);
-          this.setState({platformioEnvOptions: this.platformioEnvOptionsByVariant(value)})
-          this.setState({selectedMainboard: this.selectedMainboardByPrinterVariant(value)});
+          setPlatformioEnvOptions(platformioEnvOptionsByVariant(printerVariantOptions, value))
+          setSelectedMainboard(selectedMainboardByPrinterVariant(printerVariantOptions, value));
         }}
-        onSearchChange={(e, {searchQuery}) => this.setState({printerVariantSearch: searchQuery})}
-        options={this.state.printerVariantOptions}
+        onSearchChange={(e, {searchQuery}) => setPrinterVariantSearch(searchQuery)}
+        options={printerVariantOptions}
         placeholder='Select Printer Variant / Preset'
         name='printervariant'
         search
-        searchQuery={this.state.printerVariantSearch}
+        searchQuery={printerVariantSearch}
         selection
-        value={this.state.printerVariant}
+        value={printerVariant}
       />
       <br/>
       <Label>Selected Mainboard</Label>
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({printerMainboardSearch: "", selectedMainboard: value});
-          this.applySetting("Marlin/Configuration.h", "MOTHERBOARD", true, value);
-          this.setState({platformioEnvOptions: this.platformioEnvOptionsByMotherboard(value)})
+          setPrinterMainboardSearch("");
+          setSelectedMainboard(value);
+          applySetting("Marlin/Configuration.h", "MOTHERBOARD", true, value);
+          setPlatformioEnvOptions(platformioEnvOptionsByMotherboard(printerMainboardOptions, value))
         }}
-        onSearchChange={(e, {searchQuery}) => this.setState({printerMainboardSearch: searchQuery})}
-        options={this.state.printerMainboardOptions}
+        onSearchChange={(e, {searchQuery}) => setPrinterMainboardSearch(searchQuery)}
+        options={printerMainboardOptions}
         placeholder='Select mainboard option'
         name='printermainboard'
         search
         selection
-        value={this.state.selectedMainboard}
+        value={selectedMainboard}
       />
       <br/>
 
@@ -1086,42 +1095,43 @@ export class EditBuildDefinition extends React.Component {
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
-          this.setState({platformioEnvSearch: "", platformioEnv: value});
+          setPlatformioEnvSearch("");
+          setPlatformioEnv(value);
           // filter subsequent list accordingly
         }}
-        onSearchChange={(e, {searchQuery}) => this.setState({platformioEnvSearch: searchQuery})}
-        options={this.state.platformioEnvOptions}
+        onSearchChange={(e, {searchQuery}) => setPlatformioEnvSearch(searchQuery)}
+        options={platformioEnvOptions}
         placeholder='Select PlatformIO environment'
         name='platformioenv'
         search
-        searchQuery={this.state.platformioEnvSearch}
+        searchQuery={platformioEnvSearch}
         selection
-        value={this.state.platformioEnv}
+        value={platformioEnv}
       /><br/>        
       <Label>Description</Label>
       <TextareaAutosize
           label='Description'
           placeholder='Description'
           name='description'
-          value={this.state.description}
-          onChange={(e) => this.setState({description: e.target.value})}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
       /><br/>
-      { this.state.jsonErrors.length>0 ? 
-      <Message negative header='You have some error(s) in your config JSON. Please fix before building.' list={this.state.jsonErrors} />
+      { jsonErrors.length>0 ? 
+      <Message negative header='You have some error(s) in your config JSON. Please fix before building.' list={jsonErrors} />
       : null }
       <Label>Config JSON</Label>
       <AceEditor
         mode="json"
         theme="github"
-        value={this.state.configurationJSON}
-        onChange={(e) => this.setState({configurationJSON: e})}
+        value={configurationJSON}
+        onChange={(e) => setConfigurationJSON(e)}
         onValidate= {(annotations) => {
           if(isDev())console.log(annotations);
           var errorList = [];
           annotations.forEach(element => {
             errorList.push("Row: "+element.row+", Col: "+element.column+": "+element.text);
           });
-          this.setState({jsonErrors: errorList})
+          setJsonErrors(errorList)
         }}
         name="UNIQUE_ID_OF_DIV"
         fontSize={14}
@@ -1137,25 +1147,23 @@ export class EditBuildDefinition extends React.Component {
           tabSize: 2,
           }}
       /><br/>      
-			{ this.state.isAdmin ? <>
+			{ isAdmin ? <>
 			<Input 
           type='Checkbox'
           label='Shared with everyone'
           name='sharedWithEveryone'
-          checked={this.state.sharedWithEveryone}
-          onChange={(e)=>this.setState({sharedWithEveryone: e.target.checked})}
+          checked={sharedWithEveryone}
+          onChange={(e)=>setSharedWithEveryone(e.target.checked)}
           >
       </Input><br/><br/>
 			</> : null }
       <Button
           content='Save'
-          onClick={(e)=>this.handleSubmit(e)}
+          onClick={(e)=>handleSubmit(e)}
       />
-      <Route render={({history}) => (
-          <Button onClick={()=>history.push('/BuildDefinition')}>     
-              Cancel            
-          </Button>
-      )}/>        
+      <Button onClick={()=>navigate('/BuildDefinition')}>     
+          Cancel            
+      </Button>
       </Form>
       </Segment>
     </Grid.Column>
@@ -1163,21 +1171,22 @@ export class EditBuildDefinition extends React.Component {
       <Segment>
         <Header>Templates</Header>
         <Header as="h4">Bed Leveling</Header>
-        <Button onClick={(e)=>this.handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button><br/><br/>
-        <Button onClick={(e)=>this.handleTemplateClick(2)}>Auto Bed Leveling (4x4), BLTouch</Button><br/><br/>
-        <Button onClick={(e)=>this.handleTemplateClick(6)}>Auto Bed Leveling (4x4), BLTouch high speed probing</Button>
+        <Button onClick={(e)=>handleTemplateClick(1)}>Manual Mesh Bed Leveling (3x3), no probe</Button><br/><br/>
+        <Button onClick={(e)=>handleTemplateClick(2)}>Auto Bed Leveling (4x4), BLTouch</Button><br/><br/>
+        <Button onClick={(e)=>handleTemplateClick(6)}>Auto Bed Leveling (4x4), BLTouch high speed probing</Button>
         <Header as="h4">Filament Sensor</Header>
-        <Button onClick={(e)=>this.handleTemplateClick(3)}>Filament Sensor, default settings</Button>
+        <Button onClick={(e)=>handleTemplateClick(3)}>Filament Sensor, default settings</Button>
         <Header as="h4">Memory Optimizations (for 8 Bit boards)</Header>
-        <Button onClick={(e)=>this.handleTemplateClick(4)}>Save program memory, normal</Button>
+        <Button onClick={(e)=>handleTemplateClick(4)}>Save program memory, normal</Button>
         <p>This setting disables ARC_SUPPORT and saves quite a bit of program memory.</p>
-        <Button onClick={(e)=>this.handleTemplateClick(5)}>Save program memory, aggressive</Button>
+        <Button onClick={(e)=>handleTemplateClick(5)}>Save program memory, aggressive</Button>
         <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
       </Segment>
     </Grid.Column>
     </Grid.Row>
   </Grid>      
 
-      );
-  }
+  );
 }
+
+export default EditBuildDefinition;
