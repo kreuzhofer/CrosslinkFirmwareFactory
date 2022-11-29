@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
     Header, 
     Segment, 
@@ -12,7 +12,6 @@ import {
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import mixpanel from 'mixpanel-browser';
-import { filter } from 'underscore';
 mixpanel.init('b797e33ed9db411af6893878c06f6522');
 
 const https = require('https')
