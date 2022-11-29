@@ -65,6 +65,10 @@ const listBuildDefinitions = /* GraphQL */ gql`
           }
           nextToken
         }
+        firmwareVersion {
+          id
+          name
+        }        
       }
       nextToken
     }
