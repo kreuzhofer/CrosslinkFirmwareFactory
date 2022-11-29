@@ -35,7 +35,7 @@ function FirmwareVersionsList() {
             var nextToken = data.nextToken;
             var items = data.items;
             while(nextToken) {
-              const nextResult = await API.graphql(graphqlOperation(listFirmwareVersions, {nextToken: nextToken}));
+              var nextResult = await API.graphql(graphqlOperation(listFirmwareVersions, {nextToken: nextToken}));
               var nextData = nextResult.data.listFirmwareVersions;
               nextToken = nextData.nextToken;
               items = items.concat(nextData.items);
