@@ -14,9 +14,9 @@ import * as comparator from '../util/comparator';
 import Lambda from 'aws-sdk/clients/lambda';
 import * as subscriptions from '../graphql/subscriptions'
 const env = process.env["REACT_APP_ENV"];
+/*if (env.startsWith('dev'))*/ console.log(process.env);
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"];
 const firmwareVersionTableName = process.env["REACT_APP_FIRMWAREVERSIONTABLENAME"];
-if (env.startsWith('dev')) console.log(process.env);
 
 function FirmwareVersionsList() {
 
