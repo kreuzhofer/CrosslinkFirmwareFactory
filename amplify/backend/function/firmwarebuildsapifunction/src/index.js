@@ -177,7 +177,7 @@ exports.handler = async (event) => {
     var nextToken = data.nextToken;
     var items = data.items;
     while(nextToken) {
-      const nextResult = await API.graphql(graphqlOperation(listBuildDefinitions, {nextToken: nextToken}));
+      var nextResult = await rungqlquery(listBuildDefinitions, {nextToken: nextToken});
       nextResult = JSON.parse(nextResult.toString());
       var nextData = nextResult.data.listBuildDefinitions;
       nextToken = nextData.nextToken;
