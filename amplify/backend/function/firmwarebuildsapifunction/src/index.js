@@ -42,7 +42,6 @@ const listBuildDefinitions = /* GraphQL */ gql`
         selectedMainboard
         platformioEnv
         description
-        configurationJSON
         owner
         groupsCanAccess
         createdAt
@@ -179,6 +178,7 @@ exports.handler = async (event) => {
     var items = data.items;
     while(nextToken) {
       const nextResult = await API.graphql(graphqlOperation(listBuildDefinitions, {nextToken: nextToken}));
+      nextResult = JSON.parse(nextResult.toString());
       var nextData = nextResult.data.listBuildDefinitions;
       nextToken = nextData.nextToken;
       items = items.concat(nextData.items);
