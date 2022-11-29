@@ -40,7 +40,7 @@
         },
         "firmwarebuildsapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/firmwarebuildsapifunction-63442f77617677455151-build.zip"
+          "s3Key": "amplify-builds/firmwarebuildsapifunction-314646486c7353685132-build.zip"
         },
         "firmwareartifactapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
@@ -48,7 +48,7 @@
         },
         "firmwareversionapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/firmwareversionapifunction-343564723854515a4a4a-build.zip"
+          "s3Key": "amplify-builds/firmwareversionapifunction-6b6f63636b526b753331-build.zip"
         }
       },
       "hosting": {
