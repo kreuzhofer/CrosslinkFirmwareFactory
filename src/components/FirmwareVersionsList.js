@@ -21,7 +21,7 @@ const firmwareVersionTableName = process.env["REACT_APP_FIRMWAREVERSIONTABLENAME
 function FirmwareVersionsList() {
 
     const [firmwareVersions, setFirmwareVersions] = useState([]);
-    const [subs, setSubs] = useState([]);
+    const [subs] = useState([]);
 
     let navigate = useNavigate();
     const params = useParams();

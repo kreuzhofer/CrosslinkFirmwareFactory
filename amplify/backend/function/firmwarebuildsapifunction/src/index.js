@@ -178,6 +178,7 @@ exports.handler = async (event) => {
     result = JSON.parse(result.toString());
 
     var items = result.data.listBuildDefinitions.items;
+    console.log(`Items: ${JSON.stringify(items)}`);
     returnValue = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
   }
   else if(event.resource == "/firmwarebuilds/{proxy+}")
