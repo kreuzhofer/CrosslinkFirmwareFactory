@@ -42,7 +42,6 @@ const listBuildDefinitions = /* GraphQL */ gql`
         selectedMainboard
         platformioEnv
         description
-        configurationJSON
         owner
         groupsCanAccess
         createdAt
