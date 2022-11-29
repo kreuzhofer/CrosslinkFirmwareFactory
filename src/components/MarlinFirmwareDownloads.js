@@ -8,7 +8,9 @@ import {
     Button,
     Icon,
     Search,
-    Message
+    Message,
+    Dimmer,
+    Loader
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import mixpanel from 'mixpanel-browser';
@@ -25,6 +27,7 @@ function MarlinFirmwareDownloads () {
     const [results, setResults] = useState([]);
     const [oldResults, setOldResults] = useState([]);
     const [searchValue, setSearchValue] = useState('');
+    const [dataLoading, setDataLoading] = useState(true);
     const navigate = useNavigate();
 
     const resetComponent = () => {
@@ -57,6 +60,7 @@ function MarlinFirmwareDownloads () {
             } catch (error) {
                 console.error(error);
             }
+            setDataLoading(false);
             return true;
         }
         reloadData();
@@ -184,6 +188,7 @@ function MarlinFirmwareDownloads () {
                     <Message.Item>The list of firmware has been condensed to contain only the essential information.</Message.Item>
                     <Message.Item>You can download the latest build for a firmware by clicking on the download button in each row.</Message.Item>
                     <Message.Item>For more details about a firmware, click on the name of the firmware.</Message.Item>
+                    <Message.Item>This page is currently a bit slow due to some inefficiencies that we will resolve soon</Message.Item>
                 </Message.List>
             </Message>                
             <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
@@ -208,7 +213,17 @@ function MarlinFirmwareDownloads () {
             </Table.Header>
 
             <Table.Body>
-                {renderBuildDefinitions()}
+                {dataLoading ? 
+                <Table.Row>
+                    <Table.Cell colSpan='8'>
+                    <Dimmer active>
+                        <Loader content='Loading' />
+                    </Dimmer>
+                    </Table.Cell>
+                </Table.Row>
+                : 
+                renderBuildDefinitions()
+                }
             </Table.Body>
             </Table>
             <p><b>Missing a firmware for your printer?</b> Post a request in the channel #firmware-factory-alpha on our discord server: <a href='https://discord.gg/ne3J4Rf'>https://discord.gg/ne3J4Rf</a></p>
