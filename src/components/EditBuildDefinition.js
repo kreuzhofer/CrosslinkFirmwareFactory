@@ -90,7 +90,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
     if(jsonList.length>0) // has config json
     { 
        var json = jsonList[0]['defaultconfigjson'];
-       if(isDev())console.log(json);
+       //if(isDev())console.log(json);
        if(json)
        {
           var jsonObj = JSON.parse(json);
@@ -327,8 +327,19 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
   const fetchData = async () => {
     try {
       console.log("fetchData");
-      const firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
-      const firmwareOptions = firmwareResult.data.listFirmwareVersions.items.sort((a,b)=>a.name > b.name ? 1 : -1).map(v=>{return {
+      var firmwareResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions))
+      firmwareResult = firmwareResult.data.listFirmwareVersions;
+      var items = firmwareResult.items;
+      var nextToken = firmwareResult.nextToken;
+      while(nextToken)
+      {
+        console.log("fetchData nextToken");
+        var nextResult = await API.graphql(graphqlOperation(queries.listFirmwareVersions, {nextToken: nextToken}));
+        nextResult = nextResult.data.listFirmwareVersions;
+        nextToken = nextResult.nextToken;
+        items = items.concat(nextResult.items);
+      }
+      const firmwareOptions = items.sort((a,b)=>a.name < b.name ? 1 : -1).map(v=>{return {
         key: v.id,
         text: v.name,
         value: v.id,
