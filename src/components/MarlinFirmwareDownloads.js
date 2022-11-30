@@ -217,7 +217,7 @@ function MarlinFirmwareDownloads () {
                 <Table.Row>
                     <Table.Cell colSpan='8'>
                     <Dimmer active>
-                        <Loader content='Loading' />
+                        <Loader content='Loading... This may take a few seconds...' />
                     </Dimmer>
                     </Table.Cell>
                 </Table.Row>
