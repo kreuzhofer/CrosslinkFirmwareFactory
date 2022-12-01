@@ -42,6 +42,9 @@ const TopMenu = (props) => {
 					{ props.patronLevel >= 1 || props.isAdmin ? <Dropdown.Item href='/BuildDefinition'>My build definitions</Dropdown.Item> : null }
 				</Dropdown.Menu>
 			</Dropdown>
+			<Menu.Item>
+				<a href='https://discord.com/channels/554332400998547486/738041652282916895' target='_blank' rel="noreferrer">Help</a>
+				</Menu.Item>
 			<Dropdown item simple text='About'>
 				<Dropdown.Menu>
 					<Dropdown.Item href='https://crosslink.io/impressum-anbieterkennzeichnung/'>Imprint / Impressum</Dropdown.Item>
