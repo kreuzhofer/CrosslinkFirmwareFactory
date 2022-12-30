@@ -25,12 +25,12 @@ export class BuildJobsList extends React.Component {
 
 		handleJobDeleteConfirm = async() => {
       try {
-		console.log("deleting all build artifacts for job id: ", this.state.jobDeleteConfirmState.job.id)
+		//console.log("deleting all build artifacts for job id: ", this.state.jobDeleteConfirmState.job.id)
         let list = await Storage.list(this.state.jobDeleteConfirmState.job.id+'/');
-        console.log(list);
+        //console.log(list);
         try {
           list.forEach(async(file)=>{
-            console.log("remove "+file.key);
+            //console.log("remove "+file.key);
             await Storage.remove(file.key);
             });
         } catch (error) {
