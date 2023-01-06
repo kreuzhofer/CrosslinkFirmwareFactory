@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { API, graphqlOperation, Auth } from 'aws-amplify'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useParams, useNavigate, useLocation, NavigationType } from 'react-router-dom'
 import {
     Header, 
     Input, 
@@ -67,6 +67,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
   const [printerVariant, setPrinterVariant] = useState('');
   const [platformioEnv, setPlatformioEnv] = useState('');
   const [description, setDescription] = useState('');
+  const [notes, setNotes] = useState('');
   const [configurationJSON, setConfigurationJSON] = useState(defaultJson);
   const [sharedWithEveryone, setSharedWithEveryone] = useState(false);
   const [firmwareVersionOptions, setFirmwareOptions] = useState([]);
@@ -423,6 +424,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
       setPrinterVariant(buildDefinition.printerMainboard);
       setPlatformioEnv(buildDefinition.platformioEnv);
       setDescription(buildDefinition.description);
+      setNotes(buildDefinition.notes);
       setConfigurationJSON(upgradedObj ? JSON.stringify(upgradedObj, null, 3) : buildDefinition.configurationJSON);
       setSharedWithEveryone(clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined);
 
@@ -495,6 +497,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
           selectedMainboard: selectedMainboard,
           platformioEnv: platformioEnv,
           description: description,
+          notes: notes,
           configurationJSON: configurationJSON,
           groupsCanAccess: groupsCanAccess          
         }}));
@@ -515,6 +518,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
           selectedMainboard: selectedMainboard,
           platformioEnv:platformioEnv, 
           description: description, 
+          notes: notes,
           configurationJSON: configurationJSON, 
           groupsCanAccess: groupsCanAccess
         }}));
@@ -1122,7 +1126,8 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
         searchQuery={platformioEnvSearch}
         selection
         value={platformioEnv}
-      /><br/>        
+      /><br/>   
+
       <Label>Description</Label>
       <TextareaAutosize
           label='Description'
@@ -1131,6 +1136,15 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
       /><br/>
+      <Label>Notes</Label>
+      <TextareaAutosize
+          label='Notes'
+          placeholder='Notes'
+          name='notes'
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+      /><br/>
+
       { jsonErrors.length>0 ? 
       <Message negative header='You have some error(s) in your config JSON. Please fix before building.' list={jsonErrors} />
       : null }
@@ -1161,7 +1175,8 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
           showLineNumbers: true,
           tabSize: 2,
           }}
-      /><br/>      
+      /><br/>
+      
 			{ isAdmin ? <>
 			<Input 
           type='Checkbox'
