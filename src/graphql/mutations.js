@@ -18,6 +18,7 @@ export const createBuildDefinition = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes
       configurationJSON
       owner
       groupsCanAccess
@@ -70,6 +71,7 @@ export const updateBuildDefinition = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes
       configurationJSON
       owner
       groupsCanAccess
@@ -122,6 +124,7 @@ export const deleteBuildDefinition = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes
       configurationJSON
       owner
       groupsCanAccess

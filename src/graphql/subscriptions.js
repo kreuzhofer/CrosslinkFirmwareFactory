@@ -15,6 +15,7 @@ export const onCreateBuildDefinition = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes
       configurationJSON
       owner
       groupsCanAccess
@@ -64,6 +65,7 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes
       configurationJSON
       owner
       groupsCanAccess
@@ -113,6 +115,7 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes
       configurationJSON
       owner
       groupsCanAccess

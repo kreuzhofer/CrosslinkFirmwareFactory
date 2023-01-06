@@ -15,6 +15,7 @@ export const getBuildDefinition = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes
       configurationJSON
       owner
       groupsCanAccess
@@ -73,6 +74,7 @@ export const listBuildDefinitions = /* GraphQL */ `
         selectedMainboard
         platformioEnv
         description
+        notes
         configurationJSON
         owner
         groupsCanAccess
@@ -124,6 +126,7 @@ export const buildDefinitionsByOwner = /* GraphQL */ `
         selectedMainboard
         platformioEnv
         description
+        notes
         configurationJSON
         owner
         groupsCanAccess

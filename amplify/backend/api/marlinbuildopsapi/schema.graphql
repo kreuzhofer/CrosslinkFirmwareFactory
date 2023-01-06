@@ -19,6 +19,7 @@ type BuildDefinition @model
   selectedMainboard: String
   platformioEnv: String
   description: String
+  notes: String
   configurationJSON: String
   buildJobs: [BuildJob!] @connection(keyName: "byBuildDefinition", fields: ["id"])
   owner: String
