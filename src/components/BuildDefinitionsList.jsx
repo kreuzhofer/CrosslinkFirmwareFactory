@@ -35,6 +35,11 @@ const buildDefinitionTableName = process.env["REACT_APP_BUILDDEFINITIONTABLENAME
 const graphQLApiUrl = process.env["REACT_APP_GRAPHQLAPIURL"]
 const buildArtifactsBucket = process.env["REACT_APP_BUILDARTIFACTS_BUCKET"]
 
+const https = require('https');
+const aws4  = require('aws4');
+const env = process.env["REACT_APP_ENV"];
+const restapiurl = process.env["REACT_APP_REST_API_BASEURL"]+env;
+
 export class BuildDefinitionsList extends React.Component {
   constructor (props) {
     super(props);
@@ -75,6 +80,8 @@ export class BuildDefinitionsList extends React.Component {
       items.forEach(item => {
         if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
           item.buildRunning = true;
+        else
+          item.buildRunning = false;
       });
 //        console.info(items);
       this.setState({buildDefinitions: items, oldResults: items});    
@@ -253,6 +260,52 @@ export class BuildDefinitionsList extends React.Component {
       console.log(this.state.buildDefinitions);
     }
 
+    async function request(url, data) {
+      const user =  await Auth.currentAuthenticatedUser();
+      const token = user.signInUserSession.accessToken.jwtToken;
+      console.log(token);
+      var credentials = await Auth.currentCredentials();
+      console.log(credentials);
+      var essentialcredentials = Auth.essentialCredentials(credentials);
+      console.log(essentialcredentials);
+
+      var myURL = new URL(url);
+      console.log(myURL);
+
+      var options = {
+        service: "execute-api",
+        region: "eu-west-1",
+        host: myURL.host,
+        path: myURL.pathname,
+        method: 'POST'
+      };
+      
+      aws4.sign(options, { accessKeyId: essentialcredentials.accessKeyId, secretAccessKey: essentialcredentials.secretAccessKey, sessionToken: essentialcredentials.sessionToken});
+      console.log(options);
+
+      return new Promise((resolve, reject) => {
+          let req = https.request(options, function (res) {
+              let body = ''
+              res.on('data', (chunk) => { body += chunk })
+              res.on('end', () => { resolve(body) })
+          })
+          req.write(data)
+          req.end()
+      })
+    }   
+
+    const handleCancelBuild = async(event, def) => {
+      try {
+        const url = restapiurl+"/buildagent/"+def.id;
+        console.log(url);
+        var result = await request(url, "");
+        var items = JSON.parse(result);
+        console.info(items);
+      } catch (error) {
+          console.error(error);
+      }
+    }
+
     return dataToShow
       .sort((a,b)=>{
         return comparator.makeComparator('printerManufacturer')(a,b)+comparator.makeComparator('printerModel')(a,b)+comparator.makeComparator('printerMainboard')(a,b)
@@ -273,6 +326,10 @@ export class BuildDefinitionsList extends React.Component {
         <Button loading={def.buildRunning} disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
             <Button.Content hidden>Build</Button.Content>
             <Button.Content visible><Icon name='cubes'/></Button.Content>
+        </Button>
+        <Button animated='vertical' onClick={(e)=>handleCancelBuild(e, def)}>
+            <Button.Content hidden>Cancel build</Button.Content>
+            <Button.Content visible><Icon name='delete'/><Icon name='cubes'/></Button.Content>
         </Button>
         <Button disabled={def.buildRunning || def.buildJobs.items.length>0} animated='vertical' onClick={(e)=>handleDelete(e, def.id)} color='red'>
           <Button.Content hidden>Delete</Button.Content>
