@@ -277,10 +277,15 @@ export class BuildDefinitionsList extends React.Component {
         region: "eu-west-1",
         host: myURL.host,
         path: myURL.pathname,
-        method: 'POST'
+        method: 'POST',
+        body: data
       };
       
-      aws4.sign(options, { accessKeyId: essentialcredentials.accessKeyId, secretAccessKey: essentialcredentials.secretAccessKey, sessionToken: essentialcredentials.sessionToken});
+      aws4.sign(options, { 
+        accessKeyId: essentialcredentials.accessKeyId,
+        secretAccessKey: essentialcredentials.secretAccessKey,
+        sessionToken: essentialcredentials.sessionToken
+      });
       console.log(options);
 
       return new Promise((resolve, reject) => {
@@ -298,7 +303,8 @@ export class BuildDefinitionsList extends React.Component {
       try {
         const url = restapiurl+"/buildagent/"+def.id;
         console.log(url);
-        var result = await request(url, "");
+        var result = await request(url, "{'action':'cancel'}");
+        console.log(result);
         var items = JSON.parse(result);
         console.info(items);
       } catch (error) {
