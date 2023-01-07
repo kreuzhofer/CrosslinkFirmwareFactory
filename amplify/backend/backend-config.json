@@ -1,8 +1,65 @@
 {
   "api": {
-    "marlinbuildopsapi": {
-      "service": "AppSync",
+    "firmwarebuildsapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "firmwarebuildsapifunction"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "firmwareartifactapifunction"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "firmwareversionapifunction"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "marlinbuildopsfc6385a7"
+        },
+        {
+          "attributes": [
+            "AdminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Level1GroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
       "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "marlinbuildopsapi": {
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
@@ -17,136 +74,184 @@
             }
           }
         }
-      }
-    },
-    "firmwarebuildsapi": {
-      "service": "API Gateway",
+      },
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "firmwarebuildsapifunction",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "firmwareartifactapifunction",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "firmwareversionapifunction",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
+      "service": "AppSync"
     }
   },
   "auth": {
     "marlinbuildopsfc6385a7": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
+      "customAuth": false,
       "dependsOn": [
         {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
           "category": "function",
           "resourceName": "marlinbuildopsfc6385a7PostConfirmation",
-          "triggerProvider": "Cognito",
+          "triggerProvider": "Cognito"
+        },
+        {
           "attributes": [
             "Arn",
             "Name"
-          ]
-        },
-        {
+          ],
           "category": "function",
           "resourceName": "marlinbuildopsfc6385a7PreAuthentication",
-          "triggerProvider": "Cognito",
+          "triggerProvider": "Cognito"
+        },
+        {
           "attributes": [
             "Arn",
             "Name"
-          ]
-        },
-        {
+          ],
           "category": "function",
           "resourceName": "marlinbuildopsfc6385a7PreSignup",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
+          "triggerProvider": "Cognito"
         },
         {
-          "category": "function",
-          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
-          "triggerProvider": "Cognito",
           "attributes": [
             "Arn",
             "Name"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration",
+          "triggerProvider": "Cognito"
         }
       ],
-      "customAuth": false
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
     },
     "userPoolGroups": {
-      "service": "Cognito-UserPool-Groups",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
-          "category": "auth",
-          "resourceName": "marlinbuildopsfc6385a7",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
             "AppClientID",
             "IdentityPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "marlinbuildopsfc6385a7"
         }
-      ]
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
     }
   },
-  "hosting": {
-    "amplifyhosting": {
-      "service": "amplifyhosting",
+  "customresources": {
+    "iamroles": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "EveryoneGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Level1GroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "AdminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
       "providerPlugin": "awscloudformation",
-      "type": "manual"
+      "service": "IamRoles"
     }
   },
   "function": {
     "AddBuildDefinitionFromWebHook": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "marlinbuildopsapi",
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
-          ]
+          ],
+          "category": "api",
+          "resourceName": "marlinbuildopsapi"
         },
         {
-          "category": "auth",
-          "resourceName": "marlinbuildopsfc6385a7",
           "attributes": [
             "UserPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "marlinbuildopsfc6385a7"
         }
-      ]
-    },
-    "marlinbuildopsfc6385a7PostConfirmation": {
-      "build": true,
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "marlinbuildopsfc6385a7PreTokenGeneration": {
+    "buildagentfunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "marlinbuildopsapi"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "firmwareartifactapifunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "userdata"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "firmwarebuildsapifunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "marlinbuildopsapi"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "firmwareversionapifunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "marlinbuildopsapi"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "marlinbuildopsfc6385a7PostConfirmation": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -161,129 +266,246 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "marlinbuildopsfc6385a7PreTokenGeneration": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "parsemarlinversionfunction": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "marlinbuildopsapi",
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
-          ]
-        }
-      ]
-    },
-    "firmwarebuildsapifunction": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
+          ],
           "category": "api",
-          "resourceName": "marlinbuildopsapi",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
+          "resourceName": "marlinbuildopsapi"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "providerPlugin": "awscloudformation",
+      "service": "amplifyhosting",
+      "type": "manual"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_AddBuildDefinitionFromWebHook_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AddBuildDefinitionFromWebHook"
         }
       ]
     },
-    "firmwareartifactapifunction": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
+    "AMPLIFY_function_AddBuildDefinitionFromWebHook_s3Key": {
+      "usedBy": [
         {
-          "category": "storage",
-          "resourceName": "userdata",
-          "attributes": [
-            "BucketName"
-          ]
+          "category": "function",
+          "resourceName": "AddBuildDefinitionFromWebHook"
         }
       ]
     },
-    "firmwareversionapifunction": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
+    "AMPLIFY_function_buildagentfunction_amiId": {
+      "usedBy": [
         {
-          "category": "api",
-          "resourceName": "marlinbuildopsapi",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_buildagentfunction_subnetId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareartifactapifunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareartifactapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareartifactapifunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareartifactapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwarebuildsapifunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwarebuildsapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwarebuildsapifunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwarebuildsapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareversionapifunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareversionapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareversionapifunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareversionapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreAuthentication_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreAuthentication"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreAuthentication_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreAuthentication"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreSignup_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreSignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreSignup_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreSignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreTokenGeneration_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreTokenGeneration_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration"
+        }
+      ]
+    },
+    "AMPLIFY_function_parsemarlinversionfunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "parsemarlinversionfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_parsemarlinversionfunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "parsemarlinversionfunction"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_appId": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_type": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
         }
       ]
     }
   },
   "storage": {
     "userdata": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
-          "category": "auth",
-          "resourceName": "marlinbuildopsfc6385a7",
           "attributes": [
             "UserPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "marlinbuildopsfc6385a7"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "EveryoneGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "AdminGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "Level1GroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         }
-      ]
-    }
-  },
-  "customresources": {
-    "iamroles": {
-      "service": "IamRoles",
+      ],
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
-          "attributes": [
-            "EveryoneGroupRole"
-          ]
-        },
-        {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
-          "attributes": [
-            "Level1GroupRole"
-          ]
-        },
-        {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
-          "attributes": [
-            "AdminGroupRole"
-          ]
-        }
-      ]
+      "service": "S3"
     }
   }
 }
