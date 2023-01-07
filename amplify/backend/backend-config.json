@@ -319,6 +319,22 @@
         }
       ]
     },
+    "AMPLIFY_function_buildagentfunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_buildagentfunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
     "AMPLIFY_function_buildagentfunction_subnetId": {
       "usedBy": [
         {
