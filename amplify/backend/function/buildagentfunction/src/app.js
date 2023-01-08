@@ -213,8 +213,35 @@ app.post('/buildagent', function(req, res) {
   res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
 
-app.post('/buildagent/*', async function(req, res) {
+app.post('/buildagent/*', function(req, res) {
   // Add your code here
+  res.json({success: 'post call succeed!', url: req.url, body: req.body})
+});
+
+/****************************
+* Example put method *
+****************************/
+
+app.put('/buildagent', function(req, res) {
+  // Add your code here
+  res.json({success: 'put call succeed!', url: req.url, body: req.body})
+});
+
+app.put('/buildagent/*', function(req, res) {
+  // Add your code here
+  res.json({success: 'put call succeed!', url: req.url, body: req.body})
+});
+
+/****************************
+* Example delete method *
+****************************/
+
+app.delete('/buildagent', function(req, res) {
+  // Add your code here
+  res.json({success: 'delete call succeed!', url: req.url});
+});
+
+app.delete('/buildagent/*', async function(req, res) {
   console.log("request: ", req);
   var buildDefinitionId = req.params['0'];
   console.log("buildDefinitionId: ", buildDefinitionId);
@@ -283,35 +310,7 @@ app.post('/buildagent/*', async function(req, res) {
       await updateBuildJobState(job.id, "CANCELLED");
   });
 
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example put method *
-****************************/
-
-app.put('/buildagent', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-app.put('/buildagent/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/buildagent', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/buildagent/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
+  res.json({success: 'cancelling request submitted!', url: req.url});
 });
 
 app.listen(3000, function() {

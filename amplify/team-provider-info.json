@@ -54,7 +54,7 @@
           "amiId": "ami-07b1ef26ec89aa4ee",
           "subnetId": "subnet-0f523cd98aa56217e",
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/buildagentfunction-6a547668386259442f35-build.zip"
+          "s3Key": "amplify-builds/buildagentfunction-52672f366a6d2b49544b-build.zip"
         }
       },
       "hosting": {

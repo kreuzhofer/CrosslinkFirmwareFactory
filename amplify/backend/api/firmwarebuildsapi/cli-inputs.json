@@ -30,12 +30,14 @@
           "Admin": [
             "create",
             "read",
-            "update"
+            "update",
+            "delete"
           ],
           "Level1": [
             "create",
             "read",
-            "update"
+            "update",
+            "delete"
           ]
         },
         "setting": "private"

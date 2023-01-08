@@ -303,7 +303,7 @@ export class BuildDefinitionsList extends React.Component {
       try {
         const url = restapiurl+"/buildagent/"+def.id;
         console.log(url);
-        var result = await request(url, "{'action':'cancel'}");
+        var result = await request(url, "", "DELETE");
         console.log(result);
         var items = JSON.parse(result);
         console.info(items);
