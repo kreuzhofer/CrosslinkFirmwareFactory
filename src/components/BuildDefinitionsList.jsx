@@ -78,7 +78,7 @@ export class BuildDefinitionsList extends React.Component {
       const result = await API.graphql(graphqlOperation(customqueries.buildDefinitionsByOwnerWithJobs, {limit: 999, owner: user.username}));
       var items = result.data.buildDefinitionsByOwner.items
       items.forEach(item => {
-        if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED").length>0))
+        if(item.buildJobs.items.length>0 && (item.buildJobs.items.filter(item=>item.jobState!=="DONE" && item.jobState!=="FAILED" && item.jobState!=="CANCELLED").length>0))
           item.buildRunning = true;
         else
           item.buildRunning = false;
@@ -260,7 +260,7 @@ export class BuildDefinitionsList extends React.Component {
       console.log(this.state.buildDefinitions);
     }
 
-    async function request(url, data) {
+    async function request(url, data, method) {
       const user =  await Auth.currentAuthenticatedUser();
       const token = user.signInUserSession.accessToken.jwtToken;
       console.log(token);
@@ -277,7 +277,7 @@ export class BuildDefinitionsList extends React.Component {
         region: "eu-west-1",
         host: myURL.host,
         path: myURL.pathname,
-        method: 'POST',
+        method: method ? method : 'POST',
         body: data
       };
       
@@ -307,6 +307,7 @@ export class BuildDefinitionsList extends React.Component {
         console.log(result);
         var items = JSON.parse(result);
         console.info(items);
+        await this.reloadData();        
       } catch (error) {
           console.error(error);
       }
@@ -329,13 +330,20 @@ export class BuildDefinitionsList extends React.Component {
             <Button.Content hidden>Clone</Button.Content>
             <Button.Content visible><Icon name='clone'/></Button.Content>
           </Button>            
-        <Button loading={def.buildRunning} disabled={def.buildRunning} animated='vertical' onClick={(e)=>handleBuild(e, def)}>
+        <Button animated='vertical' onClick={(e)=>{
+            !def.buildRunning ? handleBuild(e, def) : handleCancelBuild(e, def);
+          }}>
+          {!def.buildRunning ?
+          <>
             <Button.Content hidden>Build</Button.Content>
             <Button.Content visible><Icon name='cubes'/></Button.Content>
-        </Button>
-        <Button animated='vertical' onClick={(e)=>handleCancelBuild(e, def)}>
+          </>
+          : 
+          <>
             <Button.Content hidden>Cancel build</Button.Content>
-            <Button.Content visible><Icon name='delete'/><Icon name='cubes'/></Button.Content>
+            <Button.Content visible><div className="ui active inline loader" style={{marginRight: 10}}></div><Icon name='stop' color='red' size='large'/></Button.Content>
+          </>
+          }
         </Button>
         <Button disabled={def.buildRunning || def.buildJobs.items.length>0} animated='vertical' onClick={(e)=>handleDelete(e, def.id)} color='red'>
           <Button.Content hidden>Delete</Button.Content>

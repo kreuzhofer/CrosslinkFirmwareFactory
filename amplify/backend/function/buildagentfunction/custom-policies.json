@@ -1,6 +1,6 @@
 [
   {
-    "Action": [],
-    "Resource": []
+    "Action": ["ec2:*"],
+    "Resource": ["*"]
   }
 ]
