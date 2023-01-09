@@ -82,6 +82,9 @@ buildDefinitionTableName = os.environ['BUILDDEFINITIONTABLENAME']
 
 # https://stackoverflow.com/questions/38144273/making-a-signed-http-request-to-aws-elasticsearch-in-python
 def update_job_status_gql(jobId, jobState):
+    if(is_Cancelled(jobId)):
+        exit(0) # exit clean
+
     hostname = urlparse(graphQLApiUrl).hostname
     item = {
         'input': {
@@ -179,7 +182,25 @@ def get_buildDefinition(buildDefinitionID, dynamodb=None):
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:
+        return response['Item']
+        
+def get_buildJob(buildJobID, dynamodb=None):
+    if not dynamodb:
+        dynamodb = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+
+    table = dynamodb.Table(buildJobTableName)
+
+    try:
+        response = table.get_item(Key={'id': buildJobID})
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
         return response['Item'] 
+
+def is_Cancelled():
+    job = get_buildJob(buildJobId)
+    jobState = job.jobState
+    return jobState == "CANCELLED"
 
 def getLineWhereMatch(match, text):
     lines = text.splitlines()
