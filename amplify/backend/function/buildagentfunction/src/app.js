@@ -129,47 +129,49 @@ const gqlUpdateBuildJob = /* GraphQL */ gql(`
 
 async function runGqlQuery(gqlQuery, params)
 {
-    const req = new AWS.HttpRequest(graphQLApiUrl, region);
+  console.log("running query...")
+  const req = new AWS.HttpRequest(graphQLApiUrl, region);
 
-    req.method = "POST";
-    req.path = "/graphql";
-    req.headers.host = endpoint;
-    req.headers["Content-Type"] = "application/json";
-    req.body = JSON.stringify({
-        query: print(gqlQuery),
-        variables: params
+  req.method = "POST";
+  req.path = "/graphql";
+  req.headers.host = endpoint;
+  req.headers["Content-Type"] = "application/json";
+  req.body = JSON.stringify({
+    query: print(gqlQuery),
+    variables: params
+  });
+
+  if (apiKey) {
+    req.headers["x-api-key"] = apiKey;
+  } else {
+    const signer = new AWS.Signers.V4(req, "appsync", true);
+    signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
+  }
+
+  const data = await new Promise((resolve, reject) => {
+    const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
+      let body = "";
+      result.on('data', (data) => {
+        body += data;
+      });
+      result.on('end', () => {
+        resolve(body);
+      });
+      result.on('error', (err) => {
+        reject(err);
+      });
     });
 
-    if (apiKey) {
-        req.headers["x-api-key"] = apiKey;
-    } else {
-        const signer = new AWS.Signers.V4(req, "appsync", true);
-        signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
-    }
-
-    const data = await new Promise((resolve, reject) => {
-        const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
-          let body = "";
-          result.on('data', (data) => {
-            body += data;
-          });
-          result.on('end', () => {
-            resolve(body);
-          });
-          result.on('error', (err) => {
-            reject(err);
-          });
-        });
-
-        httpRequest.write(req.body);
-        httpRequest.end();
-    });
-    return data;
+    httpRequest.write(req.body);
+    httpRequest.end();
+  });
+  console.log("query finished.")
+  return data;
 }
 
 async function updateBuildJobState(id, newstate)
 {
-  console.log("Updating state of job {0} to {1}", id, newstate);
+  console.log('Updating state of job '+id+' to state '+newstate);
   const params = {
     input: {
         id: id, 
@@ -305,10 +307,10 @@ app.delete('/buildagent/*', async function(req, res) {
 
   var buildJobs = await getBuildJobsForBuildDefinition(buildDefinitionId);
   console.log(buildJobs);
-  buildJobs.forEach(async job => {
-    if(job.jobState == "RUNNING" || job.jobState == "STARTING")
+  for(let job of buildJobs){
+    if(job.jobState !== "DONE" && job.jobState !== "FAILED" && job.jobState !== "CANCELLED")
       await updateBuildJobState(job.id, "CANCELLED");
-  });
+  }
 
   res.json({success: 'cancelling request submitted!', url: req.url});
 });
