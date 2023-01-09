@@ -66,6 +66,7 @@ const TopMenu = (props) => {
 				{ user ? 
 				<>
 				<Dropdown.Header>Welcome, {user.attributes.email}</Dropdown.Header>
+				<Dropdown.Item href='/Profile'>Edit Profile</Dropdown.Item>
 				<Dropdown.Item onClick={() => LogOut()}>Sign Out</Dropdown.Item>
 				</>
 				:

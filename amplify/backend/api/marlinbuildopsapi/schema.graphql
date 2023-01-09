@@ -106,12 +106,15 @@ type MembershipException @model
 type UserProfile @model
   @auth(rules: [
     {allow: owner}
+    {allow: private, operations: [read]}    
   ])
 {
   id: ID!
   owner: String
   buildCredits: Int!
   profileImageUrl: String
+  alias: String
+  markedForDisabling: Int
 }
 
 enum BuildJobState {

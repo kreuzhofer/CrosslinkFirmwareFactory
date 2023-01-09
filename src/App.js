@@ -15,6 +15,7 @@ import { Home } from './components/Home'
 import { MarlinFirmwareDetails } from './components/MarlinFirmwareDetails'
 import { Login } from './components/Login'
 import EditBuildDefinition from './components/EditBuildDefinition'
+import Profile from './components/Profile'
 
 //const buildAgentJobQueueUrl = process.env["REACT_APP_BUILDAGENTJOBQUEUEURL"]
 //console.log(buildAgentJobQueueUrl)
@@ -92,6 +93,8 @@ const App = () => {
             <Route path="/BuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} authState={authState} />}/>
             <Route path="/AddBuildDefinition" element={<EditBuildDefinition patronLevel={patronLevel} isAdmin={isAdmin} authState={authState} />}/>
             <Route path="/AddBuildDefinition/:id" element={<EditBuildDefinition patronLevel={patronLevel} clone={true} isAdmin={isAdmin} authState={authState} />}/>
+
+            <Route path="/Profile" element={<Profile />} />
 
             { isAdmin ? <Route path="/FirmwareVersions" element={<FirmwareVersionsList/>}/> : null }
             { isAdmin ? <Route path="/AddFirmwareVersion" element={<AddFirmwareVersion/>}/> : null }

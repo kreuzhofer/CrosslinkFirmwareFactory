@@ -449,6 +449,8 @@ export const createUserProfile = /* GraphQL */ `
       owner
       buildCredits
       profileImageUrl
+      alias
+      markedForDisabling
       createdAt
       updatedAt
     }
@@ -464,6 +466,8 @@ export const updateUserProfile = /* GraphQL */ `
       owner
       buildCredits
       profileImageUrl
+      alias
+      markedForDisabling
       createdAt
       updatedAt
     }
@@ -479,6 +483,8 @@ export const deleteUserProfile = /* GraphQL */ `
       owner
       buildCredits
       profileImageUrl
+      alias
+      markedForDisabling
       createdAt
       updatedAt
     }

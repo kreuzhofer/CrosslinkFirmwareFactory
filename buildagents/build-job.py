@@ -197,9 +197,9 @@ def get_buildJob(buildJobID, dynamodb=None):
     else:
         return response['Item'] 
 
-def is_Cancelled():
-    job = get_buildJob(buildJobId)
-    jobState = job.jobState
+def is_Cancelled(jobId):
+    job = get_buildJob(jobId, dynamodb)
+    jobState = job['jobState']
     return jobState == "CANCELLED"
 
 def getLineWhereMatch(match, text):
