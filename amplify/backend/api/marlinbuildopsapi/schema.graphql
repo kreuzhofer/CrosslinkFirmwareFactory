@@ -120,4 +120,5 @@ enum BuildJobState {
   RUNNING
   DONE
   FAILED
+  CANCELLED
 }

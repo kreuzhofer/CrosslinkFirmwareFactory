@@ -126,7 +126,7 @@ const getBuildDefinitionWithBuildJobs = /* GraphQL */ gql`
   }
 `;
 
-async function rungqlquery(gqlquery, vars)
+async function runGqlQuery(gqlQuery, vars)
 {
     const req = new AWS.HttpRequest(graphQLApiUrl, region);
 
@@ -135,7 +135,7 @@ async function rungqlquery(gqlquery, vars)
     req.headers.host = endpoint;
     req.headers["Content-Type"] = "application/json";
     req.body = JSON.stringify({
-        query: print(gqlquery),
+        query: print(gqlQuery),
         variables: vars
     });
 
@@ -174,14 +174,14 @@ exports.handler = async (event) => {
   let returnValue = null;
   if(event.resource == "/firmwarebuilds")
   {
-    var result = await rungqlquery(listBuildDefinitions);
+    var result = await runGqlQuery(listBuildDefinitions);
     result = JSON.parse(result.toString());
 
     var data = result.data.listBuildDefinitions;
     var nextToken = data.nextToken;
     var items = data.items;
     while(nextToken) {
-      var nextResult = await rungqlquery(listBuildDefinitions, {nextToken: nextToken});
+      var nextResult = await runGqlQuery(listBuildDefinitions, {nextToken: nextToken});
       nextResult = JSON.parse(nextResult.toString());
       var nextData = nextResult.data.listBuildDefinitions;
       nextToken = nextData.nextToken;
@@ -197,7 +197,7 @@ exports.handler = async (event) => {
     let vars = {
       id: id
     }
-    var result = await rungqlquery(getBuildDefinitionWithBuildJobs, vars);
+    var result = await runGqlQuery(getBuildDefinitionWithBuildJobs, vars);
     result = JSON.parse(result.toString());
 
     returnValue = result.data.getBuildDefinition;

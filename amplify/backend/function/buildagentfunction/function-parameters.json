@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "api": {
+      "marlinbuildopsapi": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "amiId",
+      "environmentVariableName": "AMI_ID"
+    },
+    {
+      "cloudFormationParameterName": "subnetId",
+      "environmentVariableName": "SUBNET_ID"
+    }
+  ]
+}

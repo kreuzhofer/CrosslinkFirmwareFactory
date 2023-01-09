@@ -1,92 +1,108 @@
 export type AmplifyDependentResourcesAttributes = {
-    "api": {
-        "marlinbuildopsapi": {
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
-        },
-        "firmwarebuildsapi": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
-        }
+  "api": {
+    "firmwarebuildsapi": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
     },
-    "auth": {
-        "marlinbuildopsfc6385a7": {
-            "IdentityPoolId": "string",
-            "IdentityPoolName": "string",
-            "UserPoolId": "string",
-            "UserPoolArn": "string",
-            "UserPoolName": "string",
-            "AppClientIDWeb": "string",
-            "AppClientID": "string",
-            "CreatedSNSRole": "string"
-        },
-        "userPoolGroups": {
-            "AdminGroupRole": "string",
-            "Level1GroupRole": "string",
-            "EveryoneGroupRole": "string"
-        }
-    },
-    "function": {
-        "AddBuildDefinitionFromWebHook": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "marlinbuildopsfc6385a7PostConfirmation": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
-        },
-        "marlinbuildopsfc6385a7PreTokenGeneration": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
-        },
-        "marlinbuildopsfc6385a7PreAuthentication": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
-        },
-        "marlinbuildopsfc6385a7PreSignup": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
-        },
-        "parsemarlinversionfunction": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "firmwarebuildsapifunction": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "firmwareartifactapifunction": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "firmwareversionapifunction": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        }
-    },
-    "storage": {
-        "userdata": {
-            "BucketName": "string",
-            "Region": "string"
-        }
+    "marlinbuildopsapi": {
+      "GraphQLAPIEndpointOutput": "string",
+      "GraphQLAPIIdOutput": "string"
     }
+  },
+  "auth": {
+    "marlinbuildopsfc6385a7": {
+      "AppClientID": "string",
+      "AppClientIDWeb": "string",
+      "CreatedSNSRole": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
+      "UserPoolArn": "string",
+      "UserPoolId": "string",
+      "UserPoolName": "string"
+    },
+    "userPoolGroups": {
+      "AdminGroupRole": "string",
+      "EveryoneGroupRole": "string",
+      "Level1GroupRole": "string"
+    }
+  },
+  "function": {
+    "AddBuildDefinitionFromWebHook": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "buildagentfunction": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "firmwareartifactapifunction": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "firmwarebuildsapifunction": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "firmwareversionapifunction": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "marlinbuildopsfc6385a7PostConfirmation": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "marlinbuildopsfc6385a7PreAuthentication": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "marlinbuildopsfc6385a7PreSignup": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "marlinbuildopsfc6385a7PreTokenGeneration": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "parsemarlinversionfunction": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "userdata": {
+      "BucketName": "string",
+      "Region": "string"
+    }
+  }
 }

@@ -21,6 +21,27 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/buildagent": {
+      "name": "/buildagent",
+      "lambdaFunction": "buildagentfunction",
+      "permissions": {
+        "groups": {
+          "Admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "Level1": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
     }
   }
 }

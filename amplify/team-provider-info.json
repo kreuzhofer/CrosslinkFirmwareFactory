@@ -16,7 +16,7 @@
       "function": {
         "AddBuildDefinitionFromWebHook": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/AddBuildDefinitionFromWebHook-747236774f7965325076-build.zip"
+          "s3Key": "amplify-builds/AddBuildDefinitionFromWebHook-626b4157563452633647-build.zip"
         },
         "marlinbuildopsfc6385a7PostConfirmation": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
@@ -28,11 +28,11 @@
         },
         "marlinbuildopsfc6385a7PreAuthentication": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreAuthentication-38704539376c48616359-build.zip"
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreAuthentication-72524b68667734665759-build.zip"
         },
         "marlinbuildopsfc6385a7PreSignup": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreSignup-4c307a31323264705148-build.zip"
+          "s3Key": "amplify-builds/marlinbuildopsfc6385a7PreSignup-6256754a345137715876-build.zip"
         },
         "parsemarlinversionfunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
@@ -40,7 +40,7 @@
         },
         "firmwarebuildsapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/firmwarebuildsapifunction-434f707a39336e536156-build.zip"
+          "s3Key": "amplify-builds/firmwarebuildsapifunction-686b3048684e62337662-build.zip"
         },
         "firmwareartifactapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
@@ -49,6 +49,12 @@
         "firmwareversionapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
           "s3Key": "amplify-builds/firmwareversionapifunction-6b6f63636b526b753331-build.zip"
+        },
+        "buildagentfunction": {
+          "amiId": "ami-07b1ef26ec89aa4ee",
+          "subnetId": "subnet-0f523cd98aa56217e",
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/buildagentfunction-52672f366a6d2b49544b-build.zip"
         }
       },
       "hosting": {
