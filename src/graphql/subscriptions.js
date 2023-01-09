@@ -395,36 +395,39 @@ export const onDeleteMembershipException = /* GraphQL */ `
   }
 `;
 export const onCreateUserProfile = /* GraphQL */ `
-  subscription OnCreateUserProfile($owner: String) {
-    onCreateUserProfile(owner: $owner) {
+  subscription OnCreateUserProfile {
+    onCreateUserProfile {
       id
       owner
       buildCredits
       profileImageUrl
+      alias
       createdAt
       updatedAt
     }
   }
 `;
 export const onUpdateUserProfile = /* GraphQL */ `
-  subscription OnUpdateUserProfile($owner: String) {
-    onUpdateUserProfile(owner: $owner) {
+  subscription OnUpdateUserProfile {
+    onUpdateUserProfile {
       id
       owner
       buildCredits
       profileImageUrl
+      alias
       createdAt
       updatedAt
     }
   }
 `;
 export const onDeleteUserProfile = /* GraphQL */ `
-  subscription OnDeleteUserProfile($owner: String) {
-    onDeleteUserProfile(owner: $owner) {
+  subscription OnDeleteUserProfile {
+    onDeleteUserProfile {
       id
       owner
       buildCredits
       profileImageUrl
+      alias
       createdAt
       updatedAt
     }

@@ -351,6 +351,7 @@ export const getUserProfile = /* GraphQL */ `
       owner
       buildCredits
       profileImageUrl
+      alias
       createdAt
       updatedAt
     }
@@ -368,6 +369,7 @@ export const listUserProfiles = /* GraphQL */ `
         owner
         buildCredits
         profileImageUrl
+        alias
         createdAt
         updatedAt
       }
