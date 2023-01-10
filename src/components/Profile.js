@@ -5,6 +5,7 @@ import { Form, Header, Input, Segment, Button, Image, Label, Icon } from "semant
 import * as mutations from '../graphql/mutations'
 import * as queries from '../graphql/queries'
 import * as rest from '../util/authenticatedRESTCall'
+import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 
 const env = process.env["REACT_APP_ENV"];
 const restapiurl = process.env["REACT_APP_REST_API_BASEURL"] + env;
@@ -39,6 +40,10 @@ function Profile(){
         var imageUrl = 'https://'+buildArtifactsBucket+".s3."+region+'.amazonaws.com/public/profile-images/'+filename;
         console.log(imageUrl);
         setProfileImageUrl(imageUrl);
+        toast({
+            title:"Success!",
+            description:"Profile image successfully uploaded!. Don't forget to save your changes!"
+        })
     } catch (error) {
         console.log('Error uploading file: ', error);
       }  
@@ -80,6 +85,10 @@ function Profile(){
             let result = await API.graphql(graphqlOperation(mutations.createUserProfile, {input: inputData}));
             console.log(result);
         }
+        toast({
+            title:'Success!',
+            description:'Profile changes successfully saved!'
+        });
     }
 
     async function reloadData()
@@ -105,6 +114,7 @@ function Profile(){
     }, []);
 
     return <>
+        <SemanticToastContainer/>
         <Segment>
             <Header>Edit your profile</Header>
             {

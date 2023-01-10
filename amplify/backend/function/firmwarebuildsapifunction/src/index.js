@@ -208,8 +208,8 @@ async function runListQuery(gqlQuery, vars)
   const queryData = data[queryName];
   //console.log("data[queryName]: ",queryData);
 
-  var nextToken = queryData.nextToken;
-  var items = queryData.items;
+  var nextToken = queryData.nextToken ? queryData.nextToken : null;
+  var items = queryData.items ? queryData.items : [];
   //console.log(items);
 
   while(nextToken) {
@@ -235,8 +235,11 @@ exports.handler = async (event) => {
     returnValue = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
     for(const v of returnValue){
       var profile = profiles.find(p=>p.owner == v.owner);
-      v.ownerAlias = profile.alias && profile.alias !== '' ? profile.alias : profile.owner;
-      v.ownerImageUrl = profile.profileImageUrl;
+      if(profile)
+      {
+        v.ownerAlias = profile.alias && profile.alias !== '' ? profile.alias : profile.owner;
+        v.ownerImageUrl = profile.profileImageUrl && profile.profileImageUrl !== '' ? profile.profileImageUrl : '/images/image_placeholder.png';
+      }
     }
     //console.log(`Items: ${JSON.stringify(returnValue)}`);
   }
