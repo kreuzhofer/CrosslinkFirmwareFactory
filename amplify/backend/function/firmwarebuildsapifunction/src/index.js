@@ -200,7 +200,7 @@ async function runListQuery(gqlQuery, vars)
   var queryName = firstLower(gqlQuery.definitions.find(item => item.kind == "OperationDefinition").name.value);
   //console.log(queryName);
   const queryResult = await runGqlQuery(gqlQuery, vars);
-  //console.log("query result: ",queryResult);
+  console.log("query result: ",queryResult);
 
   const data = queryResult.data;
   //console.log("result.data: ",data);
