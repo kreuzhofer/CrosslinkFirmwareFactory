@@ -5,7 +5,7 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-console.info(process.env);
+//console.info(process.env);
 const graphQLApiUrl = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIENDPOINTOUTPUT;
 const apiKey = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIKEYOUTPUT;
 const region = process.env.REGION;
@@ -195,22 +195,22 @@ function firstLower(string){
 
 async function runListQuery(gqlQuery, vars)
 {
-  console.log(JSON.stringify(gqlQuery));
+  //console.log(JSON.stringify(gqlQuery));
 
   var queryName = firstLower(gqlQuery.definitions.find(item => item.kind == "OperationDefinition").name.value);
-  console.log(queryName);
+  //console.log(queryName);
   const queryResult = await runGqlQuery(gqlQuery, vars);
-  console.log("query result: ",queryResult);
+  //console.log("query result: ",queryResult);
 
   const data = queryResult.data;
-  console.log("result.data: ",data);
+  //console.log("result.data: ",data);
 
   const queryData = data[queryName];
-  console.log("data[queryName]: ",queryData);
+  //console.log("data[queryName]: ",queryData);
 
   var nextToken = queryData.nextToken;
   var items = queryData.items;
-  console.log(items);
+  //console.log(items);
 
   while(nextToken) {
     var nextResult = await runGqlQuery(gqlQuery, {nextToken: nextToken});
@@ -230,26 +230,15 @@ exports.handler = async (event) => {
   if(event.resource == "/firmwarebuilds")
   {
     var profiles = await runListQuery(listUserProfiles);
-    
-    var result = await runGqlQuery(listBuildDefinitions);
-
-    var data = result.data.listBuildDefinitions;
-    var nextToken = data.nextToken;
-    var items = data.items;
-    while(nextToken) {
-      var nextResult = await runGqlQuery(listBuildDefinitions, {nextToken: nextToken});
-      var nextData = nextResult.data.listBuildDefinitions;
-      nextToken = nextData.nextToken;
-      items = items.concat(nextData.items);
-    }
-    console.log(`Items: ${JSON.stringify(items)}`);
+    var items = await runListQuery(listBuildDefinitions);
+    //console.log(`Items: ${JSON.stringify(items)}`);
     returnValue = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
     for(const v of returnValue){
       var profile = profiles.find(p=>p.owner == v.owner);
       v.ownerAlias = profile.alias && profile.alias !== '' ? profile.alias : profile.owner;
       v.ownerImageUrl = profile.profileImageUrl;
     }
-    console.log(`Items: ${JSON.stringify(returnValue)}`);
+    //console.log(`Items: ${JSON.stringify(returnValue)}`);
   }
   else if(event.resource == "/firmwarebuilds/{proxy+}")
   {
@@ -259,8 +248,6 @@ exports.handler = async (event) => {
       id: id
     }
     var result = await runGqlQuery(getBuildDefinitionWithBuildJobs, vars);
-    result = JSON.parse(result.toString());
-
     returnValue = result.data.getBuildDefinition;
   }
   return {
