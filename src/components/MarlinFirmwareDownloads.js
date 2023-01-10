@@ -10,7 +10,8 @@ import {
     Search,
     Message,
     Dimmer,
-    Loader
+    Loader,
+    Image
   } from 'semantic-ui-react'
 import * as comparator from '../util/comparator';
 import mixpanel from 'mixpanel-browser';
@@ -131,9 +132,11 @@ function MarlinFirmwareDownloads () {
           <Table.Cell>{def.printerModel}</Table.Cell>
           <Table.Cell>{def.printerMainboard}</Table.Cell>            
           <Table.Cell>{def.firmwareVersion ? def.firmwareVersion.name : "custom"}</Table.Cell>
+            <Table.Cell>
+                <Image src={def.ownerImageUrl} avatar/><span>{def.ownerAlias}</span>
+            </Table.Cell>
           <Table.Cell><a href={"/BuildDefinition/"+def.id}>{def.name}</a></Table.Cell>
           <Table.Cell>{def.description}</Table.Cell>
-
           <Table.Cell>
           { def.buildJobs.items.length > 0 ? 
                 <Button animated='vertical' onClick={(e)=>handleBuildDownload(e, def.id)}>
@@ -203,10 +206,11 @@ function MarlinFirmwareDownloads () {
                 <Table.Row>
                 <Table.HeaderCell>Manufacturer</Table.HeaderCell>
                 <Table.HeaderCell>Model</Table.HeaderCell>
-                <Table.HeaderCell>Variant / Preset</Table.HeaderCell>                        
-                <Table.HeaderCell>Firmware</Table.HeaderCell>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Description</Table.HeaderCell>
+                <Table.HeaderCell width={1}>Mainboard / Variant</Table.HeaderCell>                        
+                <Table.HeaderCell width={1}>Firmware</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Owner</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Name</Table.HeaderCell>
+                <Table.HeaderCell width={3}>Description</Table.HeaderCell>
                 <Table.HeaderCell>Builds</Table.HeaderCell>
                 <Table.HeaderCell>Actions</Table.HeaderCell>
                 </Table.Row>
