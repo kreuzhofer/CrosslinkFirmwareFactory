@@ -40,7 +40,7 @@
         },
         "firmwarebuildsapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/firmwarebuildsapifunction-686b3048684e62337662-build.zip"
+          "s3Key": "amplify-builds/firmwarebuildsapifunction-784d4a352f5153476564-build.zip"
         },
         "firmwareartifactapifunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
@@ -55,6 +55,10 @@
           "subnetId": "subnet-0f523cd98aa56217e",
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
           "s3Key": "amplify-builds/buildagentfunction-486e4a4d436474313341-build.zip"
+        },
+        "profileimagefunction": {
+          "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
+          "s3Key": "amplify-builds/profileimagefunction-5a434e4b6c342b4d5839-build.zip"
         }
       },
       "hosting": {

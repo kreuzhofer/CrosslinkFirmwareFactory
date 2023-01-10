@@ -424,7 +424,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
       setPrinterVariant(buildDefinition.printerMainboard);
       setPlatformioEnv(buildDefinition.platformioEnv);
       setDescription(buildDefinition.description);
-      setNotes(buildDefinition.notes);
+      setNotes(buildDefinition.notes ? buildDefinition.notes : '');
       setConfigurationJSON(upgradedObj ? JSON.stringify(upgradedObj, null, 3) : buildDefinition.configurationJSON);
       setSharedWithEveryone(clone ? undefined : buildDefinition.groupsCanAccess ? buildDefinition.groupsCanAccess.includes("Everyone") : undefined);
 

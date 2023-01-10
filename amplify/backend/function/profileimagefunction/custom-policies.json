@@ -1,0 +1,19 @@
+[
+  {
+    "Action": ["s3:PutObjectAcl"],
+    "Resource": [
+      {
+        "Fn::Join": [
+          "",
+          [
+            "arn:aws:s3:::",
+            {
+              "Ref": "storageuserdataBucketName"
+            },
+            "/public/profile-images/*"
+          ]
+        ]
+      }
+    ]
+  }
+]

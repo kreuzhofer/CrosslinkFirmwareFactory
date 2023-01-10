@@ -10,6 +10,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'; // default theme
 
 import 'semantic-ui-css/semantic.min.css'
+import 'react-semantic-toasts/styles/react-semantic-alert.css';
 
 Amplify.configure(awsExports);
 

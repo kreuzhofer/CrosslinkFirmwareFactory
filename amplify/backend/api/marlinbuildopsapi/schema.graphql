@@ -106,7 +106,8 @@ type MembershipException @model
 type UserProfile @model
   @auth(rules: [
     {allow: owner}
-    {allow: private, operations: [read]}    
+    {allow: private, operations: [read]}
+    {allow: private, provider: iam, operations: [read]}
   ])
 {
   id: ID!

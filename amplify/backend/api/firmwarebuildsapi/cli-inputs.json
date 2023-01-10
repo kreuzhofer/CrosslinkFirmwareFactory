@@ -42,6 +42,33 @@
         },
         "setting": "private"
       }
+    },
+    "/profileimage": {
+      "name": "/profileimage",
+      "lambdaFunction": "profileimagefunction",
+      "permissions": {
+        "groups": {
+          "Admin": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "Level1": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ],
+          "Everyone": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
+        },
+        "setting": "private"
+      }
     }
   }
 }

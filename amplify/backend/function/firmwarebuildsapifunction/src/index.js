@@ -5,7 +5,7 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-console.info(process.env);
+//console.info(process.env);
 const graphQLApiUrl = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIENDPOINTOUTPUT;
 const apiKey = process.env.API_MARLINBUILDOPSAPI_GRAPHQLAPIKEYOUTPUT;
 const region = process.env.REGION;
@@ -126,6 +126,28 @@ const getBuildDefinitionWithBuildJobs = /* GraphQL */ gql`
   }
 `;
 
+const listUserProfiles = /* GraphQL */ gql`
+  query ListUserProfiles(
+    $filter: ModelUserProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        buildCredits
+        profileImageUrl
+        alias
+        markedForDisabling
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+
 async function runGqlQuery(gqlQuery, vars)
 {
     const req = new AWS.HttpRequest(graphQLApiUrl, region);
@@ -163,7 +185,40 @@ async function runGqlQuery(gqlQuery, vars)
         httpRequest.write(req.body);
         httpRequest.end();
     });
-    return data;
+    return JSON.parse(data);
+}
+
+function firstLower(string){
+  return string.replace(/(?:^|\s)\S/g, function(a){
+  return a.toLowerCase(); });
+};
+
+async function runListQuery(gqlQuery, vars)
+{
+  //console.log(JSON.stringify(gqlQuery));
+
+  var queryName = firstLower(gqlQuery.definitions.find(item => item.kind == "OperationDefinition").name.value);
+  //console.log(queryName);
+  const queryResult = await runGqlQuery(gqlQuery, vars);
+  console.log("query result: ",queryResult);
+
+  const data = queryResult.data;
+  //console.log("result.data: ",data);
+
+  const queryData = data[queryName];
+  //console.log("data[queryName]: ",queryData);
+
+  var nextToken = queryData.nextToken ? queryData.nextToken : null;
+  var items = queryData.items ? queryData.items : [];
+  //console.log(items);
+
+  while(nextToken) {
+    var nextResult = await runGqlQuery(gqlQuery, {nextToken: nextToken});
+    var nextData = nextResult.data[queryName];
+    nextToken = nextData.nextToken;
+    items = items.concat(nextData.items);
+  }
+  return items;
 }
 
 /**
@@ -174,21 +229,19 @@ exports.handler = async (event) => {
   let returnValue = null;
   if(event.resource == "/firmwarebuilds")
   {
-    var result = await runGqlQuery(listBuildDefinitions);
-    result = JSON.parse(result.toString());
-
-    var data = result.data.listBuildDefinitions;
-    var nextToken = data.nextToken;
-    var items = data.items;
-    while(nextToken) {
-      var nextResult = await runGqlQuery(listBuildDefinitions, {nextToken: nextToken});
-      nextResult = JSON.parse(nextResult.toString());
-      var nextData = nextResult.data.listBuildDefinitions;
-      nextToken = nextData.nextToken;
-      items = items.concat(nextData.items);
-    }
-    console.log(`Items: ${JSON.stringify(items)}`);
+    var profiles = await runListQuery(listUserProfiles);
+    var items = await runListQuery(listBuildDefinitions);
+    //console.log(`Items: ${JSON.stringify(items)}`);
     returnValue = items.filter(i=>i.groupsCanAccess.includes("Everyone"));
+    for(const v of returnValue){
+      var profile = profiles.find(p=>p.owner == v.owner);
+      if(profile)
+      {
+        v.ownerAlias = profile.alias && profile.alias !== '' ? profile.alias : profile.owner;
+        v.ownerImageUrl = profile.profileImageUrl && profile.profileImageUrl !== '' ? profile.profileImageUrl : '/images/image_placeholder.png';
+      }
+    }
+    //console.log(`Items: ${JSON.stringify(returnValue)}`);
   }
   else if(event.resource == "/firmwarebuilds/{proxy+}")
   {
@@ -198,8 +251,6 @@ exports.handler = async (event) => {
       id: id
     }
     var result = await runGqlQuery(getBuildDefinitionWithBuildJobs, vars);
-    result = JSON.parse(result.toString());
-
     returnValue = result.data.getBuildDefinition;
   }
   return {

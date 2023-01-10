@@ -54,6 +54,21 @@
           ],
           "category": "auth",
           "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "profileimagefunction"
+        },
+        {
+          "attributes": [
+            "EveryoneGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -285,6 +300,20 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "profileimagefunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "userdata"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "hosting": {
@@ -468,6 +497,22 @@
         {
           "category": "function",
           "resourceName": "parsemarlinversionfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_profileimagefunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "profileimagefunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_profileimagefunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "profileimagefunction"
         }
       ]
     },
