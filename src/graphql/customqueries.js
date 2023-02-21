@@ -179,6 +179,7 @@ export const getBuildDefinitionWithBuildJobs = /* GraphQL */ `
       selectedMainboard
       platformioEnv
       description
+      notes      
       configurationJSON
       owner
       groupsCanAccess
