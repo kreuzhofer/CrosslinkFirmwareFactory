@@ -17,7 +17,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import * as queries from '../graphql/queries'
 import * as mutations from '../graphql/mutations'
 import * as customqueries from '../graphql/customqueries'
-
+import { BuildJobsList } from './BuildJobsList'
 
 import AceEditor from "react-ace";
 import 'ace-builds/webpack-resolver'
@@ -53,6 +53,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
   //console.log("PARAMS: ", params);
   const location = useLocation();
 
+  const [buildDefinition, setBuildDefinition] = useState(null);
   const [id, setId] = useState(params.id ? params.id : "");
   console.log("Id "+id);
 	console.log("IsAdmin "+isAdmin);
@@ -351,9 +352,10 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
       if(!id || id === "")
         return;
 
-      const result = await API.graphql(graphqlOperation(queries.getBuildDefinition, {id: id}));
+      const result = await API.graphql(graphqlOperation(customqueries.getBuildDefinitionWithBuildJobs, {id: id}));
       const buildDefinition = result.data.getBuildDefinition
       console.log(buildDefinition);
+      setBuildDefinition(buildDefinition);
 
       if(clone)
       {
@@ -1211,6 +1213,10 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
         <p>This setting disables ARC_SUPPORT and saves quite a bit of program memory.</p>
         <Button onClick={(e)=>handleTemplateClick(5)}>Save program memory, aggressive</Button>
         <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
+      </Segment>
+      <Segment>
+        <Header>Build jobs</Header>
+        <BuildJobsList buildDefinition={buildDefinition} />
       </Segment>
     </Grid.Column>
     </Grid.Row>
