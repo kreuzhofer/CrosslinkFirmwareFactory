@@ -84,6 +84,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
   const [selectedMainboard, setSelectedMainboard] = useState(undefined);
   const [printerMainboardSearch, setPrinterMainboardSearch] = useState('');
   const [jsonErrors, setJsonErrors] = useState([]);
+  const [isOwner, setIsOwner] = useState(true);
 
   function printerManufacturersByFirmwareVersion(options, id)
   {
@@ -445,6 +446,12 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
       if(buildDefinition.platformioEnv && localPlatformioEnvOptions && localPlatformioEnvOptions.length===0)
       {
         setPlatformioEnvSearch(buildDefinition.platformioEnv);
+      }
+
+      const user =  await Auth.currentAuthenticatedUser();
+      if(buildDefinition.owner!==user.username)
+      {
+        setIsOwner(false);
       }
 
     } catch (error) {
@@ -984,6 +991,15 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
         <Grid.Column width={7}>
 
       <Segment>
+      { isOwner || clone ? null : <>
+      <Message negative>
+      <Message.Header>This build definition is owned by another user! To edit a copy in your own account, please click here to clone it before you start making ANY changes:</Message.Header>
+        <Button onClick={() => {
+            navigate('/AddBuildDefinition/' + id, {replace: true});
+            window.location.reload();
+          }}>Clone</Button>
+      </Message>   
+      </>}
       <Form>
       <Header as='h3'>Edit build definition</Header>
       <Input
