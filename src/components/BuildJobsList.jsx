@@ -81,7 +81,7 @@ export class BuildJobsList extends React.Component {
     }
 
 		render() {
-			if(this.props.buildDefinition.buildJobs.items == null)
+			if(this.props.buildDefinition == null || this.props.buildDefinition.buildJobs.items == null)
 				return null;
 			return (
 				<>
