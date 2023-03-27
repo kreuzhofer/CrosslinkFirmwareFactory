@@ -1205,10 +1205,13 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
           >
       </Input><br/><br/>
 			</> : null }
+      { isOwner || clone ? <>
       <Button
           content='Save'
           onClick={(e)=>handleSubmit(e)}
       />
+      </>
+      : null }
       <Button onClick={()=>navigate('/BuildDefinition')}>     
           Cancel            
       </Button>
@@ -1230,10 +1233,12 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
         <Button onClick={(e)=>handleTemplateClick(5)}>Save program memory, aggressive</Button>
         <p>This setting very aggressively saves memory and removes a lot of features like the M503 command, M428 and volumetric extrusion.</p>
       </Segment>
+      { clone ? null : <>
       <Segment>
         <Header>Build jobs</Header>
         <BuildJobsList buildDefinition={buildDefinition} />
       </Segment>
+      </> }
     </Grid.Column>
     </Grid.Row>
   </Grid>      
