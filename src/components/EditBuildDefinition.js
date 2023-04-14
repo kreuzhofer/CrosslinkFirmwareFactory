@@ -267,7 +267,7 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
   function jsonLower(obj)
   {
     var ret = null;
-      if (typeof(obj) == "string" || typeof(obj) == "number")
+      if (typeof(obj) == "string" || typeof(obj) == "number" || typeof(obj) == "boolean")
           return obj;
       else if (obj.push)
           ret = [];
@@ -307,13 +307,19 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
         oldSettings.forEach(setting => {
           if(Array.isArray(setting))
           {
+            var settingKey = setting[0]
+            var settingEnabled = setting[1]
+            if(typeof settingEnabled == "boolean")
+              settingEnabled = settingEnabled.toString();
+            else
+              settingEnabled = settingEnabled.toLowerCase()==="true".toString()
             if(setting.length===2)
             {
-              convertedSettings.push({"key":setting[0], "enabled": (setting[1].toLowerCase()==="true").toString()});
+              convertedSettings.push({"key":settingKey, "enabled": settingEnabled});
             }
             else if (setting.length===3)
             {
-              convertedSettings.push({"key":setting[0], "enabled": (setting[1].toLowerCase()==="true").toString(), "value":setting[2]});
+              convertedSettings.push({"key":settingKey, "enabled": settingEnabled, "value":setting[2]});
             }
           }
           else
