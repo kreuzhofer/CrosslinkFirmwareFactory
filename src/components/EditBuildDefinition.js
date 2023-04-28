@@ -1135,6 +1135,9 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
       <br/>
 
       <Label>PlatformIO environment</Label>
+
+      { firmwareVersionId ? 
+      <>
       <Dropdown
         clearable
         onChange={(e, { searchQuery, value}) => {
@@ -1150,7 +1153,17 @@ function EditBuildDefinition({isAdmin, clone, authState}) {
         searchQuery={platformioEnvSearch}
         selection
         value={platformioEnv}
-      /><br/>   
+      /><br/></>
+    : <>
+      <Input
+          type='text'
+          placeholder='PlatformIO environment'
+          name='platformioEnvText'
+          value={platformioEnv}
+          onChange={(e) => setPlatformioEnv(e.target.value)}
+          disabled={firmwareVersionId?true:false}
+      /><br/></> }
+
 
       <Label>Description</Label>
       <TextareaAutosize
