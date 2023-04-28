@@ -323,6 +323,216 @@
       "type": "manual"
     }
   },
+  "parameters": {
+    "AMPLIFY_function_AddBuildDefinitionFromWebHook_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AddBuildDefinitionFromWebHook"
+        }
+      ]
+    },
+    "AMPLIFY_function_AddBuildDefinitionFromWebHook_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AddBuildDefinitionFromWebHook"
+        }
+      ]
+    },
+    "AMPLIFY_function_buildagentfunction_amiId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_buildagentfunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_buildagentfunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_buildagentfunction_subnetId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "buildagentfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareartifactapifunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareartifactapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareartifactapifunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareartifactapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwarebuildsapifunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwarebuildsapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwarebuildsapifunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwarebuildsapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareversionapifunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareversionapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_firmwareversionapifunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "firmwareversionapifunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreAuthentication_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreAuthentication"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreAuthentication_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreAuthentication"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreSignup_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreSignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreSignup_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreSignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreTokenGeneration_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration"
+        }
+      ]
+    },
+    "AMPLIFY_function_marlinbuildopsfc6385a7PreTokenGeneration_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "marlinbuildopsfc6385a7PreTokenGeneration"
+        }
+      ]
+    },
+    "AMPLIFY_function_parsemarlinversionfunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "parsemarlinversionfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_parsemarlinversionfunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "parsemarlinversionfunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_profileimagefunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "profileimagefunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_profileimagefunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "profileimagefunction"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_appId": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_type": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    }
+  },
   "storage": {
     "userdata": {
       "dependsOn": [
