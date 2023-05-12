@@ -58,7 +58,7 @@
         },
         "profileimagefunction": {
           "deploymentBucketName": "amplify-marlinbuildops-dev-144111-deployment",
-          "s3Key": "amplify-builds/profileimagefunction-5a434e4b6c342b4d5839-build.zip"
+          "s3Key": "amplify-builds/profileimagefunction-574b6a763743754d3731-build.zip"
         }
       },
       "hosting": {

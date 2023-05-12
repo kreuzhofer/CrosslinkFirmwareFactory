@@ -50,6 +50,11 @@ print(os.environ['BUILDJOBTABLENAME'])
 print(os.environ['BUILDDEFINITIONTABLENAME'])
 
 sourceurl = os.environ['SOURCEURL']
+sourceSubDir = None
+if("@" in sourceurl):
+    sourceSubDir = sourceurl.split('@')[1]
+    sourceurl = sourceurl.split('@')[0]
+
 configurl = os.environ['CONFIGURL']
 manufacturer = os.environ['MANUFACTURER']
 printermodel = os.environ['PRINTERMODEL']
@@ -217,10 +222,18 @@ def replaceInFile(filename, replacements):
 
         for rep in replacements:
             print(rep)
-            desiredState = bool(distutils.util.strtobool(rep['enabled']))
+            if isinstance(rep['enabled'], bool):
+                desiredState = rep['enabled']
+            else:
+                desiredState = bool(distutils.util.strtobool(rep['enabled']))
             insertAfter = None
             if("insertafter" in rep):
                 insertAfter = rep['insertafter']
+
+            if("add" in rep):
+                addKey = True
+            else:
+                addKey = False
 
             key = rep['key']
             if(insertAfter is None):
@@ -235,7 +248,13 @@ def replaceInFile(filename, replacements):
 
             # check if key exists in file
             if(searchForKey not in text):
-                print("Not found: "+key)
+                if (addKey == True):
+                    if(hasValue):
+                        text = text + "\n#define "+key+" "+newValue
+                    else:
+                        text = text + "\n#define "+key
+                else:
+                    print("Not found: "+key)
                 continue
 
             if(insertAfter is not None):
@@ -360,6 +379,8 @@ except:
 # see https://docs.python.org/3/library/tarfile.html    
 try:
     sourcedir = unpackZip(sourcefilename)
+    if(sourceSubDir is not None):
+        sourcedir = sourcedir+"/"+sourceSubDir
 except:
     print("Unexpected error:", sys.exc_info()[0])
     updatefailed()
