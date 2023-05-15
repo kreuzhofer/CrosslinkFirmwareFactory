@@ -40,6 +40,9 @@ type BuildJob @model
   jobState: BuildJobState!
   startTime: String
   endTime: String
+  flash_bytes_used: Int
+  flash_bytes_max: Int
+  flash_percent_used: Float
   message: String
   log: String
   firmwareVersionId: ID

@@ -5,6 +5,7 @@ import {
 	Table,
 	Icon,
 	Confirm,
+	Message
 } from 'semantic-ui-react'
 import { FirmwareArtifactsList } from './FirmwareArtifactsList'
 import * as mutations from '../graphql/mutations'
@@ -110,6 +111,34 @@ export class BuildJobsList extends React.Component {
 								</Table.Cell>
 								<Table.Cell>
 									<FirmwareArtifactsList artifacts={job.buildJobArtifacts.items}/>
+									{
+										job.flash_percent_used!=null ?
+										<Table celled>
+											<Table.Header>
+												<Table.Row>
+													<Table.HeaderCell>Flash % used</Table.HeaderCell>
+													<Table.HeaderCell>Flash bytes used</Table.HeaderCell>
+													<Table.HeaderCell>Flash bytes max</Table.HeaderCell>
+												</Table.Row>
+											</Table.Header>
+											<Table.Body>
+												<Table.Row>
+													<Table.Cell>{job.flash_percent_used}</Table.Cell>
+													<Table.Cell>{job.flash_bytes_used}</Table.Cell>
+													<Table.Cell>{job.flash_bytes_max}</Table.Cell>
+												</Table.Row>
+											</Table.Body>
+										</Table>
+										: ""
+									}
+									{ job.message!=null ?
+										<Message negative>
+											<Message.Header>Error(s) while building:</Message.Header>
+											{job.message.split('\n').map(line=><p>{line}</p>)}
+										</Message> 
+									: ""
+									}
+
 								</Table.Cell>
 								<Table.Cell>
 									<Button disabled={this.props.buildDefinition.buildRunning} animated='vertical' onClick={(e)=>this.handleJobDelete(e, job)} color='red'>

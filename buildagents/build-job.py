@@ -86,17 +86,8 @@ buildDefinitionTableName = os.environ['BUILDDEFINITIONTABLENAME']
 #     return response
 
 # https://stackoverflow.com/questions/38144273/making-a-signed-http-request-to-aws-elasticsearch-in-python
-def update_job_status_gql(jobId, jobState):
-    if(is_Cancelled(jobId)):
-        exit(0) # exit clean
-
+def update_job_gql(item):
     hostname = urlparse(graphQLApiUrl).hostname
-    item = {
-        'input': {
-            'id': jobId,
-            'jobState': jobState
-        }
-    }
     params = {
             'query':"""
                 mutation UpdateBuildJob(
@@ -110,6 +101,9 @@ def update_job_status_gql(jobId, jobState):
                     startTime
                     endTime
                     message
+                    flash_bytes_used
+                    flash_bytes_max
+                    flash_percent_used                    
                     log
                     createdAt
                     updatedAt
@@ -132,6 +126,37 @@ def update_job_status_gql(jobId, jobState):
     print(r.status_code)
     print("Response body: "+r.text)
     return r    
+
+def update_job_status_gql(jobId, jobState):
+    if(is_Cancelled(jobId)):
+        exit(0) # exit clean    
+    item = {
+        'input': {
+            'id': jobId,
+            'jobState': jobState
+        }
+    }
+    return update_job_gql(item)
+
+def update_job_message_gql(jobId, message):
+    item = {
+        'input' : {
+            'id': jobId,
+            'message': message
+        }
+    }
+    return update_job_gql(item)
+
+def update_job_flash_usage_gql(jobId, flash_percent_used, flash_bytes_used, flash_bytes_max):
+    item = {
+        'input' : {
+            'id': jobId,
+            'flash_percent_used': flash_percent_used,
+            'flash_bytes_used': flash_bytes_used,
+            'flash_bytes_max': flash_bytes_max
+        }
+    }
+    return update_job_gql(item)
 
 def create_buildArtifact(artifactName, artifactFileName):
     hostname = urlparse(graphQLApiUrl).hostname
@@ -357,6 +382,44 @@ def upload_file(file_name, bucket, object_name=None):
         return False
     return True
 
+def extract_flash_info(logfile):
+    flash_percent_used = flash_bytes_used = flash_bytes_max = status = error_msg = None
+
+    with open(logfile, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if "Flash:" in line:
+                # Extract the percentage used
+                flash_percent_used = line.split()[3].strip('%')
+
+                # Extract the absolute number of bytes used and the maximum number of bytes
+                flash_info = line.split('(')[1].split(')')[0]
+                flash_bytes_used, flash_bytes_max = flash_info.split('bytes from')
+
+            elif "[SUCCESS]" in line:
+                status = 'SUCCESS'
+            
+            elif "[FAILED]" in line:
+                status = 'FAILED'
+        
+        if status == 'FAILED':
+            # Return the last error message in the log
+            for line in lines:
+                if 'Error:' in line or 'error:' in line:
+                    if error_msg == None:
+                        error_msg = line.strip()
+                    else:
+                        error_msg += '\n' + line.strip()
+                
+    if flash_percent_used is not None:
+        flash_percent_used = float(flash_percent_used)
+    if flash_bytes_used is not None:
+        flash_bytes_used = int(flash_bytes_used.strip("used ").strip())
+    if flash_bytes_max is not None:
+        flash_bytes_max = int(flash_bytes_max.strip(" bytes").strip())
+
+    return flash_percent_used, flash_bytes_used, flash_bytes_max, status, error_msg
+
 update_job_status_gql(buildJobId, "RUNNING")
 
 # STEP 1
@@ -474,7 +537,7 @@ else:
 # Compile firmware
 print("Step 6")
 os.chdir(sourcedir)
-buildcommand = "/root/.platformio/penv/bin/platformio run -e "+platformioenv
+buildcommand = "/root/.platformio/penv/bin/platformio run -v -e "+platformioenv
 print("Starting build")
 print(buildcommand)
 completedProc = subprocess.run(buildcommand, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
@@ -486,6 +549,18 @@ pioLog = completedProc.stdout.decode("utf-8")
 pioLogfile = open("platformio_log.txt", "w")
 pioLogfile.write(pioLog)
 pioLogfile.close()
+
+# analyse log file
+flash_percent_used, flash_bytes_used, flash_bytes_max, status, error_msg = extract_flash_info('platformio_log.txt')
+print(f"Flash used: {flash_percent_used}%")
+print(f"Absolute number of bytes used: {flash_bytes_used} bytes")
+print(f"Maximum number of bytes: {flash_bytes_max} bytes")
+print(f"Build status: {status}")
+if status == 'FAILED':
+    print(f"Error message: {error_msg}")
+    update_job_message_gql(buildJobId, error_msg)
+update_job_flash_usage_gql(buildJobId, flash_percent_used, flash_bytes_used, flash_bytes_max)    
+
 try:
     upload_file("platformio_log.txt", buildArtifactsBucket, "public/"+buildJobId+"/platformio_log.txt")
     create_buildArtifact("PlatformIO log", "platformio_log.txt")
@@ -535,7 +610,7 @@ print(completedProc.returncode)
 print("Switching back to /tmp")
 os.chdir('/tmp')
 print("Zipping up sources")
-tgzcommand = "zip marlin.zip "+sourcedir+" -r"
+tgzcommand = "zip marlin.zip "+sourcedir+" -r -q"
 print(tgzcommand)
 completedProc = subprocess.run(tgzcommand, shell=True)
 # Print the exit code.

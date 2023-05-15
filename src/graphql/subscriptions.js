@@ -28,6 +28,9 @@ export const onCreateBuildDefinition = /* GraphQL */ `
           jobState
           startTime
           endTime
+          flash_bytes_used
+          flash_bytes_max
+          flash_percent_used
           message
           log
           firmwareVersionId
@@ -78,6 +81,9 @@ export const onUpdateBuildDefinition = /* GraphQL */ `
           jobState
           startTime
           endTime
+          flash_bytes_used
+          flash_bytes_max
+          flash_percent_used
           message
           log
           firmwareVersionId
@@ -128,6 +134,9 @@ export const onDeleteBuildDefinition = /* GraphQL */ `
           jobState
           startTime
           endTime
+          flash_bytes_used
+          flash_bytes_max
+          flash_percent_used
           message
           log
           firmwareVersionId
@@ -159,6 +168,9 @@ export const onCreateBuildJob = /* GraphQL */ `
       jobState
       startTime
       endTime
+      flash_bytes_used
+      flash_bytes_max
+      flash_percent_used
       message
       log
       firmwareVersionId
@@ -199,6 +211,9 @@ export const onUpdateBuildJob = /* GraphQL */ `
       jobState
       startTime
       endTime
+      flash_bytes_used
+      flash_bytes_max
+      flash_percent_used
       message
       log
       firmwareVersionId
@@ -239,6 +254,9 @@ export const onDeleteBuildJob = /* GraphQL */ `
       jobState
       startTime
       endTime
+      flash_bytes_used
+      flash_bytes_max
+      flash_percent_used
       message
       log
       firmwareVersionId

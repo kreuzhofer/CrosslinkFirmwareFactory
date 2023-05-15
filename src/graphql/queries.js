@@ -28,6 +28,9 @@ export const getBuildDefinition = /* GraphQL */ `
           jobState
           startTime
           endTime
+          flash_bytes_used
+          flash_bytes_max
+          flash_percent_used
           message
           log
           firmwareVersionId
@@ -159,6 +162,9 @@ export const getBuildJob = /* GraphQL */ `
       jobState
       startTime
       endTime
+      flash_bytes_used
+      flash_bytes_max
+      flash_percent_used
       message
       log
       firmwareVersionId
@@ -204,6 +210,9 @@ export const listBuildJobs = /* GraphQL */ `
         jobState
         startTime
         endTime
+        flash_bytes_used
+        flash_bytes_max
+        flash_percent_used
         message
         log
         firmwareVersionId

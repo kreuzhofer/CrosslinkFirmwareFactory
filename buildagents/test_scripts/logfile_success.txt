@@ -1,0 +1,405 @@
+********************************************************************************
+If you like PlatformIO, please:
+- follow us on Twitter to stay up-to-date on the latest project news > https://twitter.com/PlatformIO_Org
+- star it on GitHub > https://github.com/platformio/platformio
+- try PlatformIO IDE for embedded development > https://platformio.org/platformio-ide
+********************************************************************************
+
+Warning! Ignore unknown configuration option `monitor_flags` in section [env]
+Warning! `src_filter` configuration option in section [env:include_tree] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:DUE] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:esp32] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_build_flags` configuration option in section [env:linux_native] is deprecated and will be removed in the next release! Please use `build_src_flags` instead
+Warning! `src_filter` configuration option in section [env:linux_native] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_build_flags` configuration option in section [env:simulator_windows] is deprecated and will be removed in the next release! Please use `build_src_flags` instead
+Warning! `src_filter` configuration option in section [env:SAMD51_grandcentral_m4] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:malyan_M300] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:STM32F103CB_malyan] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:teensy31] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:teensy35] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:teensy36] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Warning! `src_filter` configuration option in section [env:teensy41] is deprecated and will be removed in the next release! Please use `build_src_filter` instead
+Processing STM32F103RET6_sovol_maple (platform: ststm32@~12.1; board: genericSTM32F103RE; framework: arduino)
+--------------------------------------------------------------------------------
+Platform Manager: Installing ststm32 @ ~12.1
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Platform Manager: ststm32@12.1.1 has been installed!
+Tool Manager: Installing platformio/toolchain-gccarmnoneeabi @ >=1.60301.0,<1.80000.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: toolchain-gccarmnoneeabi@1.70201.0 has been installed!
+Tool Manager: Installing platformio/framework-arduinoststm32-maple @ ~3.10000.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: framework-arduinoststm32-maple@3.10000.201129 has been installed!
+Tool Manager: Installing platformio/tool-stm32duino @ *
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: tool-stm32duino@1.0.1 has been installed!
+Tool Manager: Installing platformio/tool-scons @ ~4.40400.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: tool-scons@4.40400.0 has been installed!
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/ststm32/genericSTM32F103RE.html
+PLATFORM: ST STM32 (12.1.1) > STM32F103RE (64k RAM. 512k Flash)
+HARDWARE: STM32F103RET6 72MHz, 64KB RAM, 512KB Flash
+DEBUG: Current (jlink) External (blackmagic, cmsis-dap, jlink, stlink)
+PACKAGES: 
+ - framework-arduinoststm32-maple @ 3.10000.201129 (1.0.0) 
+ - tool-stm32duino @ 1.0.1 
+ - toolchain-gccarmnoneeabi @ 1.70201.0 (7.2.1)
+Converting Marlin.ino
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Library Manager: Installing SoftwareSerialM
+Downloading 0% 10%
+Unpacking
+Library Manager: SoftwareSerialM@1.0.0 has been installed!
+Library Manager: Installing TMCStepper @ ~0.7.3
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Library Manager: TMCStepper@0.7.3 has been installed!
+Found 28 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- SoftwareSerialM @ 1.0.0
+|-- TMCStepper @ 0.7.3
+|   |-- SoftwareSerialM @ 1.0.0
+|-- STM32ADC @ 1.0
+|-- EEPROM
+|-- USBComposite for STM32F1 @ 0.99
+|-- Wire @ 1.0
+|-- Servo(STM32F1) @ 1.1.2
+Building in release mode
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduinoVariant/board.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduinoVariant/wirish/boards.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduinoVariant/wirish/boards_setup.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduinoVariant/wirish/start.S.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduinoVariant/wirish/start_c.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduinoVariant/wirish/syscalls.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/HardwareSerial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/HardwareTimer.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/IPAddress.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/Print.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/Stream.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/WString.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/avr/dtostrf.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/cxxabi-compat.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/ext_interrupts.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/hooks.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/itoa.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/adc.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/adc_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/bkp_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/dac.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/dma.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/dma_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/exc.S.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/exti.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/exti_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/flash.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/fsmc_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/gpio.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/gpio_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/i2c.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/i2c_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/iwdg.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/nvic.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/pwr.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/rcc.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/rcc_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/spi.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/spi_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/stm32f1/performance/isrs.S.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/stm32f1/performance/vector_table.S.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/systick.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/timer.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/timer_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usart.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usart_f1.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usart_private.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usb/stm32f1/usb.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usb/stm32f1/usb_cdcacm.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usb/stm32f1/usb_reg_map.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usb/usb_lib/usb_core.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usb/usb_lib/usb_init.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usb/usb_lib/usb_mem.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/usb/usb_lib/usb_regs.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/libmaple/util.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/main.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/new.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/pwm.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/sdio.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/stm32f1/util_hooks.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/stm32f1/wiring_pulse_f1.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/stm32f1/wirish_debug.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/stm32f1/wirish_digital_f1.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/tone.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/usb_serial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/wirish_analog.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/wirish_digital.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/wirish_math.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/wirish_shift.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/FrameworkArduino/wirish_time.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/HAL.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/HAL_MinSerial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/HAL_SPI.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/MarlinSerial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/SPI.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/Servo.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/dogm/u8g_com_stm32duino_swspi.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/eeprom_bl24cxx.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/eeprom_flash.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/eeprom_if_iic.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/eeprom_sdcard.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/eeprom_wired.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/fast_pwm.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/msc_sd.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/onboard_sd.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/sdio.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/tft/tft_fsmc.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/tft/tft_spi.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/tft/xpt2046.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/timers.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/STM32F1/watchdog.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/shared/Delay.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/shared/HAL_MinSerial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/shared/eeprom_api.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/shared/esp_wifi.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/HAL/shared/servo.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/MarlinCore.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/core/serial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/core/utility.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/ammeter.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/babystep.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/bedlevel/abl/abl.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/bedlevel/bedlevel.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/host_actions.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/pause.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/powerloss.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/runout.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/feature/tmc_util.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/bedlevel/G26.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/bedlevel/G42.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/bedlevel/M420.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/bedlevel/abl/G29.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/bedlevel/abl/M421.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/calibrate/G28.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/calibrate/G34.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M200-M205.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M220.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M221.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M301.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M302.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M304.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M305.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M309.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/config/M92.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M108_M112_M410.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M111.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M120_M121.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M17_M18_M84.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M211.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M400.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M80_M81.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M85.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M993_M994.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M997.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/M999.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/control/T.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/eeprom/M500-M504.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/advance/M900.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/digipot/M907-M910.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/pause/G27.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/pause/G60.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/pause/G61.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/pause/M125.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/pause/M600.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/pause/M603.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/powerloss/M1000.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/powerloss/M413.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/runout/M412.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/trinamic/M122.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/trinamic/M569.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/trinamic/M906.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/feature/trinamic/M911-M914.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/gcode.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/gcode_d.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/geometry/G92.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/geometry/M206_M428.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/host/M110.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/host/M113.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/host/M114.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/host/M115.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/host/M118.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/host/M119.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/lcd/M0_M1.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/lcd/M117.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/lcd/M145.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/lcd/M256.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/lcd/M300.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/motion/G0_G1.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/motion/G2_G3.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/motion/G4.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/motion/M290.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/parser.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/probe/G30.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/probe/M401_M402.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/probe/M851.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/queue.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M1001.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M20.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M21_M22.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M23.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M24_M25.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M26.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M27.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M28_M29.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M30.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M32.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M33.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M34.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M524.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/sd/M928.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/stats/M31.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/stats/M75-M78.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/temp/M104_M109.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/temp/M105.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/temp/M106_M107.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/temp/M140_M190.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/temp/M141_M191.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/temp/M155.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/temp/M303.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/gcode/units/M82_M83.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/inc/Warnings.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/lcd/e3v2/common/dwin_api.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/lcd/e3v2/common/encoder.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/lcd/extui/ui_api.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/lcd/fontutils.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/lcd/marlinui.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/lcd/sv06p/LCD_RTS.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/BL24CXX.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/buzzer.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/crc16.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/hex_print.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/nozzle.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/numtostr.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/stopwatch.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/libs/vector_3.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/endstops.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/motion.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/planner.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/probe.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/settings.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/stepper/indirection.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/stepper/trinamic.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/temperature.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/module/tool_change.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/sd/Sd2Card.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/sd/SdBaseFile.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/sd/SdFatUtil.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/sd/SdFile.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/sd/SdVolume.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/src/src/sd/cardreader.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/liba3e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/liba3e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/liba3e/SoftwareSerialM/HAL_softserial_STM32.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/liba3e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/liba3e/SoftwareSerialM/SoftwareSerial.cpp.o
+Archiving .pio/build/STM32F103RET6_sovol_maple/liba3e/libSoftwareSerialM.a
+Indexing .pio/build/STM32F103RET6_sovol_maple/liba3e/libSoftwareSerialM.a
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/CHOPCONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/COOLCONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/DRVCONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/DRVCTRL.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/DRVSTATUS.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/DRV_CONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/DRV_STATUS.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/ENCMODE.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/GCONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/IHOLD_IRUN.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/PWMCONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/RAMP_STAT.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/SERIAL_SWITCH.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/SGCSCONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/SHORT_CONF.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/SMARTEN.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/SW_MODE.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/SW_SPI.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMC2130Stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMC2160Stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMC2208Stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMC2209Stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMC2660Stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMC5130Stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMC5160Stepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/TMCStepper.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/bcm2835_spi.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib234/TMCStepper/source/bcm2835_stream.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib732/STM32ADC/STM32ADC.cpp.o
+Archiving .pio/build/STM32F103RET6_sovol_maple/lib234/libTMCStepper.a
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib732/STM32ADC/utility/util_adc.c.o
+Indexing .pio/build/STM32F103RET6_sovol_maple/lib234/libTMCStepper.a
+Archiving .pio/build/STM32F103RET6_sovol_maple/lib732/libSTM32ADC.a
+Indexing .pio/build/STM32F103RET6_sovol_maple/lib732/libSTM32ADC.a
+Compiling .pio/build/STM32F103RET6_sovol_maple/libe0e/EEPROM/EEPROM.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/libe0e/EEPROM/flash_stm32.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/AbsMouse.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/Consumer.cpp.o
+Archiving .pio/build/STM32F103RET6_sovol_maple/libe0e/libEEPROM.a
+Indexing .pio/build/STM32F103RET6_sovol_maple/libe0e/libEEPROM.a
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/Digitizer.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/HIDReports.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/Joystick.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/Keyboard.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/MinSysex.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/Mouse.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBAudio.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBComposite.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBCompositeSerial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBHID.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBMIDI.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBMassStorage.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBMultiSerial.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBMultiXBox360.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBXBox360Reporter.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/USBXBox360W.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_audio.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_composite_serial.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_generic.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_hid.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_mass.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_mass_mal.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_midi_device.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_multi_serial.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_multi_x360.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_scsi.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_scsi_data.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_setup.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_x360_generic.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib9fa/USBComposite/usb_x360w.c.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib96f/Wire/SoftWire.cpp.o
+Archiving .pio/build/STM32F103RET6_sovol_maple/lib9fa/libUSBComposite.a
+Indexing .pio/build/STM32F103RET6_sovol_maple/lib9fa/libUSBComposite.a
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib96f/Wire/Wire.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib96f/Wire/utility/WireBase.cpp.o
+Compiling .pio/build/STM32F103RET6_sovol_maple/lib62e/Servo/Servo.cpp.o
+Archiving .pio/build/STM32F103RET6_sovol_maple/lib96f/libWire.a
+Indexing .pio/build/STM32F103RET6_sovol_maple/lib96f/libWire.a
+Archiving .pio/build/STM32F103RET6_sovol_maple/lib62e/libServo.a
+Indexing .pio/build/STM32F103RET6_sovol_maple/lib62e/libServo.a
+Linking .pio/build/STM32F103RET6_sovol_maple/firmware-20230426-195244.elf
+Checking size .pio/build/STM32F103RET6_sovol_maple/firmware-20230426-195244.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [==        ]  19.4% (used 12696 bytes from 65536 bytes)
+Flash: [====      ]  37.8% (used 197972 bytes from 524288 bytes)
+Building .pio/build/STM32F103RET6_sovol_maple/firmware-20230426-195244.bin
+======================== [SUCCESS] Took 837.80 seconds ========================
+
+Environment                Status    Duration
+-------------------------  --------  ------------
+STM32F103RET6_sovol_maple  SUCCESS   00:13:57.804
+========================= 1 succeeded in 00:13:57.804 =========================
