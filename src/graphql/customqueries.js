@@ -119,6 +119,9 @@ export const buildDefinitionsByOwnerWithJobs = /* GraphQL */ `
               startTime
               endTime
               message
+              flash_bytes_used
+              flash_bytes_max
+              flash_percent_used              
               log
               createdAt
               updatedAt

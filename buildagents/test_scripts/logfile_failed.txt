@@ -1,0 +1,37 @@
+********************************************************************************
+If you like PlatformIO, please:
+- follow us on Twitter to stay up-to-date on the latest project news > https://twitter.com/PlatformIO_Org
+- star it on GitHub > https://github.com/platformio/platformio
+- try PlatformIO IDE for embedded development > https://platformio.org/platformio-ide
+********************************************************************************
+
+Processing STM32F103RET6_creality (platform: ststm32; board: genericSTM32F103RE; framework: arduino)
+--------------------------------------------------------------------------------
+Platform Manager: Installing ststm32
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Platform Manager: ststm32@15.6.0 has been installed!
+Tool Manager: Installing platformio/toolchain-gccarmnoneeabi @ ~1.90201.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: toolchain-gccarmnoneeabi@1.90201.191206 has been installed!
+Tool Manager: Installing platformio/framework-cmsis @ ~2.50700.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: framework-cmsis@2.50700.210515 has been installed!
+Tool Manager: Installing platformio/framework-arduinoststm32 @ ~4.20400.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: framework-arduinoststm32@4.20400.0 has been installed!
+Tool Manager: Installing platformio/tool-scons @ ~4.40400.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking
+Tool Manager: tool-scons@4.40400.0 has been installed!
+Verbose mode can be enabled via `-v, --verbose` option
+Error: Build environment 'STM32F103RET6_creality' is incompatible with BOARD_CREALITY_V427. Use one of these: STM32F103RE_creality, STM32F103RE_creality_xfer, STM32F103RC_creality, STM32F103RC_creality_xfer, STM32F103RE_creality_maple
+========================= [FAILED] Took 88.59 seconds =========================
+
+Environment             Status    Duration
+----------------------  --------  ------------
+STM32F103RET6_creality  FAILED    00:01:28.592
+==================== 1 failed, 0 succeeded in 00:01:28.592 ====================
