@@ -102,7 +102,7 @@ export class BuildJobsList extends React.Component {
 						<Table.Row key={job.id}>
 								<Table.Cell>{job.firmwareVersion ? job.firmwareVersion.name : "custom"}</Table.Cell>
 								<Table.Cell>{job.createdAt}</Table.Cell>
-								<Table.Cell>{job.jobState}</Table.Cell>
+								<Table.Cell>{job.jobState=='FAILED' || job.jobState=='CANCELLED' ? <Message color='red'>{job.jobState}</Message> : job.jobState=='DONE' ? <Message color='green'>{job.jobState}</Message> : job.jobState}</Table.Cell>
 								<Table.Cell>Logfile.txt
 									<Button disabled={this.props.buildDefinition.buildRunning} animated='vertical' onClick={(e)=>this.handleDownload(e, job, "logfile.txt")}>
 										<Button.Content hidden>Download</Button.Content>
