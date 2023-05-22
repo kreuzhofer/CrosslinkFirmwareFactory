@@ -539,6 +539,7 @@ else:
 # STEP 6
 # Compile firmware
 print("Step 6")
+buildFailed = False
 os.chdir(sourcedir)
 buildcommand = "/root/.platformio/penv/bin/platformio run -v -e "+platformioenv
 print("Starting build")
@@ -573,29 +574,30 @@ except:
     exit(6)
 if(completedProc.returncode!=0):
     updatefailed()
-    exit(6)
+    buildFailed = True
 
 # STEP 7
 # Upload Firmware to S3
-filePathPrefix = ".pio/build/"+platformioenv+"/firmware."
-filePath = ".pio/build/"+platformioenv
-fileName = ""
-for file in os.listdir(filePath):
-    if(file.endswith(".bin") or file.endswith(".hex")):
-        fileName = file
-        break
-if(fileName != ""):
-    try:
-        upload_file(".pio/build/"+platformioenv+"/"+fileName, buildArtifactsBucket, "public/"+buildJobId+"/"+fileName)
-        create_buildArtifact("Marlin firmware binary", fileName)
-    except:
-        print("Unexpected error:", sys.exc_info()[0])
+if(buildFailed is not True):
+    filePathPrefix = ".pio/build/"+platformioenv+"/firmware."
+    filePath = ".pio/build/"+platformioenv
+    fileName = ""
+    for file in os.listdir(filePath):
+        if(file.endswith(".bin") or file.endswith(".hex")):
+            fileName = file
+            break
+    if(fileName != ""):
+        try:
+            upload_file(".pio/build/"+platformioenv+"/"+fileName, buildArtifactsBucket, "public/"+buildJobId+"/"+fileName)
+            create_buildArtifact("Marlin firmware binary", fileName)
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            updatefailed()
+            exit(7)
+    else:
+        print("No firmware file found")
         updatefailed()
         exit(7)
-else:
-    print("No firmware file found")
-    updatefailed()
-    exit(7)
 
 # STEP 8
 # Upload Firmware Source archive to S3
@@ -647,6 +649,9 @@ except:
 #         '{"firmwareurl":"TODO"}'
 #     )
 # )
+
+if(buildFailed):
+    exit(9)
 
 print("DONE")
 update_job_status_gql(buildJobId, "DONE")
