@@ -101,7 +101,7 @@ export class BuildJobsList extends React.Component {
 						{	this.props.buildDefinition.buildJobs.items.sort(comparator.makeComparator('createdAt', 'desc')).slice(0,3).map(job=>
 						<Table.Row key={job.id}>
 								<Table.Cell>{job.firmwareVersion ? job.firmwareVersion.name : "custom"}</Table.Cell>
-								<Table.Cell>{job.createdAt}</Table.Cell>
+								<Table.Cell>{new Date(job.createdAt).toLocaleString()}</Table.Cell>
 								<Table.Cell>{job.jobState=='FAILED' || job.jobState=='CANCELLED' ? <Message color='red'>{job.jobState}</Message> : job.jobState=='DONE' ? <Message color='green'>{job.jobState}</Message> : job.jobState}</Table.Cell>
 								<Table.Cell>Logfile.txt
 									<Button disabled={this.props.buildDefinition.buildRunning} animated='vertical' onClick={(e)=>this.handleDownload(e, job, "logfile.txt")}>
