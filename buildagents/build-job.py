@@ -385,38 +385,41 @@ def upload_file(file_name, bucket, object_name=None):
 def extract_flash_info(logfile):
     flash_percent_used = flash_bytes_used = flash_bytes_max = status = error_msg = None
 
-    with open(logfile, 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            if "Flash:" in line:
-                # Extract the percentage used
-                flash_percent_used = line.split()[3].strip('%')
-
-                # Extract the absolute number of bytes used and the maximum number of bytes
-                flash_info = line.split('(')[1].split(')')[0]
-                flash_bytes_used, flash_bytes_max = flash_info.split('bytes from')
-
-            elif "[SUCCESS]" in line:
-                status = 'SUCCESS'
-            
-            elif "[FAILED]" in line:
-                status = 'FAILED'
-        
-        if status == 'FAILED':
-            # Return the last error message in the log
+    try:
+        with open(logfile, 'r') as file:
+            lines = file.readlines()
             for line in lines:
-                if 'Error:' in line or 'error:' in line:
-                    if error_msg == None:
-                        error_msg = line.strip()
-                    else:
-                        error_msg += '\n' + line.strip()
+                if "Flash:" in line:
+                    # Extract the percentage used
+                    flash_percent_used = line.split(']')[1].split('%')[0].strip()
+
+                    # Extract the absolute number of bytes used and the maximum number of bytes
+                    flash_info = line.split('(')[1].split(')')[0]
+                    flash_bytes_used, flash_bytes_max = flash_info.split('bytes from')
+
+                elif "[SUCCESS]" in line:
+                    status = 'SUCCESS'
                 
-    if flash_percent_used is not None:
-        flash_percent_used = float(flash_percent_used)
-    if flash_bytes_used is not None:
-        flash_bytes_used = int(flash_bytes_used.strip("used ").strip())
-    if flash_bytes_max is not None:
-        flash_bytes_max = int(flash_bytes_max.strip(" bytes").strip())
+                elif "[FAILED]" in line:
+                    status = 'FAILED'
+            
+            if status == 'FAILED':
+                # Return the last error message in the log
+                for line in lines:
+                    if 'Error:' in line or 'error:' in line:
+                        if error_msg == None:
+                            error_msg = line.strip()
+                        else:
+                            error_msg += '\n' + line.strip()
+                    
+        if flash_percent_used is not None:
+            flash_percent_used = float(flash_percent_used)
+        if flash_bytes_used is not None:
+            flash_bytes_used = int(flash_bytes_used.strip("used ").strip())
+        if flash_bytes_max is not None:
+            flash_bytes_max = int(flash_bytes_max.strip(" bytes").strip())
+    except Exception as e:
+        print(e)
 
     return flash_percent_used, flash_bytes_used, flash_bytes_max, status, error_msg
 

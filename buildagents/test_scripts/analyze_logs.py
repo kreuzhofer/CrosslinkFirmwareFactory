@@ -6,7 +6,7 @@ def extract_flash_info(logfile):
         for line in lines:
             if "Flash:" in line:
                 # Extract the percentage used
-                flash_percent_used = line.split()[3].strip('%')
+                flash_percent_used = line.split(']')[1].split('%')[0].strip()
 
                 # Extract the absolute number of bytes used and the maximum number of bytes
                 flash_info = line.split('(')[1].split(')')[0]
@@ -49,3 +49,10 @@ print(f"Build status: {status}")
 if status == 'FAILED':
     print(f"Error message: {error_msg}")
 
+flash_percent_used, flash_bytes_used, flash_bytes_max, status, error_msg = extract_flash_info('logfile_3.txt')
+print(f"Flash used: {flash_percent_used}%")
+print(f"Absolute number of bytes used: {flash_bytes_used} bytes")
+print(f"Maximum number of bytes: {flash_bytes_max} bytes")
+print(f"Build status: {status}")
+if status == 'FAILED':
+    print(f"Error message: {error_msg}")
