@@ -124,8 +124,8 @@ export class BuildJobsList extends React.Component {
 											<Table.Body>
 												<Table.Row>
 													<Table.Cell>{job.flash_percent_used}</Table.Cell>
-													<Table.Cell>{job.flash_bytes_used}</Table.Cell>
-													<Table.Cell>{job.flash_bytes_max}</Table.Cell>
+													<Table.Cell>{job.flash_bytes_used} ({(job.flash_bytes_used/1024).toFixed(2)}KB)</Table.Cell>
+													<Table.Cell>{job.flash_bytes_max} ({(job.flash_bytes_max/1024).toFixed(2)}KB)</Table.Cell>
 												</Table.Row>
 											</Table.Body>
 										</Table>
