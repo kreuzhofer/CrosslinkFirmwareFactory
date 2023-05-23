@@ -9,6 +9,7 @@ import zipfile
 import os
 import boto3
 import json
+import random
 from botocore.exceptions import ClientError
 import re
 try:
@@ -272,7 +273,9 @@ def replaceInFile(filename, replacements):
                 hasValue = True
 
             # check if key exists in file
-            if(searchForKey not in text):
+            parts = searchForKey.split(' ', 1)
+            toFind = parts[0]+'\s+'+parts[1]
+            if(not re.search(toFind+r'(\W|$)', text)):
                 if (addKey == True):
                     if(hasValue):
                         text = text + "\n#define "+key+" "+newValue
@@ -287,7 +290,7 @@ def replaceInFile(filename, replacements):
                 newLines = []
                 for line in oldLines:
                     newLines.append(line)
-                    if(searchForKey in line):
+                    if(re.search(toFind+r'(\W|$)', line)):
                         if(hasValue):
                             newLines.append("#define "+key+" "+newValue)
                         else:
@@ -295,14 +298,21 @@ def replaceInFile(filename, replacements):
                 text = '\n'.join(newLines)
             else:
                 if desiredState: # switch should be enabled and optionally has value
-                    toFind = "//"+searchForKey
-                    while(toFind in text): # switch currently disabled, first enable it
-                        text = re.sub(toFind, searchForKey, text)
+                    parts = searchForKey.split(' ', 1)
+                    toFind = "//"+parts[0]+'\s+'+parts[1]
+                    print("toFind: "+toFind)
+
+                    if re.search(toFind+r'(\W|$)', text):
+                        print("Enabling "+parts[1])
+                        text = re.sub(toFind+r'(\W|$)', parts[0]+' '+parts[1]+r'\1', text)
                     else:
-                        print("Alread enabled: "+key)
+                        print("Already enabled: "+searchForKey)
+
                     if(hasValue):
                         line = getLineWhereMatch(searchForKey, text)
-                        leadingSpaces = len(line) - len(line.lstrip())
+                        leadingSpaces = 0
+                        if(line is not None):
+                            leadingSpaces = len(line) - len(line.lstrip())
                         while(line is not None and not (searchForKey+" "+newValue) in line):
                             print("Found: '"+line+"'")
                             newLine = (' ' * leadingSpaces) + searchForKey+" "+newValue
@@ -312,11 +322,14 @@ def replaceInFile(filename, replacements):
                             line = getLineWhereMatch(searchForKey, text)
                             leadingSpaces = len(line) - len(line.lstrip())
                 else: # switch should be disabled
-                    toFind = "//"+searchForKey
-                    if(toFind in text):
+                    parts = searchForKey.split(' ', 1)
+                    toFind = "//"+parts[0]+'\s+'+parts[1]
+
+                    if re.search(toFind+r'(\W|$)', text):
                         print("Already disabled: "+key)
                     else:
-                        text = re.sub(searchForKey, toFind, text)
+                        toFind = parts[0]+'\s+'+parts[1]
+                        text = re.sub(toFind+r'(\W|$)', "//"+parts[0]+' '+parts[1]+r'\1', text)
 
         f.seek(0)
         f.write(text)
@@ -423,6 +436,11 @@ def extract_flash_info(logfile):
 
     return flash_percent_used, flash_bytes_used, flash_bytes_max, status, error_msg
 
+def generate_random_hex_string():
+    hex_chars = '0123456789abcdef'
+    random_hex = ''.join(random.choice(hex_chars) for _ in range(4))
+    return random_hex
+
 update_job_status_gql(buildJobId, "RUNNING")
 
 # STEP 1
@@ -496,13 +514,15 @@ if(configurl.startswith("http")):
         print(completedProc.stdout.decode("utf-8"))
         # Print the exit code.
         print("Copy mainboard config files result: ",completedProc.returncode)
-    else:
+    elif(printermodel):
         copycommand = "cp ./"+configsdir+"/config/examples/"+manufacturer.replace(' ','\\ ')+"/"+printermodel.replace(' ','\\ ')+"/*.h ./"+sourcedir+"/Marlin/."
         print(copycommand)
         completedProc = subprocess.run(copycommand, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         print(completedProc.stdout.decode("utf-8"))
         # Print the exit code.
         print("Copy config files result: ",completedProc.returncode)
+    else:
+        print("No printer model, skipping to copy config file")
 
 else: # configurl is just a subdirectory of the sourcedir
     print("sourcedir is just a subdirectory of the Marlin source folder:")
@@ -573,7 +593,6 @@ except:
     updatefailed()
     exit(6)
 if(completedProc.returncode!=0):
-    updatefailed()
     buildFailed = True
 
 # STEP 7
@@ -588,8 +607,10 @@ if(buildFailed is not True):
             break
     if(fileName != ""):
         try:
-            upload_file(".pio/build/"+platformioenv+"/"+fileName, buildArtifactsBucket, "public/"+buildJobId+"/"+fileName)
-            create_buildArtifact("Marlin firmware binary", fileName)
+            randomPrefix = generate_random_hex_string()
+            randomFileName = randomPrefix+"-"+fileName
+            upload_file(".pio/build/"+platformioenv+"/"+fileName, buildArtifactsBucket, "public/"+buildJobId+"/"+randomFileName)
+            create_buildArtifact("Marlin firmware binary", randomFileName)
         except:
             print("Unexpected error:", sys.exc_info()[0])
             updatefailed()
@@ -651,6 +672,7 @@ except:
 # )
 
 if(buildFailed):
+    updatefailed()
     exit(9)
 
 print("DONE")
