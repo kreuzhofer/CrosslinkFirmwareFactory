@@ -22,23 +22,8 @@ export const getBuildDefinition = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobs {
-        items {
-          id
-          buildDefinitionID
-          jobState
-          startTime
-          endTime
-          flash_bytes_used
-          flash_bytes_max
-          flash_percent_used
-          message
-          log
-          firmwareVersionId
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -50,7 +35,9 @@ export const getBuildDefinition = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -83,22 +70,10 @@ export const listBuildDefinitions = /* GraphQL */ `
         groupsCanAccess
         createdAt
         updatedAt
-        buildJobs {
-          nextToken
-        }
-        firmwareVersion {
-          id
-          owner
-          name
-          sourceTree
-          configTree
-          parseJobState
-          defaultConfigJson
-          createdAt
-          updatedAt
-        }
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;
@@ -135,22 +110,10 @@ export const buildDefinitionsByOwner = /* GraphQL */ `
         groupsCanAccess
         createdAt
         updatedAt
-        buildJobs {
-          nextToken
-        }
-        firmwareVersion {
-          id
-          owner
-          name
-          sourceTree
-          configTree
-          parseJobState
-          defaultConfigJson
-          createdAt
-          updatedAt
-        }
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;
@@ -172,16 +135,8 @@ export const getBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobArtifacts {
-        items {
-          id
-          buildJobID
-          artifactName
-          artifactFileName
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -193,7 +148,9 @@ export const getBuildJob = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -219,22 +176,10 @@ export const listBuildJobs = /* GraphQL */ `
         owner
         createdAt
         updatedAt
-        buildJobArtifacts {
-          nextToken
-        }
-        firmwareVersion {
-          id
-          owner
-          name
-          sourceTree
-          configTree
-          parseJobState
-          defaultConfigJson
-          createdAt
-          updatedAt
-        }
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;
@@ -248,6 +193,7 @@ export const getBuildJobArtifact = /* GraphQL */ `
       owner
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -270,8 +216,10 @@ export const listBuildJobArtifacts = /* GraphQL */ `
         owner
         createdAt
         updatedAt
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;
@@ -287,6 +235,7 @@ export const getFirmwareVersion = /* GraphQL */ `
       defaultConfigJson
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -311,8 +260,10 @@ export const listFirmwareVersions = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;
@@ -326,6 +277,7 @@ export const getMembershipException = /* GraphQL */ `
       roleOverride
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -348,8 +300,10 @@ export const listMembershipExceptions = /* GraphQL */ `
         roleOverride
         createdAt
         updatedAt
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;
@@ -364,6 +318,7 @@ export const getUserProfile = /* GraphQL */ `
       markedForDisabling
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -383,8 +338,10 @@ export const listUserProfiles = /* GraphQL */ `
         markedForDisabling
         createdAt
         updatedAt
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;

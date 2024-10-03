@@ -25,23 +25,8 @@ export const createBuildDefinition = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobs {
-        items {
-          id
-          buildDefinitionID
-          jobState
-          startTime
-          endTime
-          flash_bytes_used
-          flash_bytes_max
-          flash_percent_used
-          message
-          log
-          firmwareVersionId
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -53,7 +38,9 @@ export const createBuildDefinition = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -81,23 +68,8 @@ export const updateBuildDefinition = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobs {
-        items {
-          id
-          buildDefinitionID
-          jobState
-          startTime
-          endTime
-          flash_bytes_used
-          flash_bytes_max
-          flash_percent_used
-          message
-          log
-          firmwareVersionId
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -109,7 +81,9 @@ export const updateBuildDefinition = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -137,23 +111,8 @@ export const deleteBuildDefinition = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobs {
-        items {
-          id
-          buildDefinitionID
-          jobState
-          startTime
-          endTime
-          flash_bytes_used
-          flash_bytes_max
-          flash_percent_used
-          message
-          log
-          firmwareVersionId
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -165,7 +124,9 @@ export const deleteBuildDefinition = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -190,16 +151,8 @@ export const createBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobArtifacts {
-        items {
-          id
-          buildJobID
-          artifactName
-          artifactFileName
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -211,7 +164,9 @@ export const createBuildJob = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -236,16 +191,8 @@ export const updateBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobArtifacts {
-        items {
-          id
-          buildJobID
-          artifactName
-          artifactFileName
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -257,7 +204,9 @@ export const updateBuildJob = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -282,16 +231,8 @@ export const deleteBuildJob = /* GraphQL */ `
       createdAt
       updatedAt
       buildJobArtifacts {
-        items {
-          id
-          buildJobID
-          artifactName
-          artifactFileName
-          owner
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       firmwareVersion {
         id
@@ -303,7 +244,9 @@ export const deleteBuildJob = /* GraphQL */ `
         defaultConfigJson
         createdAt
         updatedAt
+        __typename
       }
+      __typename
     }
   }
 `;
@@ -320,6 +263,7 @@ export const createBuildJobArtifact = /* GraphQL */ `
       owner
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -336,6 +280,7 @@ export const updateBuildJobArtifact = /* GraphQL */ `
       owner
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -352,6 +297,7 @@ export const deleteBuildJobArtifact = /* GraphQL */ `
       owner
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -370,6 +316,7 @@ export const createFirmwareVersion = /* GraphQL */ `
       defaultConfigJson
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -388,6 +335,7 @@ export const updateFirmwareVersion = /* GraphQL */ `
       defaultConfigJson
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -406,6 +354,7 @@ export const deleteFirmwareVersion = /* GraphQL */ `
       defaultConfigJson
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -422,6 +371,7 @@ export const createMembershipException = /* GraphQL */ `
       roleOverride
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -438,6 +388,7 @@ export const updateMembershipException = /* GraphQL */ `
       roleOverride
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -454,6 +405,7 @@ export const deleteMembershipException = /* GraphQL */ `
       roleOverride
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -471,6 +423,7 @@ export const createUserProfile = /* GraphQL */ `
       markedForDisabling
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -488,6 +441,7 @@ export const updateUserProfile = /* GraphQL */ `
       markedForDisabling
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -505,6 +459,7 @@ export const deleteUserProfile = /* GraphQL */ `
       markedForDisabling
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
