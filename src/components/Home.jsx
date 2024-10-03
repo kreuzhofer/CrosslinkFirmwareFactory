@@ -1,10 +1,19 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
+import {
+    Message,
+  } from 'semantic-ui-react'
 
 export class Home extends React.Component{
 	render(){
 		return (
 			<div>
+				<Message
+					warning
+				    icon='exclamation'
+    				header='The Crosslink Firmware Factory is DEPRECATED and will SHUTDOWN on December 31, 2024, 23:59 CEST.'
+    				content='Please download all your configurations and firmware builds to back up your data. We will not keep any data beyond December 31st, 2024 and there will be no way to restore it afterwards.'
+  				/>
 				<h3>Welcome to the Crosslink firmware factory</h3>
 				<p>Here I provide downloads of pre-configured Marlin firmware for specific printers and setups as well as pre-compiled firmware binaries.</p>
 				<a href="https://youtu.be/L9QcTNuHaaY" target="_blank" rel="noreferrer">Watch the introduction video here</a><br/>

@@ -10,7 +10,8 @@ import {
   Icon,
   Confirm,
   Search,
-  Label
+  Label,
+  Message
 } from 'semantic-ui-react'
 import _ from 'lodash';
 
@@ -366,6 +367,12 @@ export class BuildDefinitionsList extends React.Component {
 
     return (
       <Segment>
+        <Message
+        warning
+          icon='exclamation'
+          header='The Crosslink Firmware Factory is DEPRECATED and will SHUTDOWN on December 31, 2024, 23:59 CEST.'
+          content='Please download all your configurations and firmware builds to back up your data. We will not keep any data beyond December 31st, 2024 and there will be no way to restore it afterwards.'
+        />
         <Header as='h3'>My Build Definitions</Header>
         <Label>Search</Label>
         <Search

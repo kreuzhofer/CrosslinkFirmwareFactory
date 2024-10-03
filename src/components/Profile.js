@@ -1,7 +1,7 @@
 import { API, Auth, graphqlOperation, Storage } from 'aws-amplify';
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Form, Header, Input, Segment, Button, Image, Label, Icon } from "semantic-ui-react";
+import { Form, Header, Input, Segment, Button, Image, Label, Icon, Message } from "semantic-ui-react";
 import * as mutations from '../graphql/mutations'
 import * as queries from '../graphql/queries'
 import * as rest from '../util/authenticatedRESTCall'
@@ -116,6 +116,12 @@ function Profile(){
     return <>
         <SemanticToastContainer/>
         <Segment>
+            <Message
+            warning
+            icon='exclamation'
+            header='The Crosslink Firmware Factory is DEPRECATED and will SHUTDOWN on December 31, 2024, 23:59 CEST.'
+            content='Please download all your configurations and firmware builds to back up your data. We will not keep any data beyond December 31st, 2024 and there will be no way to restore it afterwards.'
+            />
             <Header>Edit your profile</Header>
             {
             profileImageUrl !=='' ? <>
